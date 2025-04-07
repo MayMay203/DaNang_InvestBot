@@ -1,0 +1,26 @@
+.base-input{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    .input-text{
+        position: relative;
+        background-color: $light-grey;
+        border-radius: 8px;
+        padding: 8px 10px;
+        .input{
+            height: 100%;
+            width: 100%;
+            outline: none;
+            border: none;
+            background-color: transparent;
+            resize: none;
+        }
+        .icon-input{
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+    }
+}
