@@ -16,7 +16,7 @@
       <div class="mt-[24px]"> <BaseButton :text="t('auth.login_with_google')" variant="outline" radius="0" leftIcon="google" sizeIcon="24px" height="38px"></BaseButton></div>
     </div>
     <div class="hidden sm:block h-[100vh] flex-1" >
-        <img class="w-[100%] h-[100%] object-fit-contain" src="/images/sign-up.png" alt="sign-up"/>
+        <img class="w-[100%] h-[100%] object-fit-contain" src="/images/login.png" alt="sign-up"/>
     </div>
     
 </div>
