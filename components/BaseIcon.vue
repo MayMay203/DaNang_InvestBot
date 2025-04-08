@@ -38,10 +38,9 @@ const emit = defineEmits(['click'])
 
 const handleClick = () => {
   if (!props.disabled) { 
-    clickValue.value = !clickValue.value;
     emit('click')
   }
 }
 
 </script>
-<style lang="scss" scoped src="@/assets/styles/BaseIcon.scss"></style>
+<style lang="scss" scoped src="@/assets/styles/components/BaseIcon.scss"></style>

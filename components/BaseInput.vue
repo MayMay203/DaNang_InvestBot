@@ -67,8 +67,11 @@ const modelValue = defineModel()
 
 const inputStyle = computed(() => ({ width: formatStyle(props.width), height: formatStyle(props.height), borderRadius: formatStyle(props.radius) }))
 
+const handleClickIcon = () => {
+    console.log('click icon')
+}
 </script>
 
-<style lang="scss" scoped src="@/assets/styles/BaseInput.scss">
+<style lang="scss" scoped src="@/assets/styles/components/BaseInput.scss">
 
 </style>

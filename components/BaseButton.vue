@@ -1,10 +1,10 @@
 <template>
     <div class="base-button" :style="{...buttonStyle}" :variant="variant">
-        <div class="icon-input" v-if="leftIcon"><BaseIcon :name="leftIcon" :sizeIcon="sizeIcon" :width="widthIcon" :height="heightIcon" :cursor="cursorIcon"/></div>
+        <div class="icon-input" v-if="leftIcon"><BaseIcon :name="leftIcon" :sizeIcon="sizeIcon" :width="widthIcon" :height="heightIcon" :cursor="cursor"/></div>
         <button :disabled="disabled" :type="type" @click="handleClick" class="button">
             {{text}}
         </button>
-        <div class="icon-input" v-if="rightIcon"><BaseIcon :name="rightIcon" :sizeIcon="sizeIcon" :width="widthIcon" :height="heightIcon" :cursor="cursorIcon"/></div>
+        <div class="icon-input" v-if="rightIcon"><BaseIcon :name="rightIcon" :sizeIcon="sizeIcon" :width="widthIcon" :height="heightIcon" :cursor="cursor"/></div>
     </div>
 </template>
 <script setup>
@@ -96,6 +96,6 @@ const handleClick = () => {
     }
 }
 </script>
-<style scoped src="@/assets/styles/BaseButton.scss">
+<style scoped src="@/assets/styles/components/BaseButton.scss">
 
 </style>

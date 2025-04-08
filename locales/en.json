@@ -1,0 +1,24 @@
+{
+  "auth": {
+    "email": "Email",
+    "full_name": "Full Name",
+    "password": "Password",
+    "confirm_password": "Confirm password",
+    "sign_up": "Sign Up",
+    "already_have_account": "Already have an account?",
+    "or": "Or",
+    "login": "Login",
+    "forget_password": "Forget password",
+    "login_with_google": "Login with Google",
+    "verify_OTP": "Verify OTP",
+    "resend_OTP": "Resend OTP",
+    "OTP_message": "Enter the OTP sent to your email",
+    "forget_password_message": "Enter your email to update your password",
+    "new_password": "New password",
+    "confirm_new_password": "Confirm new password",
+    "confirm": "Confirm",
+    "change_password": "Change password",
+    "current_password": "Current password"
+  },
+  "hihi": "hifdfdhi"
+}
