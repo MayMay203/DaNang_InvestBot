@@ -11,7 +11,7 @@
        <div class="mt-[20px]"><BaseButton :text="t('auth.sign_up')" variant="primary" height="40px" width="100%"/></div>
        <div class="mt-[16px] text-center">
         <span class="text-[14px]">{{ t('auth.already_have_account') }}</span>
-        <NuxtLink class="text-[rgba(6,80,118,0.9)] text-[14px] ml-[5px]" :to="routes.login">{{ t('auth.login') }}</NuxtLink>
+        <NuxtLink class="text-[rgba(6,80,118,0.9)] text-[14px] ml-[5px]" to="/login">{{ t('auth.login') }}</NuxtLink>
        </div>
         <div class="option-text flex items-center gap-[10px] mt-[24px] text-[13px]">{{ t('auth.or') }}</div>
       <div class="mt-[16px]"> <BaseButton :text="t('auth.login_with_google')" variant="outline" radius="0" leftIcon="google" sizeIcon="24px" height="38px"></BaseButton></div>
@@ -26,7 +26,6 @@
 import { NuxtLink } from '#components';
 import BaseButton from '~/components/BaseButton.vue';
 import BaseInput from '~/components/BaseInput.vue';
-import { routes } from '~/constants/routes';
 const { t } = useTranslation()
 </script>
 <style scoped>
