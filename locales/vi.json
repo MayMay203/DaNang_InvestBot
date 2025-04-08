@@ -14,6 +14,7 @@
     "verify_OTP": "Xác thực OTP",
     "resend_OTP": "Gửi lại OTP",
     "OTP_message": "Nhập OTP đã được gửi đến email của bạn",
+    "OTP_placeholder": "Nhập OTP",
     "forget_password_message": "Nhập email để cập nhật lại mật khẩu",
     "new_password": "Mật khẩu mới",
     "confirm_new_password": "Xác nhận mật khẩu mới",
