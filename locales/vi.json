@@ -23,6 +23,7 @@
     "email_placeholder": "Nhập email của bạn",
     "full_name_placeholder": "Nhập họ và tên của bạn",
     "password_placeholder": "Nhập mật khẩu của bạn",
-    "confirm_password_placeholder": "Xác nhận mật khẩu của bạn"
+    "confirm_password_placeholder": "Xác nhận mật khẩu của bạn",
+    "reset_password": "Đặt lại mật khẩu"
   }
 }

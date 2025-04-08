@@ -23,6 +23,7 @@
     "email_placeholder": "Enter your email",
     "full_name_placeholder": "Enter your full name",
     "password_placeholder": "Enter your password",
-    "confirm_password_placeholder": "Confirm your password"
+    "confirm_password_placeholder": "Confirm your password",
+    "reset_password": "Reset password"
   }
 }
