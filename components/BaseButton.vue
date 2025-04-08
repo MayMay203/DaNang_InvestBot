@@ -40,7 +40,7 @@ const props = defineProps({
     },
     cursor: {
         type: String,
-        default: 'default'
+        default: 'pointer'
     },
     radius: {
         type: [String, Number],
@@ -60,15 +60,12 @@ const props = defineProps({
     },
     sizeIcon: {
         type: [String, Number],
-        default: '20px'
     },
     widthIcon: {
         type: [String, Number],
-        default: '20px'
     },
     heightIcon: {
         type: [String, Number],
-        default: '20px'
     },
     leftIcon: {
         type: String,

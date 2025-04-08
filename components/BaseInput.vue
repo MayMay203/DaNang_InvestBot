@@ -1,6 +1,6 @@
 <template>
 <div class="base-input">
-    <label>{{ label }}</label>
+    <label class="text-[14px]">{{ label }}</label>
    <div class="input-text" :style="inputStyle">
         <input v-model="modelValue" v-if="typeTag === 'input'" :placeholder="placeholder" class="input"/>
         <textarea v-model="modelValue" v-else-if="typeTag === 'textarea'" :placeholder="placeholder" class="input"/>
@@ -24,11 +24,11 @@ const props = defineProps({
     },
     radius: {
         type: [String, Number],
-        default: '10px'
+        default: '6px'
     },
     height: {
         type: [String, Number],
-        default: '60px'
+        default: '40px'
     },
     placeholder: {
         type: String,

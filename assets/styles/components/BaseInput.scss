@@ -15,6 +15,11 @@
             border: none;
             background-color: transparent;
             resize: none;
+
+            &::placeholder{
+                font-size: 1.4rem;
+                color: rgba(0,0,0,0.5);
+            }
         }
         .icon-input{
             position: absolute;

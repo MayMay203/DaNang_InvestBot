@@ -18,7 +18,10 @@
     "confirm_new_password": "Confirm new password",
     "confirm": "Confirm",
     "change_password": "Change password",
-    "current_password": "Current password"
-  },
-  "hihi": "hifdfdhi"
+    "current_password": "Current password",
+    "email_placeholder": "Enter your email",
+    "full_name_placeholder": "Enter your full name",
+    "password_placeholder": "Enter your password",
+    "confirm_password_placeholder": "Confirm your password"
+  }
 }
