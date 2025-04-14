@@ -1,10 +1,10 @@
 <template>
     <div class="base-button" :style="{...buttonStyle}" :variant="variant">
-        <div class="icon-input" v-if="leftIcon"><BaseIcon :name="leftIcon" :sizeIcon="sizeIcon" :width="widthIcon" :height="heightIcon" :cursor="cursorIcon"/></div>
+        <div class="icon-input" v-if="leftIcon"><BaseIcon :name="leftIcon" :sizeIcon="sizeIcon" :width="widthIcon" :height="heightIcon" :cursor="cursor"/></div>
         <button :disabled="disabled" :type="type" @click="handleClick" class="button">
             {{text}}
         </button>
-        <div class="icon-input" v-if="rightIcon"><BaseIcon :name="rightIcon" :sizeIcon="sizeIcon" :width="widthIcon" :height="heightIcon" :cursor="cursorIcon"/></div>
+        <div class="icon-input" v-if="rightIcon"><BaseIcon :name="rightIcon" :sizeIcon="sizeIcon" :width="widthIcon" :height="heightIcon" :cursor="cursor"/></div>
     </div>
 </template>
 <script setup>
@@ -40,7 +40,7 @@ const props = defineProps({
     },
     cursor: {
         type: String,
-        default: 'default'
+        default: 'pointer'
     },
     radius: {
         type: [String, Number],
@@ -60,15 +60,12 @@ const props = defineProps({
     },
     sizeIcon: {
         type: [String, Number],
-        default: '20px'
     },
     widthIcon: {
         type: [String, Number],
-        default: '20px'
     },
     heightIcon: {
         type: [String, Number],
-        default: '20px'
     },
     leftIcon: {
         type: String,
@@ -96,6 +93,6 @@ const handleClick = () => {
     }
 }
 </script>
-<style scoped src="@/assets/styles/BaseButton.scss">
+<style scoped src="@/assets/styles/components/BaseButton.scss">
 
 </style>
