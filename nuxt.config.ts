@@ -13,7 +13,7 @@ export default defineNuxtConfig({
       },
     },
   },
-  modules: ["@nuxtjs/i18n"],
+  modules: ["@nuxtjs/i18n", "@pinia/nuxt"],
   i18n: {
     locales: [
       { code: "en", language: "en-US", file: "en.json" },
@@ -23,5 +23,10 @@ export default defineNuxtConfig({
     lazy: true,
     langDir: "locales",
     strategy: "no_prefix",
+  },
+  runtimeConfig: {
+    public: {
+      apiBaseUrl: process.env.BASE_URL,
+    },
   },
 });
