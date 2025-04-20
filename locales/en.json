@@ -31,8 +31,13 @@
     "current_password": "Current password",
     "email_placeholder": "Enter your email",
     "full_name_placeholder": "Enter your full name",
+    "fullname_message": {
+      "min": "Full name must be at least 2 characters.",
+      "max": "Full name must not exceed 50 characters,"
+    },
     "password_placeholder": "Enter your password",
     "confirm_password_placeholder": "Confirm your password",
+    "confirm_password_message": "Confirm password does not match",
     "reset_password": "Reset password"
   }
 }

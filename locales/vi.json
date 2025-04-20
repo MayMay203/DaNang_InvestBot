@@ -31,8 +31,13 @@
     "current_password": "Mật khẩu hiện tại",
     "email_placeholder": "Nhập email của bạn",
     "full_name_placeholder": "Nhập họ và tên của bạn",
+    "fullname_message": {
+      "min": "Họ và tên phải có ít nhất 2 ký tự.",
+      "max": "Họ và tên không được vượt quá 50 ký tự "
+    },
     "password_placeholder": "Nhập mật khẩu của bạn",
     "confirm_password_placeholder": "Xác nhận mật khẩu của bạn",
+    "confirm_password_message": "Mật khẩu xác nhận không khớp",
     "reset_password": "Đặt lại mật khẩu"
   }
 }
