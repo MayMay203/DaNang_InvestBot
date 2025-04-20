@@ -1,8 +1,16 @@
 {
   "auth": {
     "email": "Email",
+    "email_message": "Email nhập vào không hợp lệ.",
     "full_name": "Họ và tên",
     "password": "Mật khẩu",
+    "password_message": {
+      "min": "Mật khẩu phải có ít nhất 8 ký tự.",
+      "uppercase": "Mật khẩu phải chứa ít nhất 1 chữ hoa.",
+      "lowercase": "Mật khẩu phải chứa ít nhất 1 chữ thường.",
+      "number": "Mật khẩu phải chứa ít nhất 1 chữ số.",
+      "special": "Mật khẩu phải chứa ký tự đặc biệt."
+    },
     "confirm_password": "Xác nhận mật khẩu",
     "sign_up": "Đăng ký",
     "already_have_account": "Đã có tài khoản?",

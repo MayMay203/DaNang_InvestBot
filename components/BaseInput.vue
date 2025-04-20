@@ -2,10 +2,11 @@
 <div class="base-input">
     <label class="text-[14px]">{{ label }}</label>
    <div class="input-text" :style="inputStyle">
-        <input v-model="modelValue" v-if="typeTag === 'input'" :placeholder="placeholder" class="input"/>
+        <input v-model="modelValue" v-if="typeTag === 'input'" :placeholder="placeholder" class="input" @blur="handleBlurInput"/>
         <textarea v-model="modelValue" v-else-if="typeTag === 'textarea'" :placeholder="placeholder" class="input"/>
         <div class="icon-input" v-if="icon"><BaseIcon :name="icon" :sizeIcon="sizeIcon" :width="widthIcon" :height="heightIcon" :cursor="cursorIcon" @click="handleClickIcon"/></div>
    </div>
+    <p v-if="error" class="text-red-500 text-[12px]">{{ error }}</p>
 </div>
 </template>
 
@@ -61,14 +62,22 @@ const props = defineProps({
     cursorIcon: {
         type: String,
         default: 'default'
+    },
+    error: {
+        type: String,
+        default: ''
     }
 })
 const modelValue = defineModel()
+const emit = defineEmits(['blur'])
 
 const inputStyle = computed(() => ({ width: formatStyle(props.width), height: formatStyle(props.height), borderRadius: formatStyle(props.radius) }))
 
 const handleClickIcon = () => {
-    console.log('click icon')
+}
+
+const handleBlurInput = () => {
+    emit('blur')
 }
 </script>
 

@@ -1,8 +1,16 @@
 {
   "auth": {
     "email": "Email",
+    "email_message": "Please enter a valid email address",
     "full_name": "Full Name",
     "password": "Password",
+    "password_message": {
+      "min": "Password must be at least 8 characters",
+      "uppercase": "Password must contain at least one uppercase letter",
+      "lowercase": "Password must contain at least one lowercase letter",
+      "number": "Password must contain at least one number",
+      "special": "Password must contain at least one special character"
+    },
     "confirm_password": "Confirm password",
     "sign_up": "Sign Up",
     "already_have_account": "Already have an account?",

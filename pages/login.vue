@@ -3,14 +3,16 @@
     <div class="flex-1 p-[20px] md:p-[30px] lg:py-[20px] lg:px-[60px]">
         <h1 class="text-[rgba(6,80,118,0.9)] font-bold text-[24px] text-center">{{ t('auth.login').toUpperCase() }}</h1>
        <div class="flex flex-col gap-[10px]">
-            <BaseInput :label="t('auth.email')" :placeholder="t('auth.email_placeholder')"/>
-            <BaseInput :label="t('auth.password')" icon="visibility" cursorIcon="pointer" :placeholder="t('auth.password_placeholder')"/>
+            <BaseInput v-model="loginForm.email" :label="t('auth.email')" :placeholder="t('auth.email_placeholder')" :error="formErrors.email" @blur="handleBlurInput('email')"/>
+            <BaseInput v-model="loginForm.password" :label="t('auth.password')" icon="visibility" cursorIcon="pointer" :placeholder="t('auth.password_placeholder')" :error="formErrors.password" @blur="handleBlurInput('password')"/>
        </div>
-       <NuxtLink :to="routes.forgetPassword" class="text-[14px] text-[rgba(6,80,118,0.9)] italic block text-right mt-[12px]">{{ t('auth.forget_password') }}?</NuxtLink>
-       <div class="mt-[20px]"><BaseButton :text="t('auth.login')" variant="primary" height="40px" width="100%"/></div>
+       <div class="flex justify-end mt-[12px]">
+        <NuxtLink :to="ROUTES.FORGET_PASSWORD" class="text-[14px] text-[rgba(6,80,118,0.9)] italic inline-block">{{ t('auth.forget_password') }}?</NuxtLink>
+       </div>
+      <div class="mt-[20px]"><BaseButton @click="handleLogin" :text="t('auth.login')" variant="primary" height="40px" width="100%" :disabled="isDisabled"/></div>
        <div class="mt-[24px] text-center">
         <span class="text-[14px]">{{ t("auth.not_yet_have_account") }}</span>
-        <NuxtLink class="text-[rgba(6,80,118,0.9)] text-[14px] ml-[5px]" :to="routes.signUp">{{ t('auth.sign_up') }}</NuxtLink>
+        <NuxtLink class="text-[rgba(6,80,118,0.9)] text-[14px] ml-[5px]" :to="ROUTES.SIGNUP">{{ t('auth.sign_up') }}</NuxtLink>
        </div>
         <div class="option-text flex items-center gap-[10px] mt-[60px] text-[13px]">{{ t('auth.or') }}</div>
       <div class="mt-[24px]"> <BaseButton :text="t('auth.login_with_google')" variant="outline" radius="0" leftIcon="google" sizeIcon="24px" height="38px"></BaseButton></div>
@@ -18,16 +20,55 @@
     <div class="hidden sm:block h-[100vh] flex-1" >
         <img class="w-[100%] h-[100%] object-fit-contain" src="/images/login.png" alt="sign-up"/>
     </div>
-    
 </div>
 </template>
 <script setup>
-import { NuxtLink } from '#components';
-import BaseButton from '~/components/BaseButton.vue';
-import BaseInput from '~/components/BaseInput.vue';
-import { routes } from '~/constants/routes';
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+import { NuxtLink } from '#components'
+import { ROUTES } from '~/constants/routes'
+import { getLoginSchema } from '~/schemas/loginSchema'
+import BaseButton from '~/components/BaseButton.vue'
+import BaseInput from '~/components/BaseInput.vue'
+
 const { t } = useTranslation()
+const loginSchema = getLoginSchema(t)
+const router = useRouter()
+
+const loginForm = ref({
+  email: '',
+  password: ''
+})
+
+const formErrors = ref({
+  email: '',
+  password: ''
+})
+
+const isDisabled = computed(() => {
+  return !loginForm.value.email || !loginForm.value.password || formErrors.value.email || formErrors.value.password
+})
+
+// Functions
+const handleLogin = () => {
+  router.push(ROUTES.HOME)
+}
+
+const handleBlurInput = (field) => {
+  const result = loginSchema.safeParse(loginForm.value)
+  if (!result.success) {
+    const error = result.error.errors.find(err => err.path[0] === field)
+    if (error) {
+      formErrors.value[field] = error.message
+    } else {
+      formErrors.value[field] = ''
+    }
+  } else {
+    formErrors.value[field] = ''
+  }
+}
 </script>
+
 <style scoped>
 .option-text::before {
     content: '';
