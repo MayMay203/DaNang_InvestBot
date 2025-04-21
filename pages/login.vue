@@ -30,28 +30,41 @@ import { ROUTES } from '~/constants/routes'
 import { getLoginSchema } from '~/schemas/loginSchema'
 import BaseButton from '~/components/BaseButton.vue'
 import BaseInput from '~/components/BaseInput.vue'
+import { authService } from '~/service-api/authService'
+import { Toast } from 'primevue'
+import { useToast } from "primevue/usetoast";
+import { getMessageError } from '~/components/utils/getMessageError'
 
 const { t } = useTranslation()
+const toast = useToast()
 const loginSchema = getLoginSchema(t)
 const router = useRouter()
+const authStore = useAuthStore()
 
 const loginForm = ref({
   email: '',
   password: ''
 })
-
 const formErrors = ref({
   email: '',
   password: ''
 })
 
 const isDisabled = computed(() => {
-  return !loginForm.value.email || !loginForm.value.password || formErrors.value.email || formErrors.value.password
+  return !loginForm.value.email || !loginForm.value.password || !!formErrors.value.email ||
+    !!formErrors.value.password
 })
 
 // Functions
-const handleLogin = () => {
-  router.push(ROUTES.HOME)
+ const handleLogin = async () => {
+   try {
+    await authStore.login({ email: loginForm.value.email, password: loginForm.value.password })
+    router.push(ROUTES.HOME)
+  }
+   catch (error) {
+    console.info('error', error)
+    toast.add({ severity: 'error', summary: 'Error Login', detail: getMessageError(error), life: 3000 });
+  }
 }
 
 const handleBlurInput = (field) => {

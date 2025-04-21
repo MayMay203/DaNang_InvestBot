@@ -38,21 +38,29 @@ export const useAuthStore = defineStore("authStore", {
     setToken(dataToken: TokenizationSate) {
       this.access_token = dataToken.accessToken;
       this.refresh_token = dataToken.refreshToken;
+      localStorage.setItem('accessToken', dataToken.accessToken || '')
+      localStorage.setItem('refreshToken', dataToken.refreshToken || '');
     },
     setIsAthenticated(status: boolean) {
       this.is_athenticated = status;
     },
     async login(user: IAuth) {
       try {
-        const { status, data } = await authService.login({ ...user });
-        console.info("data:", data);
-        if (status == 200) {
-          this.setToken({
-            accessToken: data.accessToken,
-            refreshToken: data.refreshToken,
-          });
-          this.setIsAthenticated(true);
-          return true;
+        const { data, statusCode } = await authService.login({ ...user });
+        if (statusCode == 200) {
+          if (data) {
+            this.setToken({
+              accessToken: data.accessToken,
+              refreshToken: data.refreshToken,
+            });
+            useUserStore().saveUserInfo({
+              id: data.id,
+              email: data.email,
+              role_id: data.roleId,
+              full_name: data.fullName,
+            });
+            this.setIsAthenticated(true);
+          }
         }
       } catch (error) {
         return Promise.reject(error);

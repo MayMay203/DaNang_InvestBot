@@ -16,3 +16,13 @@ body{
 a, button{
     outline: none
 }
+
+.p-toast-message-content svg{
+  with: 16px;
+  height: 16px
+}
+
+.p-toast-message-text .p-toast-detail
+.p-toast-message-text .p-toast-summary {
+    font-size: 1.5rem!important
+}

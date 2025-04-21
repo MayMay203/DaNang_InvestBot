@@ -31,13 +31,11 @@ export default defineNuxtPlugin(() => {
     (error) => Promise.reject(error)
   );
 
-  axios.interceptors.response.use(
+  axiosInstance.interceptors.response.use(
     function (response) {
-      console.info("response: ", response);
-      return response;
+      return response.data;
     },
     function (error) {
-      console.info("error", error);
       return Promise.reject(error);
     }
   );
