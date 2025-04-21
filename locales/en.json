@@ -23,6 +23,7 @@
     "resend_OTP": "Resend OTP",
     "OTP_message": "Enter the OTP sent to your email",
     "OTP_placeholder": "Enter the OTP",
+    "invalid_OTP": "Please enter a valid 6-digit OTP",
     "forget_password_message": "Enter your email to update your password",
     "new_password": "New password",
     "confirm_new_password": "Confirm new password",

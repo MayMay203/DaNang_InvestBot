@@ -13,6 +13,6 @@ body{
     font-family: 'Roboto', sans-serif;
 }
 
-a{
+a, button{
     outline: none
 }
