@@ -73,10 +73,10 @@ const handleForgetPassword = async () => {
     }
     catch (error) {
          if (error?.response) {
-       toast.add({ severity: 'error', summary: 'Error Login', detail: getMessageError(error), life: 3000 });
+       toast.add({ severity: 'error', summary: 'Error', detail: getMessageError(error), life: 3000 });
       }
       else {
-       toast.add({ severity: 'error', summary: 'Error Login', detail: error.message, life: 3000 })
+       toast.add({ severity: 'error', summary: 'Error', detail: error.message, life: 3000 })
     }
     }
 }
