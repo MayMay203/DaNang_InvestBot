@@ -9,7 +9,7 @@
             <button class="text-[rgba(6,80,118,0.9)] italic p-[4px] cursor-pointer" @click="handleResendOTP">{{ t('auth.resend_OTP') }}</button>
            <span class="text-[red] font-bold italic">{{ formattedTime }}</span>
         </div>
-       <div class="mt-[30px]"><BaseButton :text="t('auth.confirm')" variant="primary" height="40px" width="100%" :disabled="isDisabled"/></div>
+       <div class="mt-[30px]"><BaseButton :text="t('auth.confirm')" variant="primary" height="40px" width="100%" :disabled="isDisabled" @click="handleConfirmOTP"/></div>
     </div>
     <div class="hidden sm:block h-[100vh] flex-1" >
         <img class="w-[100%] h-[100%] object-fit-contain" src="/images/login.png" alt="sign-up"/>
@@ -19,10 +19,16 @@
 <script setup>
 import BaseButton from '~/components/BaseButton.vue';
 import BaseInput from '~/components/BaseInput.vue';
+import { getMessageError } from '~/components/utils/getMessageError';
+import { ROUTES } from '~/constants/routes';
 import { getVerifySchema } from '~/schemas/verifyOTPSchema';
+import { authService } from '~/service-api/authService';
 
 const { t } = useTranslation()
 const verifySchema = getVerifySchema(t)
+const userStore = useUserStore()
+const toast = useToast()
+const router = useRouter()
 
 const verifyData = ref({
   OTP: ''
@@ -34,7 +40,7 @@ const totalTime = ref(120);
 let timer = null;
 
 const isDisabled = computed(() => {
-  return !verifyData.value.OTP || verifyError.value.OTP
+  return !verifyData.value.OTP || !!verifyError.value.OTP
 })
 
 const formattedTime = computed(() => {
@@ -69,10 +75,42 @@ const startCountdown = () => {
   }, 1000);
 };
 
-const handleResendOTP = () => {
-    clearInterval(timer);         
+const handleResendOTP = async() => {
+  try {
+     clearInterval(timer);         
     totalTime.value = 120;        
     startCountdown();    
+    const { data } = await authService.resendOTP(userStore.email || localStorage.getItem('email'))
+    toast.add({severity: 'success', summary: 'Register', detail: data.message, life: 3000})
+  }
+  catch (error) {
+     if (error?.response) {
+       toast.add({ severity: 'error', summary: 'Error Login', detail: getMessageError(error), life: 3000 });
+      }
+      else {
+       toast.add({ severity: 'error', summary: 'Error Login', detail: error.message, life: 3000 })
+    }
+   }
+}
+
+const handleConfirmOTP = async () => {
+  try {
+   const otpData = {
+    email: userStore.email || localStorage.getItem('email'),
+    otp: verifyData.value.OTP
+    }
+    await authService.verifyOTP(otpData)
+    router.push(ROUTES.LOGIN)
+    toast.add({ severity: 'success', summary: 'Success', detail: 'Your account has been successfully registered!', life: 3000 })
+  }
+  catch (error) {
+    if (error?.response) {
+       toast.add({ severity: 'error', summary: 'Error Login', detail: getMessageError(error), life: 3000 });
+      }
+      else {
+       toast.add({ severity: 'error', summary: 'Error Login', detail: error.message, life: 3000 })
+    }
+  }
 }
 
 onMounted(() => {

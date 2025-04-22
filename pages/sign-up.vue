@@ -9,7 +9,7 @@
             <BaseInput v-model="signUpForm.confirmPassword" :label="t('auth.confirm_password')" icon="visibility" cursorIcon="pointer" :placeholder="t('auth.confirm_password_placeholder')" :error="signUpErrors.confirmPassword" @blur="handleBlurInput('confirmPassword')"/>
        </div>
        <div class="mt-[20px]">
-        <BaseButton :text="t('auth.sign_up')" variant="primary" height="40px" width="100%" :disabled="isDisabled"/>
+        <BaseButton :text="t('auth.sign_up')" variant="primary" height="40px" width="100%" :disabled="isDisabled" @click="handleRegister"/>
     </div>
        <div class="mt-[16px] text-center">
         <span class="text-[14px]">{{ t('auth.already_have_account') }}</span>
@@ -28,11 +28,17 @@
 import { NuxtLink } from '#components';
 import BaseButton from '~/components/BaseButton.vue';
 import BaseInput from '~/components/BaseInput.vue';
+import { getMessageError } from '~/components/utils/getMessageError';
 import { ROUTES } from '~/constants/routes';
 import { getSignUpSchema } from '~/schemas/signUpSchema';
+import { authService } from '~/service-api/authService';
 
 const { t } = useTranslation()
 const signUpSchema = getSignUpSchema(t)
+const authStore = useAuthStore()
+const userStore = useUserStore()
+const toast = useToast()
+const router = useRouter()
 
 const signUpForm = ref({
     email: '',
@@ -49,7 +55,7 @@ const signUpErrors = ref({
 })
 
 const isDisabled = computed(() => {
-    return !signUpForm.value.email || !signUpForm.value.password || !signUpForm.value.confirmPassword || !signUpForm.value.fullname || signUpErrors.value.email || signUpErrors.value.password || signUpErrors.value.fullname || signUpErrors.value.confirmPassword
+    return !signUpForm.value.email || !signUpForm.value.password || !signUpForm.value.confirmPassword || !signUpForm.value.fullname || !!signUpErrors.value.email || !!signUpErrors.value.password || !!signUpErrors.value.fullname || !!signUpErrors.value.confirmPassword
 })
 
 const handleBlurInput = (field) => {
@@ -66,9 +72,30 @@ const handleBlurInput = (field) => {
   }
 }
 
-
-
-
+const handleRegister = async () => {
+  try {
+    const registerData = {
+      email: signUpForm.value.email,
+      fullName: signUpForm.value.fullname,
+      password: signUpForm.value.password,
+      confirmPassword: signUpForm.value.confirmPassword
+    }
+    const message = await authStore.register(registerData)
+    toast.add({severity: 'success', summary: 'Register', detail: message, life: 3000})
+    router.push(ROUTES.VERIFY_OTP)
+    if (!message.includes('Please check your email to enter OTP')) {
+      await authService.resendOTP(userStore.email)
+    }
+  }
+  catch (error) {
+     if (error?.response) {
+       toast.add({ severity: 'error', summary: 'Error Login', detail: getMessageError(error), life: 3000 });
+      }
+      else {
+       toast.add({ severity: 'error', summary: 'Error Login', detail: error.message, life: 3000 })
+    }
+  }
+}
 </script>
 <style scoped>
 .option-text::before {

@@ -1,4 +1,4 @@
-import type { IAuth } from "~/models/IAuth";
+import type { IUser, ILogin } from "~/models/IAuth";
 import { authService } from "~/service-api/authService";
 
 interface AuthState {
@@ -38,30 +38,43 @@ export const useAuthStore = defineStore("authStore", {
     setToken(dataToken: TokenizationSate) {
       this.access_token = dataToken.accessToken;
       this.refresh_token = dataToken.refreshToken;
-      localStorage.setItem('accessToken', dataToken.accessToken || '')
-      localStorage.setItem('refreshToken', dataToken.refreshToken || '');
+      localStorage.setItem("accessToken", dataToken.accessToken || "");
+      localStorage.setItem("refreshToken", dataToken.refreshToken || "");
     },
     setIsAthenticated(status: boolean) {
       this.is_athenticated = status;
     },
-    async login(user: IAuth) {
+    async login(user: ILogin) {
       try {
-        const { data, statusCode } = await authService.login({ ...user });
-        if (statusCode == 200) {
-          if (data) {
+        const { data, status } = await authService.login({ ...user });
+        if (status == 200) {
+          const responseData = data.data;
+          if (responseData) {
             this.setToken({
-              accessToken: data.accessToken,
-              refreshToken: data.refreshToken,
+              accessToken: responseData.accessToken,
+              refreshToken: responseData.refreshToken,
             });
             const userStore = useUserStore();
             userStore.saveUserInfo({
-              id: data.id,
-              email: data.email,
-              role_id: data.roleId,
-              full_name: data.fullName,
+              id: responseData.id,
+              email: responseData.email,
+              role_id: responseData.roleId,
+              full_name: responseData.fullName,
             });
             this.setIsAthenticated(true);
           }
+        }
+      } catch (error) {
+        return Promise.reject(error);
+      }
+    },
+
+    async register(user: IUser) {
+      try {
+        const { status, data } = await authService.register(user);
+        if (status === 201) {
+          useUserStore().saveEmail(user.email);
+          return data.message;
         }
       } catch (error) {
         return Promise.reject(error);

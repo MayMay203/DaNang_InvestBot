@@ -30,8 +30,6 @@ import { ROUTES } from '~/constants/routes'
 import { getLoginSchema } from '~/schemas/loginSchema'
 import BaseButton from '~/components/BaseButton.vue'
 import BaseInput from '~/components/BaseInput.vue'
-import { authService } from '~/service-api/authService'
-import { Toast } from 'primevue'
 import { useToast } from "primevue/usetoast";
 import { getMessageError } from '~/components/utils/getMessageError'
 

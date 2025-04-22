@@ -38,5 +38,9 @@ export const useUserStore = defineStore("userStore", {
       this.role_id = userInfo.role_id;
       this.full_name = userInfo.full_name;
     },
+    saveEmail(email: string) {
+      this.email = email;
+      localStorage.setItem("email", email);
+    },
   },
 });
