@@ -6,7 +6,7 @@
 <template>
   <div>
     <NuxtLayout>
-      <Toast/>
+      <Toast />
       <NuxtPage />
     </NuxtLayout>
   </div>

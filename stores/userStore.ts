@@ -15,10 +15,10 @@ export const useUserStore = defineStore("userStore", {
     };
   },
   getters: {
-    id: (state: UserState) => {
+    idUser: (state: UserState) => {
       return state.id;
     },
-    email: (state: UserState) => {
+    emailUser: (state: UserState) => {
       return state.email;
     },
     roleId: (state: UserState) => {

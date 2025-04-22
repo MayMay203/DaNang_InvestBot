@@ -4,12 +4,8 @@
     box-sizing: border-box;
 }
 
-html{
-    font-size: 62.5%
-}
-
 body{
-    font-size: 1.6rem;
+    font-size: 1rem;
     font-family: 'Roboto', sans-serif;
 }
 
@@ -17,12 +13,6 @@ a, button{
     outline: none
 }
 
-.p-toast-message-content svg{
-  with: 16px;
-  height: 16px
-}
-
-.p-toast-message-text .p-toast-detail
-.p-toast-message-text .p-toast-summary {
-    font-size: 1.5rem!important
+input::placeholder{
+    font-size: 15px!important;
 }

@@ -62,8 +62,12 @@ const isDisabled = computed(() => {
     router.push(ROUTES.HOME)
   }
    catch (error) {
-    console.info('error', error)
-    toast.add({ severity: 'error', summary: 'Error Login', detail: getMessageError(error), life: 3000 });
+     if (error?.response) {
+       toast.add({ severity: 'error', summary: 'Error Login', detail: getMessageError(error), life: 3000 });
+      }
+      else {
+       toast.add({ severity: 'error', summary: 'Error Login', detail: error.message, life: 3000 })
+    }
   }
 }
 

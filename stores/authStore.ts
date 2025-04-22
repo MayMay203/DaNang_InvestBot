@@ -53,7 +53,8 @@ export const useAuthStore = defineStore("authStore", {
               accessToken: data.accessToken,
               refreshToken: data.refreshToken,
             });
-            useUserStore().saveUserInfo({
+            const userStore = useUserStore();
+            userStore.saveUserInfo({
               id: data.id,
               email: data.email,
               role_id: data.roleId,
