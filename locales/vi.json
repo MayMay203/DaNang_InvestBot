@@ -1,8 +1,16 @@
 {
   "auth": {
     "email": "Email",
+    "email_message": "Email nhập vào không hợp lệ.",
     "full_name": "Họ và tên",
     "password": "Mật khẩu",
+    "password_message": {
+      "min": "Mật khẩu phải có ít nhất 8 ký tự.",
+      "uppercase": "Mật khẩu phải chứa ít nhất 1 chữ hoa.",
+      "lowercase": "Mật khẩu phải chứa ít nhất 1 chữ thường.",
+      "number": "Mật khẩu phải chứa ít nhất 1 chữ số.",
+      "special": "Mật khẩu phải chứa ký tự đặc biệt."
+    },
     "confirm_password": "Xác nhận mật khẩu",
     "sign_up": "Đăng ký",
     "already_have_account": "Đã có tài khoản?",
@@ -15,6 +23,7 @@
     "resend_OTP": "Gửi lại OTP",
     "OTP_message": "Nhập OTP đã được gửi đến email của bạn",
     "OTP_placeholder": "Nhập OTP",
+    "invalid_OTP": "Nhập mã OTP hợp lệ với 6 chữ số.",
     "forget_password_message": "Nhập email để cập nhật lại mật khẩu",
     "new_password": "Mật khẩu mới",
     "confirm_new_password": "Xác nhận mật khẩu mới",
@@ -23,8 +32,13 @@
     "current_password": "Mật khẩu hiện tại",
     "email_placeholder": "Nhập email của bạn",
     "full_name_placeholder": "Nhập họ và tên của bạn",
+    "fullname_message": {
+      "min": "Họ và tên phải có ít nhất 2 ký tự.",
+      "max": "Họ và tên không được vượt quá 50 ký tự "
+    },
     "password_placeholder": "Nhập mật khẩu của bạn",
     "confirm_password_placeholder": "Xác nhận mật khẩu của bạn",
+    "confirm_password_message": "Mật khẩu xác nhận không khớp",
     "reset_password": "Đặt lại mật khẩu"
   }
 }
