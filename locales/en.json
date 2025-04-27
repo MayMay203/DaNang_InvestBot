@@ -68,7 +68,13 @@
       "updatedAt": "Updated At",
       "access": "Access",
       "active": "Active",
-      "item": "Item"
+      "item": "Item",
+      "create_new_material": "Create new material",
+      "file_upload": "File Upload",
+      "text_content": "Text Content",
+      "content": "Content",
+      "upload_message": "Drag and drop files to here to upload.",
+      "select_access_message": "Select a access type"
     },
     "store": {
       "name": "Name",
