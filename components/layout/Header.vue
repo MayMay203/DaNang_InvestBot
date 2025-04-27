@@ -2,6 +2,7 @@
 import BaseIcon from "../base-components/BaseIcon.vue";
 import { ref } from "vue";
 
+const {t} = useTranslation()
 const op = ref();
 const isDetail = ref(false);
 const toggle = (event) => {
@@ -46,7 +47,7 @@ const toggle = (event) => {
         >
           <div class="flex gap-[8px]">
             <BaseIcon name="language" sizeIcon="22px"></BaseIcon>
-            <span class="text-[14px]">Language</span>
+            <span class="text-[14px]">{{t('menu.language')}}</span>
           </div>
           <BaseIcon
             name="arrow_down"
@@ -65,8 +66,8 @@ const toggle = (event) => {
           class="flex flex-col pl-[30px] text-[14px] gap-[6px]"
           v-if="isDetail"
         >
-          <span class="px-[10px] py-[8px] menu-item">Tiếng Việt</span>
-          <span class="px-[10px] py-[8px] menu-item">Tiếng Anh</span>
+          <span class="px-[10px] py-[8px] menu-item">{{t('menu.vietnamese')}}</span>
+          <span class="px-[10px] py-[8px] menu-item">{{t('menu.english')}}</span>
         </div>
         <div
           class="h-[0.8px] bg-[#000] menu-item"
@@ -76,7 +77,7 @@ const toggle = (event) => {
           class="flex gap-[8px] items-center px-[8px] py-[10px] menu-item"
         >
           <BaseIcon name="logout" sizeIcon="22px"></BaseIcon>
-          <span class="text-[14px]">Logout</span>
+          <span class="text-[14px]">{{t('menu.logout')}}</span>
         </button>
       </div>
     </Popover>

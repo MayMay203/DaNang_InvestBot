@@ -40,5 +40,15 @@
     "confirm_password_placeholder": "Xác nhận mật khẩu của bạn",
     "confirm_password_message": "Mật khẩu xác nhận không khớp",
     "reset_password": "Đặt lại mật khẩu"
+  },
+  "menu": {
+    "language": "Ngôn ngữ",
+    "vietnamese": "Tiếng việt",
+    "english": "Tiếng anh",
+    "logout": "Đăng xuất",
+    "manage_account": "Tài khoản",
+    "manage_knowlege": "Kho kiến thức",
+    "manage_material": "Tài liệu",
+    "chatbot": "Hỏi đáp"
   }
 }

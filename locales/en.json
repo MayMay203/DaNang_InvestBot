@@ -40,5 +40,15 @@
     "confirm_password_placeholder": "Confirm your password",
     "confirm_password_message": "Confirm password does not match",
     "reset_password": "Reset password"
+  },
+  "menu": {
+    "language": "Language",
+    "vietnamese": "Vietnamese",
+    "english": "English",
+    "logout": "Logout",
+    "manage_account": "Accounts",
+    "manage_knowledge": "Knowledge Store",
+    "manage_material": "Materials",
+    "chatbot": "Chatbot"
   }
 }
