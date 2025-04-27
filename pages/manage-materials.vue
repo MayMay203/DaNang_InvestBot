@@ -204,5 +204,7 @@ const clearFilter = () => {
         </template>
       </Column>
     </DataTable>
+    <!-- modal add new material -->
+     
   </div>
 </template>

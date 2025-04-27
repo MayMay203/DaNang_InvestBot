@@ -24,6 +24,7 @@ input::placeholder{
     --p-select-option-selected-focus-color: #065076;
     --p-select-focus-border-color: #065076;
     --p-button-outlined-primary-border-color: #065076;
+    --p-textarea-focus-border-color: #065076;
     --p-button-outlined-primary-color: #065076;
     --p-button-outlined-primary-hover-background: rgba(74, 144, 226, 0.08);
     --p-button-primary-background: #065076;

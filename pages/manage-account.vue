@@ -148,10 +148,10 @@ const handleToggleAccount = () => {
     <!-- Dialog active account -->
      <Dialog v-model:visible="isVisible" modal :header="title" :style="{ width: '25rem' }">
     <span class="text-surface-500 dark:text-surface-400 block mb-5">{{ t('management.account.active_message') }}</span>
-    <Textarea v-model="reason" rows="2" class="w-[100%]"/>
+    <Textarea v-model="reason" rows="2" class="w-[100%]" required/>
     <div class="flex items-center justify-end gap-2 mt-3">
         <Button type="button" :label="t('action.cancel')" severity="secondary" @click="isVisible = false"></Button>
-        <Button type="button" :label="t('action.save')" @click="handleToggleAccount"></Button>
+        <Button type="button" :label="t('action.save')" @click="handleToggleAccount" :disabled="!reason"></Button>
     </div>
 </Dialog>
     </div>
