@@ -40,5 +40,59 @@
     "confirm_password_placeholder": "Confirm your password",
     "confirm_password_message": "Confirm password does not match",
     "reset_password": "Reset password"
-  }
+  },
+  "menu": {
+    "language": "Language",
+    "vietnamese": "Vietnamese",
+    "english": "English",
+    "logout": "Logout",
+    "manage_account": "Accounts",
+    "manage_knowledge": "Knowledge Store",
+    "manage_material": "Materials",
+    "chatbot": "Chatbot"
+  },
+  "management": {
+    "account": {
+      "fullName": "FullName",
+      "email": "Email",
+      "role": "Role",
+      "active": "Active",
+      "active_title": "Active Account",
+      "active_message": "Please to enter your reason to implement this action.",
+      "deactive_title": "Deactive Account"
+    },
+    "material": {
+      "name": "Name",
+      "description": "Description",
+      "materialType": "Material Type",
+      "updatedAt": "Updated At",
+      "access": "Access",
+      "active": "Active",
+      "item": "Item",
+      "create_new_material": "Create new material",
+      "file_upload": "File Upload",
+      "text_content": "Text Content",
+      "content": "Content",
+      "upload_message": "Drag and drop files to here to upload.",
+      "select_access_message": "Select a access type"
+    },
+    "store": {
+      "name": "Name",
+      "description": "Description",
+      "createdBy": "Created By",
+      "updatedAt": "Updated At",
+      "status": "Status",
+      "active": "Active",
+      "material": "Material",
+      "create_new_knowledge_store": "Create new knowledge store"
+    },
+    "sync": "sync",
+    "edit": "Edit",
+    "create": "Create",
+    "order": "Order"
+  },
+"action": {
+  "save": "Save",
+  "cancel": "Cancel"
+}
 }

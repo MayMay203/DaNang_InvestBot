@@ -25,8 +25,8 @@
   </div>
 </template>
 <script setup>
-import BaseIcon from '~/components/BaseIcon.vue';
-import BaseInput from '~/components/BaseInput.vue';
+import BaseIcon from '~/components/base-components/BaseIcon.vue';
+import BaseInput from '~/components/base-components/BaseInput.vue';
 
 const inputValue = ref('')
 </script>

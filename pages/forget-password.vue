@@ -26,8 +26,8 @@
     </div>
 </template>
 <script setup>
-import BaseButton from '~/components/BaseButton.vue';
-import BaseInput from '~/components/BaseInput.vue';
+import BaseButton from '~/components/base-components/BaseButton.vue';
+import BaseInput from '~/components/base-components/BaseInput.vue';
 import { getForgetPassSchema } from '~/schemas/forgetPassSchema';
 import { authService } from '~/service-api/authService';
 import { ROUTES } from '~/constants/routes';

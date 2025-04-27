@@ -16,3 +16,26 @@ a, button{
 input::placeholder{
     font-size: 15px!important;
 }
+
+/* Custom data table */
+:root{
+    --p-select-option-selected-background: rgba(74, 144, 226, 0.08);
+    --p-select-option-selected-focus-background: rgba(74, 144, 226, 0.08);
+    --p-select-option-selected-focus-color: #065076;
+    --p-select-focus-border-color: #065076;
+    --p-button-outlined-primary-border-color: #065076;
+    --p-textarea-focus-border-color: #065076;
+    --p-button-outlined-primary-color: #065076;
+    --p-button-outlined-primary-hover-background: rgba(74, 144, 226, 0.08);
+    --p-button-primary-background: #065076;
+    --p-button-primary-border-color: #065076;
+    --p-button-primary-hover-background: rgba(74, 144, 226, 0.08);
+    --p-button-primary-hover-border-color: #065076;
+    --p-button-primary-hover-color: #065076;
+    --p-inputtext-focus-border-color: #065076;
+    --p-select-option-selected-color: #065076;
+    --p-slider-handle-focus-ring-color: #065076;
+    --p-paginator-nav-button-selected-background: rgba(74, 144, 226, 0.08);
+    --p-fieldset-legend-focus-ring-color: #065076;
+    --p-paginator-nav-button-selected-color: #065076;
+}

@@ -40,5 +40,59 @@
     "confirm_password_placeholder": "Xác nhận mật khẩu của bạn",
     "confirm_password_message": "Mật khẩu xác nhận không khớp",
     "reset_password": "Đặt lại mật khẩu"
+  },
+  "menu": {
+    "language": "Ngôn ngữ",
+    "vietnamese": "Tiếng việt",
+    "english": "Tiếng anh",
+    "logout": "Đăng xuất",
+    "manage_account": "Tài khoản",
+    "manage_knowlege": "Kho kiến thức",
+    "manage_material": "Tài liệu",
+    "chatbot": "Hỏi đáp"
+  },
+  "management": {
+    "account": {
+      "fullName": "Họ và tên",
+      "email": "Email",
+      "role": "Vai trò",
+      "active": "Hoạt động",
+      "active_title": "Khoá tài khoản",
+      "active_message": "Vui lòng nhập lí do bên dưới để thực hiện hành động này.",
+      "deactive_title": "Mở khoá tài khoản"
+    },
+    "material": {
+      "name": "Tên",
+      "description": "Mô tả",
+      "materialType": "Loại tài liệu",
+      "updatedAt": "Cập nhật lúc",
+      "access": "Quyền truy cập",
+      "active": "Hoạt động",
+      "item": "Chi tiết",
+      "create_new_material": "Thêm tài liệu mới",
+      "file_upload": "Tải File",
+      "text_content": "Văn bản",
+      "content": "Nội dung",
+      "upload_message": "Kéo và thả tập tin đến đây để tải lên.",
+      "select_access_message": "Lựa chọn một quyền truy cập"
+    },
+    "store": {
+      "name": "Tên",
+      "description": "Mô tả",
+      "createdBy": "Được tạo bởi",
+      "updatedAt": "Cập nhật lúc",
+      "status": "Trạng thái",
+      "active": "Hoạt động",
+      "material": "Tài liệu",
+      "create_new_knowledge_store": "Thêm mới kho kiến thức"
+    },
+    "sync": "Đồng bộ",
+    "edit": "Sửa",
+    "create": "Thêm mới",
+    "order": "STT"
+  },
+  "action": {
+    "save": "Lưu",
+    "cancel": "Thoát"
   }
 }
