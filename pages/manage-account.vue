@@ -5,6 +5,7 @@ definePageMeta({
   layout: "admin",
 });
 
+const {t} = useTranslation()
 const filters = ref({value: null});
 const loading = ref(false);
 const customers = [
@@ -111,23 +112,23 @@ const clearFilter = () => {
                 </IconField>
             </div>
         </template>
-        <Column header="STT" style="width: 10%">
+        <Column :header="t('management.order')" style="width: 10%">
          <template #body="{ index}">
           {{ first + index + 1 }}
         </template>
         </Column>
-        <Column field="fullName" header="FullName" style="width: 25%" search>
+        <Column field="fullName" :header="t('management.account.fullName')"  style="width: 25%" search>
          <template #filter="{ filterModel }">
             <InputText v-model="filterModel.value" type="text" placeholder="Search by name" />
           </template>
         </Column>
-        <Column field="email" header="Email" style="width: 25%">
+        <Column field="email" :header="t('management.account.email')" style="width: 25%">
           <template #filter="{ filterModel }">
             <InputText v-model="filterModel.value" type="text" placeholder="Search by email" />
           </template>
         </Column>
-        <Column field="role" header="Role" style="width: 25%"></Column>
-        <Column field="active" header="Active" style="width: 15%">
+        <Column field="role" :header="t('management.account.role')" style="width: 25%"></Column>
+        <Column field="active" :header="t('management.account.active')" style="width: 15%">
          <template #body="slotProps">
           <ToggleSwitch v-model="slotProps.data.active" />
         </template>

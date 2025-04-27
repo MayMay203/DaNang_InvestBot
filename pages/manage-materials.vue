@@ -6,6 +6,7 @@ definePageMeta({
   layout: "admin",
 });
 
+const {t} = useTranslation()
 const filters = ref({ value: null });
 const loading = ref(false);
 const customers = [
@@ -159,12 +160,12 @@ const clearFilter = () => {
           ></BaseButton>
         </div>
       </template>
-      <Column header="STT" style="width: 5%">
+      <Column :header="t('management.order')" style="width: 5%">
         <template #body="{ index }">
           {{ first + index + 1 }}
         </template>
       </Column>
-      <Column field="name" header="Name" style="width: 15%" search>
+      <Column field="name" :header="t('management.material.name')" style="width: 15%" search>
         <template #filter="{ filterModel }">
           <InputText
             v-model="filterModel.value"
@@ -173,7 +174,7 @@ const clearFilter = () => {
           />
         </template>
       </Column>
-      <Column field="description" header="Description" style="width: 15%">
+      <Column field="description" :header="t('management.material.description')" style="width: 15%">
         <template #filter="{ filterModel }">
           <InputText
             v-model="filterModel.value"
@@ -184,12 +185,12 @@ const clearFilter = () => {
       </Column>
       <Column
         field="materialType"
-        header="Material Type"
+        :header="t('management.material.materialType')"
         style="width: 15%"
       ></Column>
-      <Column field="updatedAt" header="Updated At" style="width: 10%"></Column>
-      <Column field="access" header="Access" style="width: 10%"></Column>
-      <Column field="active" header="Active" style="width: 10%">
+      <Column field="updatedAt" :header="t('management.material.updatedAt')" style="width: 10%"></Column>
+      <Column field="access" :header="t('management.material.access')" style="width: 10%"></Column>
+      <Column field="active" :header="t('management.material.active')" style="width: 10%">
         <template #body="slotProps">
           <ToggleSwitch v-model="slotProps.data.active" />
         </template>
@@ -197,8 +198,8 @@ const clearFilter = () => {
        <Column style="width: 20%">
          <template #body>
           <div class="flex gap-[6px]">
-            <BaseButton left-icon="item" text="Item" variant="outline" color="#065076" width="80px" height="30px" sizeIcon="18px" border-color="#065076"></BaseButton>
-            <BaseButton left-icon="edit" text="Edit" variant="outline" color="red" width="80px" height="30px" sizeIcon="18px" border-color="red"></BaseButton>
+            <BaseButton left-icon="item" :text="t('management.material.item')" variant="outline" color="#065076" width="100px" height="30px" sizeIcon="18px" border-color="#065076"></BaseButton>
+            <BaseButton left-icon="edit" :text="t('management.edit')" variant="outline" color="red" width="80px" height="30px" sizeIcon="18px" border-color="red"></BaseButton>
         </div>
         </template>
       </Column>

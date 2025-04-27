@@ -50,5 +50,35 @@
     "manage_knowledge": "Knowledge Store",
     "manage_material": "Materials",
     "chatbot": "Chatbot"
+  },
+  "management": {
+    "account": {
+      "fullName": "FullName",
+      "email": "Email",
+      "role": "Role",
+      "active": "Active"
+    },
+    "material": {
+      "name": "Name",
+      "description": "Description",
+      "materialType": "Material Type",
+      "updatedAt": "Updated At",
+      "access": "Access",
+      "active": "Active",
+      "item": "Item"
+    },
+    "store": {
+      "name": "Name",
+      "description": "Description",
+      "createdBy": "Created By",
+      "updatedAt": "Updated At",
+      "status": "Status",
+      "active": "Active",
+      "material": "Material"
+    },
+    "sync": "sync",
+    "edit": "Edit",
+    "create": "Create",
+    "order": "Order"
   }
 }

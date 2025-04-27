@@ -50,5 +50,35 @@
     "manage_knowlege": "Kho kiến thức",
     "manage_material": "Tài liệu",
     "chatbot": "Hỏi đáp"
+  },
+  "management": {
+    "account": {
+      "fullName": "Họ và tên",
+      "email": "Email",
+      "role": "Vai trò",
+      "active": "Hoạt động"
+    },
+    "material": {
+      "name": "Tên",
+      "description": "Mô tả",
+      "materialType": "Loại tài liệu",
+      "updatedAt": "Cập nhật lúc",
+      "access": "Quyền truy cập",
+      "active": "Hoạt động",
+      "item": "Chi tiết"
+    },
+    "store": {
+      "name": "Tên",
+      "description": "Mô tả",
+      "createdBy": "Được tạo bởi",
+      "updatedAt": "Cập nhật lúc",
+      "status": "Trạng thái",
+      "active": "Hoạt động",
+      "material": "Tài liệu"
+    },
+    "sync": "Đồng bộ",
+    "edit": "Sửa",
+    "create": "Thêm mới",
+    "order": "STT"
   }
 }
