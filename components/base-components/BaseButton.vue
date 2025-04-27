@@ -23,7 +23,7 @@
   </button>
 </template>
 <script setup>
-import BaseIcon from "./BaseIcon.vue";
+import BaseIcon from "../base-components/BaseIcon.vue";
 
 const props = defineProps({
   variant: {

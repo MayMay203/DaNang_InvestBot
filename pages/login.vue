@@ -28,10 +28,10 @@ import { useRouter } from 'vue-router'
 import { NuxtLink } from '#components'
 import { ROUTES } from '~/constants/routes'
 import { getLoginSchema } from '~/schemas/loginSchema'
-import BaseButton from '~/components/BaseButton.vue'
-import BaseInput from '~/components/BaseInput.vue'
+import BaseButton from '~/components/base-components/BaseButton.vue'
+import BaseInput from '~/components/base-components/BaseInput.vue'
 import { useToast } from "primevue/usetoast";
-import { getMessageError } from '~/components/utils/getMessageError'
+import { getMessageError } from '~/utils/getMessageError'
 
 const { t } = useTranslation()
 const toast = useToast()

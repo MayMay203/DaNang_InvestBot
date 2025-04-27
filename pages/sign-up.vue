@@ -26,9 +26,9 @@
 </template>
 <script setup>
 import { NuxtLink } from '#components';
-import BaseButton from '~/components/BaseButton.vue';
-import BaseInput from '~/components/BaseInput.vue';
-import { getMessageError } from '~/components/utils/getMessageError';
+import BaseButton from '~/components/base-components/BaseButton.vue';
+import BaseInput from '~/components/base-components/BaseInput.vue';
+import { getMessageError } from '~/utils/getMessageError';
 import { ROUTES } from '~/constants/routes';
 import { getSignUpSchema } from '~/schemas/signUpSchema';
 import { authService } from '~/service-api/authService';

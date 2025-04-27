@@ -17,9 +17,9 @@
 </div>
 </template>
 <script setup>
-import BaseButton from '~/components/BaseButton.vue';
-import BaseInput from '~/components/BaseInput.vue';
-import { getMessageError } from '~/components/utils/getMessageError';
+import BaseButton from '~/components/base-components/BaseButton.vue';
+import BaseInput from '~/components/base-components/BaseInput.vue';
+import { getMessageError } from '~/utils/getMessageError';
 import { ROUTES } from '~/constants/routes';
 import { getVerifySchema } from '~/schemas/verifyOTPSchema';
 import { authService } from '~/service-api/authService';
