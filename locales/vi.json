@@ -83,7 +83,8 @@
       "updatedAt": "Cập nhật lúc",
       "status": "Trạng thái",
       "active": "Hoạt động",
-      "material": "Tài liệu"
+      "material": "Tài liệu",
+      "create_new_knowledge_store": "Thêm mới kho kiến thức"
     },
     "sync": "Đồng bộ",
     "edit": "Sửa",

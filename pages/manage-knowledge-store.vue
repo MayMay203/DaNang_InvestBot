@@ -84,10 +84,12 @@ const customers = [
   },
 ];
 const first = ref(0);
+const isStoreVisible = ref(false)
 
 const onPage = (event) => {
   first.value = event.first;
 };
+
 const initFilters = () => {
   filters.value = {
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
@@ -117,10 +119,16 @@ const initFilters = () => {
     },
   };
 };
+
 initFilters();
+
 const clearFilter = () => {
   initFilters();
 };
+
+const handleAddNewStore = () => {
+  isStoreVisible.value = false
+}
 </script>
 
 <template>
@@ -159,12 +167,13 @@ const clearFilter = () => {
               />
             </IconField>
           </div>
-          <BaseButton
+         <BaseButton
             left-icon="add_circle"
-            text="Create"
-            width="120px"
+            :text="t('management.create')"
+            width="140px"
             height="42px"
             sizeIcon="22px"
+            @click="isStoreVisible = true"
           ></BaseButton>
         </div>
       </template>
@@ -236,5 +245,22 @@ const clearFilter = () => {
         </template>
       </Column>
     </DataTable>
+    <!-- Modal add new knowledge store -->
+      <Dialog v-model:visible="isStoreVisible" modal :header="t('management.store.create_new_knowledge_store')" :style="{ width: '35rem' }">
+    <div class="flex flex-col gap-4 mb-4">
+        <label for="name" class="font-medium w-24 text-[15px]">{{ t('management.store.name') }}</label>
+        <InputText id="name" class="flex-auto" autocomplete="off" />
+    </div>
+     <div class="flex flex-col gap-4 mb-4">
+        <label for="content" class="font-medium w-24 text-[15px]">{{ t('management.store.description') }}</label>
+        <Textarea v-model="content" rows="2" class="w-[100%]" required/>
+    </div>
+    <div class="flex justify-end gap-4">
+        <Button type="button" :label="t('action.cancel')" severity="secondary" @click="isStoreVisible = false"></Button>
+        <Button type="button" :label="t('action.save')" @click="handleAddNewStore"></Button>
+    </div>
+    </Dialog>
+    <!-- Modal add material for knowledge store -->
+
   </div>
 </template>

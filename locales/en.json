@@ -83,7 +83,8 @@
       "updatedAt": "Updated At",
       "status": "Status",
       "active": "Active",
-      "material": "Material"
+      "material": "Material",
+      "create_new_knowledge_store": "Create new knowledge store"
     },
     "sync": "sync",
     "edit": "Edit",
