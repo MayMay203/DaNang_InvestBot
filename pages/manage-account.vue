@@ -77,6 +77,9 @@ const customers = [
   }
 ]
 const first = ref(0);
+const title = ref()
+const isVisible = ref(false)
+const reason = ref()
 
 const onPage = (event) => {
   first.value = event.first;
@@ -90,14 +93,22 @@ const initFilters = () => {
         active: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.EQUALS }] }
     };
 };
-initFilters();
+initFilters()
 const clearFilter = () => {
     initFilters();
 };
+const toggleActive = (value) => {
+  title.value = value ? t('management.account.active_title') : t('management.account.deactive_title')
+  isVisible.value = true
+}
+const handleToggleAccount = () => {
+  isVisible.value = false
+}
 </script>
 
 <template>
    <div>
+    <!-- Data for account management -->
       <DataTable v-model:filters="filters" showGridlines :value="customers" paginator :rows="8" :first="first" @page="onPage" :rowsPerPageOptions="[5, 10, 20, 50]" tableStyle="min-width: 50rem"
       filterDisplay="menu" :loading="loading" :globalFilterFields="['fullName', 'email', 'role', 'active']"
       >
@@ -130,9 +141,18 @@ const clearFilter = () => {
         <Column field="role" :header="t('management.account.role')" style="width: 25%"></Column>
         <Column field="active" :header="t('management.account.active')" style="width: 15%">
          <template #body="slotProps">
-          <ToggleSwitch v-model="slotProps.data.active" />
+          <ToggleSwitch v-model="slotProps.data.active" @update:modelValue="toggleActive"/>
         </template>
       </Column>
     </DataTable>
+    <!-- Dialog active account -->
+     <Dialog v-model:visible="isVisible" modal :header="title" :style="{ width: '25rem' }">
+    <span class="text-surface-500 dark:text-surface-400 block mb-5">{{ t('management.account.active_message') }}</span>
+    <Textarea v-model="reason" rows="2" class="w-[100%]"/>
+    <div class="flex items-center justify-end gap-2 mt-3">
+        <Button type="button" :label="t('action.cancel')" severity="secondary" @click="isVisible = false"></Button>
+        <Button type="button" :label="t('action.save')" @click="handleToggleAccount"></Button>
+    </div>
+</Dialog>
     </div>
 </template>

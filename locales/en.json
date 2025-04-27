@@ -56,7 +56,10 @@
       "fullName": "FullName",
       "email": "Email",
       "role": "Role",
-      "active": "Active"
+      "active": "Active",
+      "active_title": "Active Account",
+      "active_message": "Please to enter your reason to implement this action.",
+      "deactive_title": "Deactive Account"
     },
     "material": {
       "name": "Name",
@@ -80,5 +83,9 @@
     "edit": "Edit",
     "create": "Create",
     "order": "Order"
-  }
+  },
+"action": {
+  "save": "Save",
+  "cancel": "Cancel"
+}
 }

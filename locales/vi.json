@@ -56,7 +56,10 @@
       "fullName": "Họ và tên",
       "email": "Email",
       "role": "Vai trò",
-      "active": "Hoạt động"
+      "active": "Hoạt động",
+      "active_title": "Khoá tài khoản",
+      "active_message": "Vui lòng nhập lí do bên dưới để thực hiện hành động này.",
+      "deactive_title": "Mở khoá tài khoản"
     },
     "material": {
       "name": "Tên",
@@ -80,5 +83,9 @@
     "edit": "Sửa",
     "create": "Thêm mới",
     "order": "STT"
+  },
+  "action": {
+    "save": "Lưu",
+    "cancel": "Thoát"
   }
 }
