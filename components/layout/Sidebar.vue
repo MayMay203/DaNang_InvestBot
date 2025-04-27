@@ -19,7 +19,7 @@ const isVisible = ref(false);
 </script>
 <template>
   <div
-    class="sidebar bg-[rgba(74,144,226,0.1)] h-[100vh] border-r border-[rgba(6,80,118,0.1)]"
+    class="sidebar bg-[rgba(74,144,226,0.1)] min-h-screen border-r border-[rgba(6,80,118,0.1)]"
     :style="{
       width: isVisible ? '250px' : '70px',
     }"
