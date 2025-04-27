@@ -6,6 +6,6 @@ export const ROUTES = {
   VERIFY_OTP: "/verify-otp",
   MANAGE_ACCOUNT: "/manage-account",
   MANAGE_MATERIALS: "/manage-materials",
-  MANAGE_KNOWLEDGE_STORE: "/manage-knowlege-store",
+  MANAGE_KNOWLEDGE_STORE: "/manage-knowledge-store",
   CHAT_BOT: "/chat-bot",
 };

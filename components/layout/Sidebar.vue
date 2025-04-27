@@ -38,7 +38,7 @@ const isVisible = ref(false);
         <img src="/images/logo.png" alt="logo" class="w-[150px]" />
       </NuxtLink>
     </div>
-    <div class="mt-[40px]">
+    <div class="mt-[20px]">
       <div class="flex flex-col">
         <NuxtLink
           v-for="(item, index) in menuList"
