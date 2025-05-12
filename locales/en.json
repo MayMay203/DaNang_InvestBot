@@ -112,5 +112,8 @@
     "copyright": " 2025 DN InvestBot. All rights reserved. ",
     "chatbot": "Chatbot",
     "service_footer": "Service"
+  },
+  "chatbot": {
+    "placeholder_chat": "Ask anything about DaNang Investment"
   }
 }

@@ -112,5 +112,8 @@
     "copyright": "© 2025 DN InvestBot. Giữ bản quyền.",
     "chatbot": "Hỏi đáp",
     "service_footer": "Dịch vụ"
+  },
+  "chatbot": {
+    "placeholder_chat": "Hỏi bất cứ điều gì về xúc tiến đầu tư Đà Nẵng"
   }
 }
