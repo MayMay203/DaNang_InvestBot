@@ -49,7 +49,9 @@
     "manage_account": "Tài khoản",
     "manage_knowlege": "Kho kiến thức",
     "manage_material": "Tài liệu",
-    "chatbot": "Hỏi đáp"
+    "chatbot": "Hỏi đáp",
+    "home": "Trang chủ",
+    "service": "Dịch vụ"
   },
   "management": {
     "account": {
@@ -94,5 +96,21 @@
   "action": {
     "save": "Lưu",
     "cancel": "Thoát"
+  },
+  "home": {
+    "sliderDesc": "Hỗ trợ thông tin xúc tiến đầu tư tại Đà Nẵng",
+    "investmentGuide": "HƯỚNG DẪN ĐẦU TƯ",
+    "investmentGuide_desc": "InvestBot hỗ trợ nhà đầu tư tiếp cận thông tin quan trọng về các khu công nghiệp, khu kinh tế và các dự án tiềm năng. Cung cấp chi tiết về ưu đãi đầu tư, thủ tục pháp lý, cấp phép và hỗ trợ doanh nghiệp. Nhà đầu tư cũng có thể tìm thấy thông tin liên hệ với các cơ quan chức năng để đơn giản hóa quá trình đầu tư tại Đà Nẵng.",
+    "service": "DỊCH VỤ",
+    "viewService": "Xem dịch vụ",
+    "potentialProjects": "Dự án tiềm năng",
+    "potentialProjects_desc": "Thông tin về các khu công nghiệp, khu kinh tế và dự án đầu tư tiềm năng.",
+    "legalProcedures": "Thủ tục pháp lý",
+    "legalProcedures_desc": "Ưu đãi đầu tư, thuế và thủ tục pháp lý.",
+    "investmentAssistance": "Hỗ trợ đầu tư",
+    "investmentAssistance_desc": "Cấp phép kinh doanh, hỗ trợ và thông tin liên hệ hỗ trợ đầu tư.",
+    "copyright": "© 2025 DN InvestBot. Giữ bản quyền.",
+    "chatbot": "Hỏi đáp",
+    "service_footer": "Dịch vụ"
   }
 }

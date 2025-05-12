@@ -1,3 +1,5 @@
 <template>
-  <div>hé lô tôi index nhoé</div>
+  <div>
+    
+  </div>
 </template>

@@ -49,7 +49,9 @@
     "manage_account": "Accounts",
     "manage_knowledge": "Knowledge Store",
     "manage_material": "Materials",
-    "chatbot": "Chatbot"
+    "chatbot": "Chatbot",
+    "home": "Home",
+    "service": "Service"
   },
   "management": {
     "account": {
@@ -91,8 +93,24 @@
     "create": "Create",
     "order": "Order"
   },
-"action": {
-  "save": "Save",
-  "cancel": "Cancel"
-}
+  "action": {
+    "save": "Save",
+    "cancel": "Cancel"
+  },
+  "home": {
+    "sliderDesc": "Support for investment promotion information in Da Nang",
+    "investmentGuide": "INVESTMENT GUIDANCE",
+    "investmentGuide_desc": "InvestBot helps investors access key information on industrial zones, economic zones, and potential projects. It provides details on investment incentives, legal procedures, licensing, and business support. Investors can also find contact information for relevant agencies to streamline their investment process in Da Nang.",
+    "service": "SERVICE",
+    "viewService": "View Service",
+    "potentialProjects": "Potential projects",
+    "potentialProjects_desc": "Information on industrial zones, economic zones, and potential investment projects.",
+    "legalProcedures": "Legal procedures",
+    "legalProcedures_desc": "Investment incentives, taxes, and legal procedures.",
+    "investmentAssistance": "Investment Assistance",
+    "investmentAssistance_desc": "Business Licensing, Support, and Investment Assistance Contacts",
+    "copyright": " 2025 DN InvestBot. All rights reserved. ",
+    "chatbot": "Chatbot",
+    "service_footer": "Service"
+  }
 }
