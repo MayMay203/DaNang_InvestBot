@@ -64,10 +64,11 @@ const handleBlurInput = (field) => {
 
 const handleResetPassword = async () => {
     try {
-        authStore.setToken({refreshToken: '', accessToken: secretParam})
+        authStore.setToken({refreshToken: '', accessToken: secretParam.value})
         const { data } = await authService.resetPassword({ newPassword: resetData.value.password, confirmPassword: resetData.value.confirmPassword })
+        authStore.reset()
+        navigateTo(ROUTES.LOGIN)
         toast.add({ severity: 'success', summary: 'Success', detail: data.message, life: 3000 })
-        router.push(ROUTES.LOGIN)
     }
     catch (error) {
         if (error?.response) {

@@ -36,7 +36,6 @@ import { getMessageError } from '~/utils/getMessageError'
 const { t } = useTranslation()
 const toast = useToast()
 const loginSchema = getLoginSchema(t)
-const router = useRouter()
 const authStore = useAuthStore()
 
 const loginForm = ref({
@@ -56,8 +55,7 @@ const isDisabled = computed(() => {
 // Functions
  const handleLogin = async () => {
    try {
-    await authStore.login({ email: loginForm.value.email, password: loginForm.value.password })
-    router.push(ROUTES.HOME)
+     await authStore.login({ email: loginForm.value.email, password: loginForm.value.password })
   }
    catch (error) {
      if (error?.response) {

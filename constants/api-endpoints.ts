@@ -7,4 +7,7 @@ export const API_ENPOINT = {
   CHANGE_PASSWORD: "/auth/change-password",
   RESET_PASSWORD: "/auth/reset-password",
   REFRESH_TOKEN: "/auth/refresh-token",
+  MANAGE_ACCOUNT: "/manage-account/get-all-accounts",
+  CHANGE_STATUS_ACCOUNT: "/manage-account/change-status-account",
+  REGISTER_ACCOUNT: "/manage-account/register-account",
 };

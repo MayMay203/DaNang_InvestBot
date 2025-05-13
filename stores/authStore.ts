@@ -1,3 +1,4 @@
+import { ROUTES } from "~/constants/routes";
 import type { IUser, ILogin } from "~/models/IAuth";
 import { authService } from "~/service-api/authService";
 
@@ -34,6 +35,8 @@ export const useAuthStore = defineStore("authStore", {
   actions: {
     reset() {
       this.$reset();
+      localStorage.removeItem("accessToken");
+      localStorage.removeItem("refreshToken");
     },
     setToken(dataToken: TokenizationSate) {
       this.access_token = dataToken.accessToken;
@@ -62,6 +65,11 @@ export const useAuthStore = defineStore("authStore", {
               full_name: responseData.fullName,
             });
             this.setIsAthenticated(true);
+            if (responseData.roleId === 1) {
+              navigateTo(ROUTES.MANAGE_ACCOUNT);
+            } else {
+              navigateTo(ROUTES.HOME);
+            }
           }
         }
       } catch (error) {
