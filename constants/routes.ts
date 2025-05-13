@@ -8,5 +8,5 @@ export const ROUTES = {
   MANAGE_MATERIALS: "/manage-materials",
   MANAGE_KNOWLEDGE_STORE: "/manage-knowledge-store",
   CHAT_BOT: "/chatbot",
-  RESET_PASSWORD: "/reset-password"
+  RESET_PASSWORD: "/reset-password",
 };
