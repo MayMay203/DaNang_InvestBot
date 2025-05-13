@@ -1,4 +1,5 @@
 <script setup>
+import { ROUTES } from "~/constants/routes";
 import BaseIcon from "../base-components/BaseIcon.vue";
 import { ref } from "vue";
 
@@ -8,6 +9,16 @@ const isDetail = ref(false);
 const toggle = (event) => {
   op.value.toggle(event);
 };
+const authStore = useAuthStore()
+const userStore = useUserStore()
+
+const handleLogout = () => {
+  localStorage.removeItem('accessToken')
+  localStorage.removeItem('refreshToken')
+  authStore.reset()
+  userStore.reset()
+  return navigateTo(ROUTES.LOGIN)
+}
 </script>
 
 <template>
@@ -75,6 +86,7 @@ const toggle = (event) => {
         ></div>
         <button
           class="flex gap-[8px] items-center px-[8px] py-[10px] menu-item"
+          @click="handleLogout"
         >
           <BaseIcon name="logout" sizeIcon="22px"></BaseIcon>
           <span class="text-[14px]">{{t('menu.logout')}}</span>

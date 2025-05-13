@@ -55,11 +55,17 @@
     "account": {
       "fullName": "FullName",
       "email": "Email",
+      "password": "Password",
+      "confirm_password": "Confirm Password",
       "role": "Role",
       "active": "Active",
       "active_title": "Active Account",
       "active_message": "Please to enter your reason to implement this action.",
-      "deactive_title": "Deactive Account"
+      "deactive_title": "Deactive Account",
+      "reason": "Lock reasons",
+      "create_new_account": "Create new account",
+      "admin": "Admin",
+      "employee": "Employee"
     },
     "material": {
       "name": "Name",
@@ -91,8 +97,41 @@
     "create": "Create",
     "order": "Order"
   },
+<<<<<<< Updated upstream
 "action": {
   "save": "Save",
   "cancel": "Cancel"
 }
+=======
+  "action": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "select_a_role": "Select a role"
+  },
+  "home": {
+    "sliderDesc": "Support for investment promotion information in Da Nang",
+    "investmentGuide": "INVESTMENT GUIDANCE",
+    "investmentGuide_desc": "InvestBot helps investors access key information on industrial zones, economic zones, and potential projects. It provides details on investment incentives, legal procedures, licensing, and business support. Investors can also find contact information for relevant agencies to streamline their investment process in Da Nang.",
+    "service": "SERVICE",
+    "viewService": "View Service",
+    "potentialProjects": "Potential projects",
+    "potentialProjects_desc": "Information on industrial zones, economic zones, and potential investment projects.",
+    "legalProcedures": "Legal procedures",
+    "legalProcedures_desc": "Investment incentives, taxes, and legal procedures.",
+    "investmentAssistance": "Investment Assistance",
+    "investmentAssistance_desc": "Business Licensing, Support, and Investment Assistance Contacts",
+    "copyright": " 2025 DN InvestBot. All rights reserved. ",
+    "chatbot": "Chatbot",
+    "service_footer": "Service"
+  },
+  "chatbot": {
+    "placeholder_chat": "Ask anything about DaNang Investment"
+  },
+  "toast": {
+    "success": "Success",
+    "error": "Error",
+    "message_error": "There have been errors, please try again",
+    "message_success": "Action completed successfully"
+  }
+>>>>>>> Stashed changes
 }
