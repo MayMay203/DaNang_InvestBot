@@ -99,9 +99,6 @@
   },
   "action": {
     "save": "Lưu",
-<<<<<<< Updated upstream
-    "cancel": "Thoát"
-=======
     "cancel": "Thoát",
     "select_a_role": "Lựa chọn vai trò"
   },
@@ -129,6 +126,5 @@
     "error": "Lỗi",
     "message_error": "Đã có lỗi xảy ra, vui lòng thử lại",
     "message_success": "Hành động thực hiện thành công"
->>>>>>> Stashed changes
   }
 }

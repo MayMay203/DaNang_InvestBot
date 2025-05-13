@@ -97,12 +97,6 @@
     "create": "Create",
     "order": "Order"
   },
-<<<<<<< Updated upstream
-"action": {
-  "save": "Save",
-  "cancel": "Cancel"
-}
-=======
   "action": {
     "save": "Save",
     "cancel": "Cancel",
@@ -133,5 +127,4 @@
     "message_error": "There have been errors, please try again",
     "message_success": "Action completed successfully"
   }
->>>>>>> Stashed changes
 }
