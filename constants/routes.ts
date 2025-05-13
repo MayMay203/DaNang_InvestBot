@@ -7,10 +7,6 @@ export const ROUTES = {
   MANAGE_ACCOUNT: "/manage-account",
   MANAGE_MATERIALS: "/manage-materials",
   MANAGE_KNOWLEDGE_STORE: "/manage-knowledge-store",
-<<<<<<< Updated upstream
-  CHAT_BOT: "/chat-bot",
-=======
   CHAT_BOT: "/chatbot",
-  RESET_PASSWORD: "/reset-password"
->>>>>>> Stashed changes
+  RESET_PASSWORD: "/reset-password",
 };
