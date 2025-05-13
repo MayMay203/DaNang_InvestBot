@@ -80,7 +80,10 @@
       "text_content": "Text Content",
       "content": "Content",
       "upload_message": "Drag and drop files to here to upload.",
-      "select_access_message": "Select a access type"
+      "select_access_message": "Select a access type",
+      "public": "Public",
+      "private": "Private",
+      "internal": "Internal"
     },
     "store": {
       "name": "Name",

@@ -80,7 +80,10 @@
       "text_content": "Văn bản",
       "content": "Nội dung",
       "upload_message": "Kéo và thả tập tin đến đây để tải lên.",
-      "select_access_message": "Lựa chọn một quyền truy cập"
+      "select_access_message": "Lựa chọn một quyền truy cập",
+      "public": "Công khai",
+      "private": "Riêng tư",
+      "internal": "Nội bộ"
     },
     "store": {
       "name": "Tên",

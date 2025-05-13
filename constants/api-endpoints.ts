@@ -10,4 +10,9 @@ export const API_ENPOINT = {
   MANAGE_ACCOUNT: "/manage-account/get-all-accounts",
   CHANGE_STATUS_ACCOUNT: "/manage-account/change-status-account",
   REGISTER_ACCOUNT: "/manage-account/register-account",
+  GET_ALL_MATERIALS: "/material/get-all-materials",
+  UPLOAD_MATERIAL: "/material/upload-material",
+  DETAIL_MATERIAL: "/material",
+  UPDATE_MATERIAL: "/material/update-material",
+  CHANGE_STATUS_MATERIAL: "/material/change-status",
 };
