@@ -15,6 +15,16 @@
         :placeholder="placeholder"
         class="input"
       />
+      <Password
+        v-if="typeTag === 'password'"
+        v-model="modelValue"
+        :placeholder="placeholder"
+        class="input"
+        toggleMask
+        :feedback="false"
+        inputClass="w-full"
+        @blur="handleBlurInput"
+      />
       <div class="icon-input" v-if="icon">
         <BaseIcon
           :name="icon"

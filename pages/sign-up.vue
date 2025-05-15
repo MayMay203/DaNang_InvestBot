@@ -5,8 +5,8 @@
        <div class="flex flex-col gap-[10px]">
             <BaseInput v-model="signUpForm.email" :label="t('auth.email')" :placeholder="t('auth.email_placeholder')" :error="signUpErrors.email" @blur="handleBlurInput('email')"/>
             <BaseInput v-model="signUpForm.fullname" :label="t('auth.full_name')" :placeholder="t('auth.full_name_placeholder')" :error="signUpErrors.fullname" @blur="handleBlurInput('fullname')"/>
-            <BaseInput v-model="signUpForm.password" :label="t('auth.password')" icon="visibility" cursorIcon="pointer" :error="signUpErrors.password" :placeholder="t('auth.password_placeholder')" @blur="handleBlurInput('password')"/>
-            <BaseInput v-model="signUpForm.confirmPassword" :label="t('auth.confirm_password')" icon="visibility" cursorIcon="pointer" :placeholder="t('auth.confirm_password_placeholder')" :error="signUpErrors.confirmPassword" @blur="handleBlurInput('confirmPassword')"/>
+            <BaseInput v-model="signUpForm.password" :label="t('auth.password')" typeTag="password" :error="signUpErrors.password" :placeholder="t('auth.password_placeholder')" @blur="handleBlurInput('password')"/>
+            <BaseInput v-model="signUpForm.confirmPassword" :label="t('auth.confirm_password')" typeTag="password" :placeholder="t('auth.confirm_password_placeholder')" :error="signUpErrors.confirmPassword" @blur="handleBlurInput('confirmPassword')"/>
        </div>
        <div class="mt-[20px]">
         <BaseButton :text="t('auth.sign_up')" variant="primary" height="40px" width="100%" :disabled="isDisabled" @click="handleRegister"/>

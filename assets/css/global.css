@@ -42,9 +42,27 @@ input::placeholder{
     --p-paginator-nav-button-selected-background: rgba(74, 144, 226, 0.08);
     --p-fieldset-legend-focus-ring-color: #065076;
     --p-paginator-nav-button-selected-color: #065076;
+    --p-primary-color: #065076;
+    --p-primary-hover-color: #065076;
 }
 
 .p-select,
 .p-password input{
     width: 100%;
+}
+
+.input-text{
+    .p-password-input{
+        padding: 0;
+        border: none;
+        background: transparent;
+        outline: none;
+        box-shadow: none;
+        border-radius: initial;
+        color: #000;
+        &::placeholder{
+            font-size: 1.4rem;
+            color: rgba(0,0,0,0.5);
+        }
+    }
 }

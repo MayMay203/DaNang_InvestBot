@@ -3,8 +3,8 @@
     <div class="flex-1 p-[20px] md:p-[30px] lg:py-[20px] lg:px-[60px]">
         <h1 class="text-[rgba(6,80,118,0.9)] font-bold text-[24px] text-center">{{ t('auth.reset_password').toUpperCase() }}</h1>
        <div class="flex flex-col gap-[10px]">
-            <BaseInput v-model="resetData.password" :error="resetErrors.password" :label="t('auth.password')" icon="visibility" cursorIcon="pointer" :placeholder="t('auth.password_placeholder')" @blur="handleBlurInput('password')"/>
-            <BaseInput v-model="resetData.confirmPassword" :error="resetErrors.confirmPassword" :label="t('auth.confirm_password')" icon="visibility" cursorIcon="pointer" :placeholder="t('auth.confirm_password_placeholder')" @blur="handleBlurInput('confirmPassword')"/>
+            <BaseInput v-model="resetData.password" :error="resetErrors.password" :label="t('auth.password')" typeTag="password" :placeholder="t('auth.password_placeholder')" @blur="handleBlurInput('password')"/>
+            <BaseInput v-model="resetData.confirmPassword" :error="resetErrors.confirmPassword" :label="t('auth.confirm_password')" typeTag="password" :placeholder="t('auth.confirm_password_placeholder')" @blur="handleBlurInput('confirmPassword')"/>
        </div>
        <div class="mt-[30px]"><BaseButton :text="t('auth.confirm')" variant="primary" height="40px" width="100%" :disabled="isDisabled" @click="handleResetPassword"/></div>
     </div>
