@@ -3,7 +3,7 @@ import { ROUTES } from "~/constants/routes";
 import BaseIcon from "../base-components/BaseIcon.vue";
 import { ref } from "vue";
 
-const {t} = useTranslation()
+const {t, locale} = useTranslation()
 const op = ref();
 const isDetail = ref(false);
 const toggle = (event) => {
@@ -13,11 +13,15 @@ const authStore = useAuthStore()
 const userStore = useUserStore()
 
 const handleLogout = () => {
-  localStorage.removeItem('accessToken')
-  localStorage.removeItem('refreshToken')
+  localStorage.clear()
   authStore.reset()
   userStore.reset()
   return navigateTo(ROUTES.LOGIN)
+}
+
+const handleChangeLanguage = (langCode) => {
+  locale.value = langCode
+  localStorage.setItem('lang', langCode);
 }
 </script>
 
@@ -77,8 +81,8 @@ const handleLogout = () => {
           class="flex flex-col pl-[30px] text-[14px] gap-[6px]"
           v-if="isDetail"
         >
-          <span class="px-[10px] py-[8px] menu-item">{{t('menu.vietnamese')}}</span>
-          <span class="px-[10px] py-[8px] menu-item">{{t('menu.english')}}</span>
+          <button class="px-[10px] py-[8px] menu-item flex justify-start" @click="handleChangeLanguage('vi')">{{t('menu.vietnamese')}}</button>
+          <button class="px-[10px] py-[8px] menu-item flex justify-start" @click="handleChangeLanguage('en')">{{t('menu.english')}}</button>
         </div>
         <div
           class="h-[0.8px] bg-[#000] menu-item"

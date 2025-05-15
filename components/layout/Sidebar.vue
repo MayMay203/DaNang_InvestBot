@@ -5,16 +5,12 @@ import BaseIcon from "~/components/base-components/BaseIcon.vue";
 
 const route = useRoute();
 const {t} = useTranslation()
-const menuList = [
+const menuList = computed(() => [
   { label: t('menu.manage_account'), path: ROUTES.MANAGE_ACCOUNT, icon: "dashboard" },
   { label: t('menu.manage_material'), path: ROUTES.MANAGE_MATERIALS, icon: "material" },
-  {
-    label: t('menu.manage_knowlege'),
-    path: ROUTES.MANAGE_KNOWLEDGE_STORE,
-    icon: "store",
-  },
+  { label: t('menu.manage_knowledge'), path: ROUTES.MANAGE_KNOWLEDGE_STORE, icon: "store" },
   { label: t('menu.chatbot'), path: ROUTES.CHAT_BOT, icon: "chatbot" },
-];
+]);
 const isVisible = ref(true);
 </script>
 <template>
