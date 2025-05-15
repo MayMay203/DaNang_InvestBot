@@ -11,8 +11,6 @@ export default defineNuxtPlugin(() => {
 
   axiosInstance.interceptors.request.use(
     async (config) => {
-      const authStore = useAuthStore();
-
       const excludedUrls = [
         "/auth/login",
         "/auth/register",
@@ -22,8 +20,10 @@ export default defineNuxtPlugin(() => {
       ];
 
       const isExcluded = excludedUrls.some((url) => config.url?.includes(url));
-      if (!isExcluded && authStore.accessToken) {
-        config.headers.Authorization = `Bearer ${authStore.accessToken}`;
+      if (!isExcluded) {
+        config.headers.Authorization = `Bearer ${localStorage.getItem(
+          "accessToken"
+        )}`;
       }
 
       return config;

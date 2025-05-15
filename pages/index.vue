@@ -1,5 +1,12 @@
+<script setup>
+const router = useRouter()
+
+onMounted(() => {
+  router.push('/login')
+})
+</script>
+
 <template>
-  <div>
-    
-  </div>
+  <!-- Optional fallback -->
+  <div>Redirecting to login...</div>
 </template>

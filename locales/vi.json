@@ -57,11 +57,17 @@
     "account": {
       "fullName": "Họ và tên",
       "email": "Email",
+      "password": "Mật khẩu",
+      "confirm_password": "Xác nhận mật khẩu",
       "role": "Vai trò",
       "active": "Hoạt động",
-      "active_title": "Khoá tài khoản",
+      "active_title": "Mở tài khoản",
       "active_message": "Vui lòng nhập lí do bên dưới để thực hiện hành động này.",
-      "deactive_title": "Mở khoá tài khoản"
+      "deactive_title": "Khoá tài khoản",
+      "reason": "Lý do khoá",
+      "create_new_account": "Tạo mới tài khoản",
+      "admin": "Quản trị viên",
+      "employee": "Nhân viên"
     },
     "material": {
       "name": "Tên",
@@ -76,7 +82,10 @@
       "text_content": "Văn bản",
       "content": "Nội dung",
       "upload_message": "Kéo và thả tập tin đến đây để tải lên.",
-      "select_access_message": "Lựa chọn một quyền truy cập"
+      "select_access_message": "Lựa chọn một quyền truy cập",
+      "public": "Công khai",
+      "private": "Riêng tư",
+      "internal": "Nội bộ"
     },
     "store": {
       "name": "Tên",
@@ -86,7 +95,11 @@
       "status": "Trạng thái",
       "active": "Hoạt động",
       "material": "Tài liệu",
-      "create_new_knowledge_store": "Thêm mới kho kiến thức"
+      "create_new_knowledge_store": "Thêm mới kho kiến thức",
+      "add_materials_to_store": "Thêm tài liệu vào kho kiến thức",
+      "materials": "Tài liệu",
+      "selected_list": "Danh sách đã chọn",
+      "placeholder_select_list": "Lựa chọn các tài liệu"
     },
     "sync": "Đồng bộ",
     "edit": "Sửa",
@@ -95,7 +108,8 @@
   },
   "action": {
     "save": "Lưu",
-    "cancel": "Thoát"
+    "cancel": "Thoát",
+    "select_a_role": "Lựa chọn vai trò"
   },
   "home": {
     "sliderDesc": "Hỗ trợ thông tin xúc tiến đầu tư tại Đà Nẵng",
@@ -115,5 +129,11 @@
   },
   "chatbot": {
     "placeholder_chat": "Hỏi bất cứ điều gì về xúc tiến đầu tư Đà Nẵng"
+  },
+  "toast": {
+    "success": "Thành công",
+    "error": "Lỗi",
+    "message_error": "Đã có lỗi xảy ra, vui lòng thử lại",
+    "message_success": "Hành động thực hiện thành công"
   }
 }

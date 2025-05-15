@@ -1,86 +1,37 @@
 <script setup>
 import { FilterMatchMode, FilterOperator } from "@primevue/core/api";
 import BaseButton from "~/components/base-components/BaseButton.vue";
+import { materialService } from "~/service-api/materialService";
+import dayjs from 'dayjs'
 
 definePageMeta({
   layout: "admin",
 });
 
-const {t} = useTranslation()
+const { t } = useTranslation()
+const toast = useToast()
 const filters = ref({ value: null });
 const loading = ref(false);
-const customers = [
-  {
-    name: "John Doe",
-    description: "johndoe@example.com",
-    materialType: "PDF File",
-    updatedAt: "12/12/2025",
-    access: "public",
-    active: false,
-  },
-  {
-    name: "John Doe",
-    description: "johndoe@example.com",
-    materialType: "PDF File",
-    updatedAt: "12/12/2025",
-    access: "public",
-    active: true,
-  },
-  {
-    name: "John Doe",
-    description: "johndoe@example.com",
-    materialType: "PDF File",
-    updatedAt: "12/12/2025",
-    access: "public",
-    active: true,
-  },
-  {
-    name: "John Doe",
-    description: "johndoe@example.com",
-    materialType: "PDF File",
-    updatedAt: "12/12/2025",
-    access: "public",
-    active: true,
-  },
-  {
-    name: "John Doe",
-    description: "johndoe@example.com",
-    materialType: "PDF File",
-    updatedAt: "12/12/2025",
-    access: "public",
-    active: true,
-  },
-  {
-    name: "John Doe",
-    description: "johndoe@example.com",
-    materialType: "PDF File",
-    updatedAt: "12/12/2025",
-    access: "public",
-    active: true,
-  },
-  {
-    name: "John Doe",
-    description: "johndoe@example.com",
-    materialType: "PDF File",
-    updatedAt: "12/12/2025",
-    access: "public",
-    active: true,
-  },
-  {
-    name: "John Doe",
-    description: "johndoe@example.com",
-    materialType: "PDF File",
-    updatedAt: "12/12/2025",
-    access: "public",
-    active: false,
-  },
-];
-const accessList = ref([{ key: 1, name: 'Public'}, { key: 2, name: 'Private'}, {key: 1, name: 'Member'}])
+const accessList = ref([{ id: 1, name: t('management.material.public')}, { id: 2, name: t('management.material.private')}, {id: 3, name: t('management.material.internal')}])
 const first = ref(0);
 const visible = ref(false)
 const isVisible = ref(false)
 const isUploadVisible = ref(false)
-const materialType = ref()
+const materials = ref([])
+const formData = reactive({
+  files: null,
+  name: '',
+  description: '',
+  content: '',
+  accessLevel: null,
+  materialTypeId: '',
+})
+const $primevue = usePrimeVue();
+const totalSize = ref(0);
+const totalSizePercent = ref(0);
+const autoTextarea = ref(null);
+
+
 
 const onPage = (event) => {
   first.value = event.first;
@@ -124,7 +75,7 @@ const clearFilter = () => {
 
 const addNewMaterial = () => {
   visible.value = false;
-  if (materialType.value === 'fileUpload') {
+  if (formData.materialTypeId == 1) {
     isUploadVisible.value = true
   }
   else {
@@ -132,8 +83,104 @@ const addNewMaterial = () => {
   }
 }
 
-const confirmAddNewMaterial = () => {
+const confirmAddNewMaterial = async () => {
+  try {
+    let { name, description, files, content, materialTypeId, accessLevel } = formData;
+    materialTypeId = Number(materialTypeId)
+    const formDataToSend = new FormData();
+
+    formDataToSend.append('name', name);
+    formDataToSend.append('description', description);
+    formDataToSend.append('materialTypeId', materialTypeId);
+    formDataToSend.append('accessLevelId', accessLevel.id);
+
+    if (materialTypeId == 1 && files?.length) {
+      files.forEach(file => {
+        formDataToSend.append('files', file); 
+      });
+    } else if (materialTypeId == 2) {
+      formDataToSend.append('text', content);
+    } else if (materialTypeId == 3) {
+      formDataToSend.append('url', content);
+    }
+    await materialService.uploadMaterial(formDataToSend);
+    toast.add({ 
+      severity: 'success', 
+      summary: t("toast.success"), 
+      detail: t("toast.message_success"), 
+      life: 3000 
+    });
+    await fetchAllMaterials();
+  } catch (error) {
+    console.error(error)
+    toast.add({ 
+      severity: 'error', 
+      summary: t("toast.error"), 
+      detail: t("toast.message_error"), 
+      life: 3000 
+    });
+  } finally {
+    isVisible.value = false;
+    visible.value = false;
+    isUploadVisible.value = false;
+  }
+};
+
+
+const fetchAllMaterials = async () => {
+  try {
+    const { data } = await materialService.getAllMaterials()
+    materials.value = data.data.map(item => ({
+      ...item,
+      updatedAt: dayjs(item.updatedAt).format('HH:mm:ss DD-MM-YYYY')
+    }))
+  } catch (error) {
+    console.error(error)
+  }
 }
+
+const handleCloseDetailModal = () => {
+  isVisible.value = false;
+  isUploadVisible.value = false;
+  visible.value = true
+}
+
+const onRemoveTemplatingFile = (file, removeFileCallback, index) => {
+    removeFileCallback(index);
+    totalSize.value -= parseInt(formatSize(file.size));
+    totalSizePercent.value = totalSize.value / 10;
+};
+
+const onSelectedFiles = (event) => {
+  formData.files = event.files;
+};
+
+const formatSize = (bytes) => {
+    const k = 1024;
+    const dm = 3;
+    const sizes = $primevue.config.locale.fileSizeTypes;
+
+    if (bytes === 0) {
+        return `0 ${sizes[0]}`;
+    }
+
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    const formattedSize = parseFloat((bytes / Math.pow(k, i)).toFixed(dm));
+
+    return `${formattedSize} ${sizes[i]}`;
+};
+
+const autoResize = () => {
+  const el = autoTextarea.value?.$el?.querySelector('textarea');
+  if (el) {
+    el.style.height = 'auto'; 
+    el.style.height = `${el.scrollHeight}px`;
+  }
+};
+
+onMounted(async() => {
+  await fetchAllMaterials()
+})
 </script>
 
 <template>
@@ -141,7 +188,7 @@ const confirmAddNewMaterial = () => {
     <DataTable
       v-model:filters="filters"
       showGridlines
-      :value="customers"
+      :value="materials"
       paginator
       :rows="8"
       :first="first"
@@ -206,15 +253,15 @@ const confirmAddNewMaterial = () => {
         </template>
       </Column>
       <Column
-        field="materialType"
+        field="materialType.name"
         :header="t('management.material.materialType')"
-        style="width: 15%"
+        style="width: 10%"
       ></Column>
-      <Column field="updatedAt" :header="t('management.material.updatedAt')" style="width: 10%"></Column>
-      <Column field="access" :header="t('management.material.access')" style="width: 10%"></Column>
-      <Column field="active" :header="t('management.material.active')" style="width: 10%">
+      <Column field="updatedAt" :header="t('management.material.updatedAt')" style="width: 20%"></Column>
+      <Column field="accessLevel.name" :header="t('management.material.access')" style="width: 10%"></Column>
+      <Column field="isActive" :header="t('management.material.active')" style="width: 10%">
         <template #body="slotProps">
-          <ToggleSwitch v-model="slotProps.data.active" />
+          <ToggleSwitch v-model="slotProps.data.isActive" />
         </template>
       </Column>
        <Column style="width: 20%">
@@ -230,29 +277,29 @@ const confirmAddNewMaterial = () => {
     <Dialog v-model:visible="visible" modal :header="t('management.material.create_new_material')" :style="{ width: '35rem' }">
     <div class="flex flex-col gap-4 mb-4">
         <label for="name" class="font-medium w-24 text-[15px]">{{ t('management.material.name') }}</label>
-        <InputText id="name" class="flex-auto" autocomplete="off" />
+        <InputText v-model="formData.name" id="name" class="flex-auto" autocomplete="off" />
     </div>
      <div class="flex flex-col gap-4 mb-4">
         <label for="description" class="font-medium w-24 text-[15px]">{{ t('management.material.description') }}</label>
-        <InputText id="description" class="flex-auto" autocomplete="off" />
+        <InputText v-model="formData.description" id="description" class="flex-auto" autocomplete="off" />
     </div>
      <div class="flex flex-col gap-4 mb-4">
         <label for="name" class="font-medium w-30 text-[15px]">{{ t('management.material.access') }}</label>
-        <Select name="access.name" :options="accessList" optionLabel="name" :placeholder="t('management.material.select_access_message')" fluid />
+        <Select v-model="formData.accessLevel" name="access.name" :options="accessList" optionLabel="name" :placeholder="t('management.material.select_access_message')" fluid />
     </div>
     <div class="flex flex-col gap-4 mb-7">
       <span class="font-medium w-24 text-[15px]">{{ t('management.material.materialType') }}</span>
       <div class="flex justify-center gap-5">
     <div class="flex items-center gap-2 px-[16px]">
-        <RadioButton v-model="materialType" inputId="materialType1" name="materialType" value="fileUpload" />
+        <RadioButton v-model="formData.materialTypeId" inputId="materialType1" name="materialType" value="1" />
         <label for="materialType1">{{ t('management.material.file_upload') }}</label>
     </div>
     <div class="flex items-center gap-2">
-        <RadioButton v-model="materialType" inputId="materialType2" name="materialType" value="textContent" />
+        <RadioButton v-model="formData.materialTypeId" inputId="materialType2" name="materialType" value="2" />
         <label for="materialType2">{{ t('management.material.text_content') }}</label>
     </div>
     <div class="flex items-center gap-2">
-        <RadioButton v-model="materialType" inputId="materialType3" name="materialType" value="Url" />
+        <RadioButton v-model="formData.materialTypeId" inputId="materialType3" name="materialType" value="3" />
         <label for="materialType3">URL</label>
     </div>
     </div>
@@ -264,27 +311,30 @@ const confirmAddNewMaterial = () => {
     </Dialog>
     <!-- Modal add content -->
      <Dialog v-model:visible="isVisible" modal :header="t('management.material.create_new_material')" :style="{ width: '35rem' }">
-    <div class="flex flex-col gap-4 mb-4">
-        <label for="name" class="font-medium w-24 text-[15px]">{{ t('management.material.name') }}</label>
-        <InputText id="name" class="flex-auto" autocomplete="off" />
-    </div>
      <div class="flex flex-col gap-4 mb-4">
         <label for="content" class="font-medium w-24 text-[15px]">{{ t('management.material.content') }}</label>
-        <Textarea v-model="content" rows="2" class="w-[100%]" required/>
+        <Textarea
+          v-model="formData.content"
+          rows="5"
+          class="w-full resize-none overflow-y"
+          required
+          ref="autoTextarea"
+          @input="autoResize"
+        />
     </div>
     <div class="flex justify-end gap-4">
-        <Button type="button" :label="t('action.cancel')" severity="secondary" @click="isVisible = false"></Button>
+        <Button type="button" :label="t('action.cancel')" severity="secondary" @click="handleCloseDetailModal"></Button>
         <Button type="button" :label="t('action.save')" @click="confirmAddNewMaterial"></Button>
     </div>
     </Dialog>
     <!-- Modal upload file -->
     <Dialog v-model:visible="isUploadVisible" modal :header="t('management.material.create_new_material')" :style="{ width: '35rem' }">
-      <FileUpload name="demo[]" url="/api/upload" @upload="onTemplatedUpload($event)" :multiple="true" accept="image/*" :maxFileSize="1000000" @select="onSelectedFiles">
-        <template #header="{ chooseCallback, uploadCallback, clearCallback, files }">
+      <FileUpload name="demo[]" :multiple="true" accept=".jpg,.jpeg,.png,.gif,.bmp,.pdf,.doc,.docx,.xls,.xlsx" :maxFileSize="1000000" @select="onSelectedFiles">
+        <template #header="{ chooseCallback, clearCallback, files }">
             <div class="flex flex-wrap justify-between items-center flex-1 gap-4">
                 <div class="flex gap-2">
                     <Button @click="chooseCallback()" icon="pi pi-images" rounded outlined severity="secondary"></Button>
-                    <Button @click="uploadEvent(uploadCallback)" icon="pi pi-cloud-upload" rounded outlined severity="success" :disabled="!files || files.length === 0"></Button>
+                    <Button  @click="confirmAddNewMaterial" icon="pi pi-cloud-upload" rounded outlined severity="success" :disabled="!files || files.length === 0"></Button>
                     <Button @click="clearCallback()" icon="pi pi-times" rounded outlined severity="danger" :disabled="!files || files.length === 0"></Button>
                 </div>
                 <ProgressBar :value="totalSizePercent" :showValue="false" class="md:w-20rem h-1 w-full md:ml-auto">
@@ -336,10 +386,6 @@ const confirmAddNewMaterial = () => {
             </div>
         </template>
       </FileUpload>
-      <div class="flex justify-end gap-4 mt-6">
-          <Button type="button" :label="t('action.cancel')" severity="secondary" @click="isUploadVisible = false"></Button>
-          <Button type="button" :label="t('action.save')" @click="confirmAddNewMaterial"></Button>
-      </div>
     </Dialog>
   </div>
 </template>

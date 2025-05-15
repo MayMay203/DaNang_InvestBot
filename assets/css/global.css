@@ -43,3 +43,8 @@ input::placeholder{
     --p-fieldset-legend-focus-ring-color: #065076;
     --p-paginator-nav-button-selected-color: #065076;
 }
+
+.p-select,
+.p-password input{
+    width: 100%;
+}
