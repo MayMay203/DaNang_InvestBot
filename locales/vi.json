@@ -49,7 +49,9 @@
     "manage_account": "Tài khoản",
     "manage_knowlege": "Kho kiến thức",
     "manage_material": "Tài liệu",
-    "chatbot": "Hỏi đáp"
+    "chatbot": "Hỏi đáp",
+    "home": "Trang chủ",
+    "service": "Dịch vụ"
   },
   "management": {
     "account": {

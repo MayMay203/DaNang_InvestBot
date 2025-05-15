@@ -49,7 +49,9 @@
     "manage_account": "Accounts",
     "manage_knowledge": "Knowledge Store",
     "manage_material": "Materials",
-    "chatbot": "Chatbot"
+    "chatbot": "Chatbot",
+    "home": "Home",
+    "service": "Service"
   },
   "management": {
     "account": {
