@@ -276,34 +276,34 @@ onMounted(async() => {
     </DataTable>
     <!-- modal add new material -->
     <Dialog v-model:visible="visible" modal :header="t('management.material.create_new_material')" :style="{ width: '35rem' }">
+      <div class="flex flex-col gap-4 mb-4">
+      <span class="font-medium w-24 text-[15px]">{{ t('management.material.materialType') }}</span>
+      <div class="flex justify-center gap-5">
+        <div class="flex items-center gap-2 px-[16px]">
+            <RadioButton v-model="formData.materialTypeId" inputId="materialType1" name="materialType" value="1" />
+            <label for="materialType1">{{ t('management.material.file_upload') }}</label>
+        </div>
+        <div class="flex items-center gap-2">
+            <RadioButton v-model="formData.materialTypeId" inputId="materialType2" name="materialType" value="2" />
+            <label for="materialType2">{{ t('management.material.text_content') }}</label>
+        </div>
+        <div class="flex items-center gap-2">
+            <RadioButton v-model="formData.materialTypeId" inputId="materialType3" name="materialType" value="3" />
+            <label for="materialType3">URL</label>
+        </div>
+      </div>
+    </div>
     <div class="flex flex-col gap-4 mb-4">
         <label for="name" class="font-medium w-24 text-[15px]">{{ t('management.material.name') }}</label>
-        <InputText v-model="formData.name" id="name" class="flex-auto" autocomplete="off" />
+        <InputText v-model="formData.name" id="name" class="flex-auto" autocomplete="off" :disabled="formData.materialTypeId == 1" />
     </div>
      <div class="flex flex-col gap-4 mb-4">
         <label for="description" class="font-medium w-24 text-[15px]">{{ t('management.material.description') }}</label>
-        <InputText v-model="formData.description" id="description" class="flex-auto" autocomplete="off" />
+        <InputText v-model="formData.description" id="description" class="flex-auto" autocomplete="off" :disabled="formData.materialTypeId == 1"/>
     </div>
-     <div class="flex flex-col gap-4 mb-4">
+     <div class="flex flex-col gap-4 mb-7">
         <label for="name" class="font-medium w-30 text-[15px]">{{ t('management.material.access') }}</label>
         <Select v-model="formData.accessLevel" name="access.name" :options="accessList" optionLabel="name" :placeholder="t('management.material.select_access_message')" fluid />
-    </div>
-    <div class="flex flex-col gap-4 mb-7">
-      <span class="font-medium w-24 text-[15px]">{{ t('management.material.materialType') }}</span>
-      <div class="flex justify-center gap-5">
-    <div class="flex items-center gap-2 px-[16px]">
-        <RadioButton v-model="formData.materialTypeId" inputId="materialType1" name="materialType" value="1" />
-        <label for="materialType1">{{ t('management.material.file_upload') }}</label>
-    </div>
-    <div class="flex items-center gap-2">
-        <RadioButton v-model="formData.materialTypeId" inputId="materialType2" name="materialType" value="2" />
-        <label for="materialType2">{{ t('management.material.text_content') }}</label>
-    </div>
-    <div class="flex items-center gap-2">
-        <RadioButton v-model="formData.materialTypeId" inputId="materialType3" name="materialType" value="3" />
-        <label for="materialType3">URL</label>
-    </div>
-    </div>
     </div>
     <div class="flex justify-end gap-4">
         <Button type="button" :label="t('action.cancel')" severity="secondary" @click="visible = false"></Button>

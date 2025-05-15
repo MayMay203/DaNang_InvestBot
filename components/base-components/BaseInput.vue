@@ -3,8 +3,9 @@
     <label class="text-[14px]">{{ label }}</label>
     <div class="input-text" :style="inputStyle">
       <input
-        v-model="modelValue"
         v-if="typeTag === 'input'"
+        v-model="modelValue"
+        :disabled="disabled"
         :placeholder="placeholder"
         class="input"
         @blur="handleBlurInput"
@@ -97,6 +98,10 @@ const props = defineProps({
     type: String,
     default: "",
   },
+  disabled: {
+    type: Boolean,
+    default: false,
+  }
 });
 const modelValue = defineModel();
 const emit = defineEmits(["blur"]);
