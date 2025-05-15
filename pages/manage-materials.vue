@@ -184,7 +184,7 @@ onMounted(async() => {
 </script>
 
 <template>
-  <div>
+  <div class="overflow-auto w-full">
     <DataTable
       v-model:filters="filters"
       showGridlines
@@ -194,10 +194,11 @@ onMounted(async() => {
       :first="first"
       @page="onPage"
       :rowsPerPageOptions="[5, 10, 20, 50]"
-      tableStyle="min-width: 50rem"
       filterDisplay="menu"
       :loading="loading"
       :globalFilterFields="['fullName', 'email', 'role', 'active']"
+      scrollable
+      resizableColumns columnResizeMode="fit"
     >
       <template #header>
         <div class="flex justify-between">
@@ -264,7 +265,7 @@ onMounted(async() => {
           <ToggleSwitch v-model="slotProps.data.isActive" />
         </template>
       </Column>
-       <Column style="width: 20%">
+       <Column style="width: 15%">
          <template #body>
           <div class="flex gap-[6px]">
             <BaseButton left-icon="item" :text="t('management.material.item')" variant="outline" color="#065076" width="100px" height="30px" sizeIcon="18px" border-color="#065076"></BaseButton>

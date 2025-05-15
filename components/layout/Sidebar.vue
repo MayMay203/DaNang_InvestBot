@@ -15,7 +15,7 @@ const menuList = [
   },
   { label: t('menu.chatbot'), path: ROUTES.CHAT_BOT, icon: "chatbot" },
 ];
-const isVisible = ref(false);
+const isVisible = ref(true);
 </script>
 <template>
   <div
@@ -25,7 +25,7 @@ const isVisible = ref(false);
     }"
   >
     <div
-      class="flex items-center p-[20px]"
+      class="flex items-center p-[20px] justify-center lg:justify-start"
       :class="{ 'gap-[12px]': isVisible }"
     >
       <BaseIcon
@@ -34,7 +34,7 @@ const isVisible = ref(false);
         cursor="pointer"
         @click="isVisible = !isVisible"
       />
-      <NuxtLink :to="ROUTES.HOME" v-if="isVisible">
+      <NuxtLink :to="ROUTES.HOME" v-if="isVisible" class="hidden lg:inline-block">
         <img src="/images/logo.png" alt="logo" class="w-[150px]" />
       </NuxtLink>
     </div>
@@ -58,10 +58,11 @@ const isVisible = ref(false);
               'filter-white': route.path.startsWith(item.path),
               'filter-blue': !route.path.startsWith(item.path),
             }"
+            cursor="pointer"
           />
           <span
             v-if="isVisible"
-            class="flex-1 text-left leading-[20px]"
+            class="flex-1 text-left leading-[20px] hidden lg:inline-block"
             :class="{
               'text-white': route.path.startsWith(item.path),
               'text-[#065076]': !route.path.startsWith(item.path),

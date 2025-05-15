@@ -40,18 +40,18 @@ const handleLogout = () => {
 
 <template>
   <div
-    class="flex justify-between items-center bg-[rgba(74,144,226,0.1)] h-[60px] w-[100%] px-[40px]"
+    class="flex justify-between items-center bg-[rgba(74,144,226,0.1)] h-[60px] w-[100%] px-[20px] md:px-[40px]"
   >
-    <NuxtLink :to="ROUTES.HOME">
+    <NuxtLink :to="ROUTES.HOME" class="hidden md:inline-block">
       <img src="/images/logo.png" alt="logo" class="w-[175px]" />
     </NuxtLink>
-    <div class="flex gap-[30px] items-center">
-      <div class="flex gap-2">
+    <div class="flex gap-[30px] items-center justify-between lg:justify-start flex-1 md:flex-initial">
+      <div class="flex gap-4 lg:gap-2">
         <template v-for="(item, index) in menuList" :key="index">
           <NuxtLink
             v-if="item.label !== t('menu.service')"
             :to="item.path"
-            class="py-[11px] px-[20px] flex items-center gap-[10px]"
+            class="px-[4px] py-[11px] md:px-[20px] flex items-center gap-[10px]"
             :class="{ active: route.path.startsWith(item.path) && !isActive }"
             @click="isActive = false"
           >
@@ -60,7 +60,7 @@ const handleLogout = () => {
           <a
             v-else
             href="#services"
-            class="py-[11px] px-[20px] flex items-center gap-[10px] cursor-pointer"
+            class="px-[4px] py-[11px] md:px-[20px] flex items-center gap-[10px] cursor-pointer"
             :class="{ active: isActive }"
             @click="isActive = true"
           >
@@ -161,5 +161,15 @@ const handleLogout = () => {
     left: 50%;
     transform: translateX(-50%);
   }
+}
+
+.menu-item:hover {
+  background-color: rgba(#ccc, 0.15);
+  cursor: pointer;
+  border-radius: 6px;
+}
+
+.filter-black {
+  filter: invert(1) brightness(0);
 }
 </style>

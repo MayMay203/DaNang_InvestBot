@@ -110,7 +110,7 @@ onMounted(async () => {
 <template>
    <div>
     <!-- Data for account management -->
-      <DataTable v-model:filters="filters" showGridlines :value="customers" paginator :rows="8" :first="first" @page="onPage" :rowsPerPageOptions="[5, 10, 20, 50]" tableStyle="min-width: 50rem"
+      <DataTable v-model:filters="filters" scrollable resizableColumns columnResizeMode="fit" showGridlines :value="customers" paginator :rows="8" :first="first" @page="onPage" :rowsPerPageOptions="[5, 10, 20, 50]"
       filterDisplay="menu" :loading="loading" :globalFilterFields="['fullName', 'email', 'role', 'active']"
       >
       <template #header>
