@@ -26,6 +26,7 @@ export default defineNuxtRouteMiddleware(async (to) => {
     try {
       const decoded = jwtDecode<TokenPayload>(accessToken);
       const { exp, roleId } = decoded;
+      console.log('roleId', roleId)
 
       const isExpired = exp * 1000 < Date.now();
 
@@ -41,11 +42,16 @@ export default defineNuxtRouteMiddleware(async (to) => {
           else return await navigateTo(ROUTES.MANAGE_ACCOUNT);
         }
 
+        if(!isExcluded && !to.path.includes('manage')){
+          if(roleId === 1){
+            return await navigateTo(ROUTES.MANAGE_ACCOUNT)
+          }
+        }
+
         return;
       }
     } catch (e) {
       console.error(e);
-      // return await navigateTo(ROUTES.LOGIN);
     }
   }
 

@@ -4,7 +4,7 @@ import 'primeicons/primeicons.css';
 
 <template>
   <div>
-    <NuxtLayout>
+    <NuxtLayout :key="$route.path">
       <Toast />
       <NuxtPage />
     </NuxtLayout>
