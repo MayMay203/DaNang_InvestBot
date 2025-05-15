@@ -129,7 +129,6 @@ const confirmAddNewMaterial = async () => {
 
 const fetchAllMaterials = async () => {
   try {
-    console.info('Vô fecth lại data')
     const { data } = await materialService.getAllMaterials()
     materials.value = data.data.map(item => ({
       ...item,
