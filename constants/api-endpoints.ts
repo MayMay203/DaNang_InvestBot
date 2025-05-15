@@ -15,4 +15,8 @@ export const API_ENPOINT = {
   DETAIL_MATERIAL: "/material",
   UPDATE_MATERIAL: "/material/update-material",
   CHANGE_STATUS_MATERIAL: "/material/change-status",
+  GET_ALL_KNOWLEDGE_STROE: "/knowledge-store/get-all",
+  CREATE_KNOWLEDGE_STORE: "/knowledge-store/create",
+  ADD_MATERIAL_TO_KNOWLEDGE_STORE: "/knowledge-store/add-materials",
+  ASYNC_KNOWLEDGE_STORE: "/knowledge-store/async",
 };

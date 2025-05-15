@@ -93,7 +93,11 @@
       "status": "Trạng thái",
       "active": "Hoạt động",
       "material": "Tài liệu",
-      "create_new_knowledge_store": "Thêm mới kho kiến thức"
+      "create_new_knowledge_store": "Thêm mới kho kiến thức",
+      "add_materials_to_store": "Thêm tài liệu vào kho kiến thức",
+      "materials": "Tài liệu",
+      "selected_list": "Danh sách đã chọn",
+      "placeholder_select_list": "Lựa chọn các tài liệu"
     },
     "sync": "Đồng bộ",
     "edit": "Sửa",

@@ -2,9 +2,10 @@ import { API_ENPOINT } from "~/constants/api-endpoints"
 import type { IChangeStatus, Material } from "~/models/IMaterial";
 
 class MaterialService{
-    getAllMaterials() {
+    getAllMaterials(store="empty") {
         const { $axiosApi } = useNuxtApp()
-        return $axiosApi.get(API_ENPOINT.GET_ALL_MATERIALS)
+        const url = store ? `${API_ENPOINT.GET_ALL_MATERIALS}?store=${store}` : API_ENPOINT.GET_ALL_MATERIALS
+        return $axiosApi.get(url)
     }
 
     async uploadMaterial(formData:any) {

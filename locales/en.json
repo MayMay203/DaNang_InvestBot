@@ -93,7 +93,11 @@
       "status": "Status",
       "active": "Active",
       "material": "Material",
-      "create_new_knowledge_store": "Create new knowledge store"
+      "create_new_knowledge_store": "Create new knowledge store",
+      "add_materials_to_store": "Add materials to store",
+      "materials": "Materials",
+      "selected_list": "Selected List",
+      "placeholder_select_list": "Select materials"
     },
     "sync": "sync",
     "edit": "Edit",
