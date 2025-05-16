@@ -109,7 +109,8 @@
   "action": {
     "save": "Save",
     "cancel": "Cancel",
-    "select_a_role": "Select a role"
+    "select_a_role": "Select a role",
+    "logout": "Logout"
   },
   "home": {
     "sliderDesc": "Support for investment promotion information in Da Nang",
@@ -132,9 +133,11 @@
   },
   "toast": {
     "success": "Success",
+    "confirm": "Confirmation",
     "error": "Error",
     "message_error": "There have been errors, please try again",
     "message_success": "Action completed successfully",
-    "message_expired_login": "At the end of the login, please try again!"
+    "message_expired_login": "At the end of the login, please try again!",
+    "message_confirm_logout": "Are you sure you want to logout?"
   }
 }

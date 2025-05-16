@@ -4,6 +4,7 @@ import BaseIcon from "../base-components/BaseIcon.vue";
 import { ref } from "vue";
 
 const { t, locale } = useTranslation();
+const confirm = useConfirm();
 const route = useRoute();
 const op = ref();
 const isDetail = ref(false);
@@ -29,7 +30,29 @@ const menuList = computed(()=> ([
 ]))
 const isActive = ref(false);
 
-const handleLogout = () => {
+const handleShowConfirmLogout = () => {
+  confirm.require({
+        message: t('toast.message_confirm_logout'),
+        header: t('toast.confirm'),
+        icon: 'pi pi-exclamation-triangle',
+        rejectProps: {
+            label: t('action.cancel'),
+            severity: 'secondary',
+            outlined: true
+        },
+        acceptProps: {
+          label: t('action.logout')
+        },
+        accept: () => {
+            handleConfirmLogout()
+        },
+        reject: () => {
+            
+        }
+    });
+}
+
+const handleConfirmLogout = () => {
   localStorage.clear()
   authStore.reset()
   userStore.reset()
@@ -134,13 +157,14 @@ const handleChangeLanguage = (langCode) => {
             ></div>
             <button
               class="flex gap-[8px] items-center px-[8px] py-[10px] menu-item"
-              @click="handleLogout"
+              @click="handleShowConfirmLogout"
             >
               <BaseIcon name="logout" sizeIcon="22px"></BaseIcon>
               <span class="text-[14px]">{{ t("menu.logout") }}</span>
             </button>
           </div>
         </Popover>
+        <ConfirmDialog></ConfirmDialog>
       </div>
     </div>
   </div>
