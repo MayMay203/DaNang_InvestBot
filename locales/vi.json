@@ -134,6 +134,7 @@
     "success": "Thành công",
     "error": "Lỗi",
     "message_error": "Đã có lỗi xảy ra, vui lòng thử lại",
-    "message_success": "Hành động thực hiện thành công"
+    "message_success": "Hành động thực hiện thành công",
+    "message_expired_login": "Hết phiên đăng nhập, Vui lòng thử lại!"
   }
 }

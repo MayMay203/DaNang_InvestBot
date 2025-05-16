@@ -134,6 +134,7 @@
     "success": "Success",
     "error": "Error",
     "message_error": "There have been errors, please try again",
-    "message_success": "Action completed successfully"
+    "message_success": "Action completed successfully",
+    "message_expired_login": "At the end of the login, please try again!"
   }
 }
