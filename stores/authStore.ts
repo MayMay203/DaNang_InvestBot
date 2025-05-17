@@ -88,7 +88,6 @@ export const useAuthStore = defineStore("authStore", {
           }
         }
       } catch (error) {
-        console.log("errorresponselogin", error);
         return Promise.reject(error);
       }
     },

@@ -31,12 +31,12 @@ export default defineNuxtPlugin(() => {
       }
     }
 
-    toast.add({
-      severity: "error",
-      summary: "Error",
-      detail: "Expired đăng nhập!",
-      life: 3000,
-    });
+    // toast.add({
+    //   severity: "error",
+    //   summary: "Expire Session",
+    //   detail: "Expired đăng nhập!",
+    //   life: 3000,
+    // });
     authStore.reset();
     return navigateTo(ROUTES.LOGIN);
   };

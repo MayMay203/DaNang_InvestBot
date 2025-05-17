@@ -21,7 +21,7 @@ export default defineNuxtConfig({
       { code: "en", language: "en-US", file: "en.json" },
       { code: "vi", language: "vi-VN", file: "vi.json" },
     ],
-    defaultLocale: "en",
+    defaultLocale: "vi",
     lazy: true,
     langDir: "locales",
     strategy: "no_prefix",

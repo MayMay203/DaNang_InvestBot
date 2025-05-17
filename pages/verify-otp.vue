@@ -85,10 +85,10 @@ const handleResendOTP = async() => {
   }
   catch (error) {
      if (error?.response) {
-       toast.add({ severity: 'error', summary: 'Error Login', detail: getMessageError(error), life: 3000 });
+       toast.add({ severity: 'error', summary: t('toast.error'), detail: getMessageError(error), life: 3000 });
       }
       else {
-       toast.add({ severity: 'error', summary: 'Error Login', detail: error.message, life: 3000 })
+       toast.add({ severity: 'error', summary: t('toast.error'), detail: error.message, life: 3000 })
     }
    }
 }
@@ -101,14 +101,14 @@ const handleConfirmOTP = async () => {
     }
     await authService.verifyOTP(otpData)
     router.push(ROUTES.LOGIN)
-    toast.add({ severity: 'success', summary: 'Success', detail: 'Your account has been successfully registered!', life: 3000 })
+    toast.add({ severity: 'success', summary: t('toast.success'), detail: 'Your account has been successfully registered!', life: 3000 })
   }
   catch (error) {
     if (error?.response) {
-       toast.add({ severity: 'error', summary: 'Error Login', detail: getMessageError(error), life: 3000 });
+       toast.add({ severity: 'error', summary: t('toast.error'), detail: getMessageError(error), life: 3000 });
       }
       else {
-       toast.add({ severity: 'error', summary: 'Error Login', detail: error.message, life: 3000 })
+       toast.add({ severity: 'error', summary: t('toast.error'), detail: error.message, life: 3000 })
     }
   }
 }

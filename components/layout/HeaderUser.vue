@@ -13,22 +13,23 @@ const toggle = (event) => {
 };
 const authStore = useAuthStore()
 const userStore = useUserStore()
+const activeMenu = ref('');
 
-const menuList = computed(()=> ([
-  {
-    label: t("menu.home"),
-    path: ROUTES.HOME,
-  },
-  {
-    label: t("menu.service"),
-    path: "#services",
-  },
-  {
-    label: t("menu.chatbot"),
-    path: ROUTES.CHAT_BOT,
-  },
-]))
-const isActive = ref(false);
+const menuList = [
+  { key: 'home', label: 'Home', path: '/' },
+  { key: 'service', label: 'Service', path: '/#services' },
+  { key: 'chatbot', label: 'Chatbot', path: '/chatbot' },
+];
+
+function updateActiveMenu(value) {
+  if (value === '/#services') {
+    activeMenu.value = 'service';
+  } else if (value === '/') {
+    activeMenu.value = 'home';
+  } else if(value === '/chatbot') {
+    activeMenu.value = 'chatbot';
+  }
+}
 
 const handleShowConfirmLogout = () => {
   confirm.require({
@@ -61,8 +62,16 @@ const handleConfirmLogout = () => {
 
 const handleChangeLanguage = (langCode) => {
   locale.value = langCode
-  localStorage.setItem('lang', langCode);
+  const currentLang = localStorage.getItem('lang')
+  if (currentLang !== langCode) {
+    localStorage.setItem('lang', langCode);
+    location.reload()
+  }
 }
+
+watch(() => route.fullPath, (newValue) => {
+  updateActiveMenu(newValue);
+}, { immediate: true });
 </script>
 
 <template>
@@ -76,20 +85,18 @@ const handleChangeLanguage = (langCode) => {
       <div class="flex gap-4 lg:gap-2">
         <template v-for="(item, index) in menuList" :key="index">
           <NuxtLink
-            v-if="item.label !== t('menu.service')"
+            v-if="!item.path.includes('#')"
             :to="item.path"
             class="px-[4px] py-[11px] md:px-[20px] flex items-center gap-[10px]"
-            :class="{ active: route.path.startsWith(item.path) && !isActive }"
-            @click="isActive = false"
+            :class="{ active: activeMenu === item.key }"
           >
             {{ item.label }}
           </NuxtLink>
           <a
             v-else
-            href="#services"
+            :href="item.path"
             class="px-[4px] py-[11px] md:px-[20px] flex items-center gap-[10px] cursor-pointer"
-            :class="{ active: isActive }"
-            @click="isActive = true"
+            :class="{ active: activeMenu === item.key }"
           >
             {{ item.label }}
           </a>

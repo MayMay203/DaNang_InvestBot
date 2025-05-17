@@ -36,15 +36,21 @@ const handleShowConfirmLogout = () => {
 }
 
 const handleConfirmLogout = () => {
-  localStorage.clear()
   authStore.reset()
   userStore.reset()
+  localStorage.removeItem('accessToken')
+  localStorage.removeItem('refreshToken')
   return navigateTo(ROUTES.LOGIN)
 }
 
 const handleChangeLanguage = (langCode) => {
   locale.value = langCode
-  localStorage.setItem('lang', langCode);
+  const currentLang = localStorage.getItem('lang')
+  if (currentLang !== langCode) {
+    localStorage.setItem('lang', langCode);
+    localStorage.removeItem('activeMenu')
+    location.reload()
+  }
 }
 </script>
 

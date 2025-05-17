@@ -11,12 +11,12 @@ const toast = useToast()
 const {t} = useTranslation()
 const filters = ref({value: null});
 const loading = ref(false);
-const customers = ref([])
+const accounts = ref([])
 const first = ref(0);
 const title = ref()
 const isVisible = ref(false)
 const reason = ref()
-const updatedStatus = ref({ status: null, id: null, userRef: null })
+const updatedStatus = ref({ status: null, id: null })
 const createDialog = ref(false)
 const roles = ref([
     { name: t('management.account.admin'), id: 1 },
@@ -34,7 +34,7 @@ const formData = reactive({
 const fetchAllAccounts = async () => {
   try {
     const {data} = await accountService.getAllAccounts() || {}
-    customers.value = data?.data
+    accounts.value = data?.data
   }
   catch (error) {
     console.error(error)
@@ -60,31 +60,34 @@ const toggleActive = (value, userData) => {
   updatedStatus.value = {
     status: value,
     id: userData.id,
-    userRef: userData 
+  }
+  const account = accounts.value.find(acc => acc.id === updatedStatus.value.id);
+  if (account) {
+    account.isActive = value;
   }
   title.value = value ? t('management.account.active_title') : t('management.account.deactive_title')
   isVisible.value = true
 }
 
 const handleToggleAccount = async () => {
-  const { status, id, userRef } = updatedStatus.value
+  const { status, id } = updatedStatus.value
   try {
     await accountService.changeStatusAccount({ status, id, reason: reason.value })
     await fetchAllAccounts()
-    userRef.isActive = status 
     toast.add({ severity: 'success', summary: t("toast.success"), detail: t("toast.message_success"), life: 3000 })
   } catch (error) {
-    userRef.isActive = !status 
     toast.add({ severity: 'error', summary: t("toast.error"), detail: t("toast.message_error"), life: 3000 })
   } finally {
     isVisible.value = false
   }
 }
 
-const handleCancel = () => {
-  const { status, userRef } = updatedStatus.value
-  userRef.isActive = !status
-  isVisible.value = false
+const handleCancel = async () => {
+  const account = accounts.value.find(acc => acc.id === updatedStatus.value.id);
+  if (account) {
+    account.isActive = !updatedStatus.value.status;
+  }
+  isVisible.value = false;
 }
 
 const handleAddNewAccount = async () => {
@@ -110,7 +113,7 @@ onMounted(async () => {
 <template>
    <div>
     <!-- Data for account management -->
-      <DataTable v-model:filters="filters" scrollable resizableColumns columnResizeMode="fit" showGridlines :value="customers" paginator :rows="8" :first="first" @page="onPage" :rowsPerPageOptions="[5, 10, 20, 50]"
+      <DataTable v-model:filters="filters" scrollable resizableColumns columnResizeMode="fit" showGridlines :value="accounts" paginator :rows="8" :first="first" @page="onPage" :rowsPerPageOptions="[5, 10, 20, 50]"
       filterDisplay="menu" :loading="loading" :globalFilterFields="['fullName', 'email', 'role', 'active']"
       >
       <template #header>

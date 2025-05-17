@@ -5,13 +5,12 @@ import { ROUTES } from '~/constants/routes';
 definePageMeta({ layout: 'user-layout' })
 
 const { t } = useTranslation()
-h
 const  scrollToService = () => {
     const el = document.getElementById('services');
     if (el) {
       el.scrollIntoView({ behavior: 'smooth' });
     }
-  }
+}
 </script>
 
 <template>
