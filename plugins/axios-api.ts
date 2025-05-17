@@ -1,10 +1,11 @@
 import axios, { type AxiosInstance, type AxiosResponse } from "axios";
 import { ROUTES } from "~/constants/routes";
+import { useToast } from "primevue/usetoast";
 
 // axios plugin
-export default defineNuxtPlugin((nuxtApp) => {
+export default defineNuxtPlugin(() => {
   const config = useRuntimeConfig();
-  // const toast = useToast();
+  const toast = useToast();
   const axiosInstance: AxiosInstance = axios.create({
     baseURL: config.public.apiBaseUrl,
     headers: {
@@ -26,16 +27,16 @@ export default defineNuxtPlugin((nuxtApp) => {
           return axiosInstance(originalRequest); // gọi lại request
         }
       } catch (e) {
-        console.error("Refresh token failed:", e);
+        return Promise.reject(e);
       }
     }
 
-    // toast.add({
-    //   severity: "error",
-    //   summary: "Error",
-    //   detail: "Expired đăng nhập!",
-    //   life: 3000,
-    // });
+    toast.add({
+      severity: "error",
+      summary: "Error",
+      detail: "Expired đăng nhập!",
+      life: 3000,
+    });
     authStore.reset();
     return navigateTo(ROUTES.LOGIN);
   };
@@ -45,12 +46,19 @@ export default defineNuxtPlugin((nuxtApp) => {
       const excludedUrls = [
         "/auth/login",
         "/auth/register",
-        "/auth/refresh-token",
         "/auth/verify-otp",
         "/auth/forget-password",
       ];
+
+      const lang = localStorage.getItem("lang") || "en";
+      config.headers["Accept-Language"] = lang;
+
       const isExcluded = excludedUrls.some((url) => config.url?.includes(url));
-      if (!isExcluded) {
+      if (config.url?.includes("/auth/refresh-token")) {
+        config.headers.Authorization = `Bearer ${localStorage.getItem(
+          "refreshToken"
+        )}`;
+      } else if (!isExcluded) {
         config.headers.Authorization = `Bearer ${localStorage.getItem(
           "accessToken"
         )}`;
@@ -65,6 +73,7 @@ export default defineNuxtPlugin((nuxtApp) => {
       return response;
     },
     async (error) => {
+      console.error("error response", error);
       const originalRequest = error.config;
 
       if (error.response && error.response.status === 401) {

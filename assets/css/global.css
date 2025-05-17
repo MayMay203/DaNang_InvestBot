@@ -44,6 +44,7 @@ input::placeholder{
     --p-paginator-nav-button-selected-color: #065076;
     --p-primary-color: #065076;
     --p-primary-hover-color: #065076;
+    --p-primary-active-color: #065076
 }
 
 .p-select,

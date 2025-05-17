@@ -65,8 +65,8 @@ const clearFilter = () => {
 
 const fetchAllMaterialsByStore = async () => {
   try {
-    const {data} = await materialService.getAllMaterials("empty")
-    materialList.value = data.data
+    const {data} = await materialService.getAllMaterials("empty") || {}
+    materialList.value = data?.data
   }
   catch (error) {
     console.error(error)

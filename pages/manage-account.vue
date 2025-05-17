@@ -33,8 +33,8 @@ const formData = reactive({
 
 const fetchAllAccounts = async () => {
   try {
-    const {data} = await accountService.getAllAccounts()
-    customers.value = data.data
+    const {data} = await accountService.getAllAccounts() || {}
+    customers.value = data?.data
   }
   catch (error) {
     console.error(error)

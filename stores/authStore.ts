@@ -49,13 +49,15 @@ export const useAuthStore = defineStore("authStore", {
     },
     async refresh() {
       try {
-        const { status, data } = await authService.refreshToken();
+        const res = await authService.refreshToken();
+        const {data, status} = res || {}
         if (status == 200) {
           this.setToken(data.data);
           this.setIsAthenticated(true);
           return true;
         }
       } catch (error) {
+        console.error("error to refreshToken", error)
         this.reset();
         return Promise.reject(error);
       }
@@ -86,6 +88,7 @@ export const useAuthStore = defineStore("authStore", {
           }
         }
       } catch (error) {
+        console.log("errorresponselogin", error);
         return Promise.reject(error);
       }
     },
