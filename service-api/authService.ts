@@ -12,6 +12,7 @@ class AuthService {
     const { $axiosApi } = useNuxtApp();
     return $axiosApi.post(API_ENPOINT.LOGIN, { ...user });
   }
+
   register(user: IUser) {
     const { $axiosApi } = useNuxtApp();
     return $axiosApi.post(API_ENPOINT.REGISTER, { ...user });

@@ -19,4 +19,5 @@ export const API_ENPOINT = {
   CREATE_KNOWLEDGE_STORE: "/knowledge-store/create",
   ADD_MATERIAL_TO_KNOWLEDGE_STORE: "/knowledge-store/add-materials",
   ASYNC_KNOWLEDGE_STORE: "/knowledge-store/async",
+  LOGIN_GOOGLE: "/auth/login-with-google"
 };

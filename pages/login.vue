@@ -15,7 +15,7 @@
         <NuxtLink class="text-[rgba(6,80,118,0.9)] text-[14px] ml-[5px]" :to="ROUTES.SIGNUP">{{ t('auth.sign_up') }}</NuxtLink>
        </div>
         <div class="option-text flex items-center gap-[10px] mt-[60px] text-[13px]">{{ t('auth.or') }}</div>
-      <div class="mt-[24px]"> <BaseButton :text="t('auth.login_with_google')" variant="outline" radius="0" leftIcon="google" sizeIcon="24px" height="38px"></BaseButton></div>
+      <div class="mt-[24px]"> <BaseButton :text="t('auth.login_with_google')" variant="outline" radius="0" leftIcon="google" sizeIcon="24px" height="38px" @click="handleLoginGoogle"></BaseButton></div>
     </div>
     <div class="hidden sm:block h-[100vh] flex-1" >
         <img class="w-[100%] h-[100%] object-fit-contain" src="/images/login.png" alt="sign-up"/>
@@ -79,8 +79,11 @@ const handleBlurInput = (field) => {
     formErrors.value[field] = ''
   }
 }
-</script>
 
+const handleLoginGoogle = async () => {
+  window.location.href = 'http://localhost:3001/auth/login-with-google';
+}
+</script>
 <style scoped>
 .option-text::before {
     content: '';

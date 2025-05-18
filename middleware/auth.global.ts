@@ -11,6 +11,7 @@ const excludedUrls = [
   ROUTES.SIGNUP,
   ROUTES.FORGET_PASSWORD,
   ROUTES.VERIFY_OTP,
+  ROUTES.OAUTH_SUCCESS,
 ];
 
 export default defineNuxtRouteMiddleware(async (to) => {
