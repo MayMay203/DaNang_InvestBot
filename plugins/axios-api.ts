@@ -62,6 +62,7 @@ export default defineNuxtPlugin(() => {
         "/auth/register",
         "/auth/verify-otp",
         "/auth/forget-password",
+        "/auth/login-with-google",
       ];
 
       const lang = localStorage.getItem("lang") || "vi";

@@ -9,4 +9,5 @@ export const ROUTES = {
   MANAGE_KNOWLEDGE_STORE: "/manage-knowledge-store",
   CHAT_BOT: "/chatbot",
   RESET_PASSWORD: "/reset-password",
+  OAUTH_SUCCESS: "/oauth-success",
 };
