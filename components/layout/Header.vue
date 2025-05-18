@@ -13,6 +13,10 @@ const toggle = (event) => {
 const authStore = useAuthStore()
 const userStore = useUserStore()
 
+const props = defineProps({
+  sidebarWidth: String
+})
+
 const handleShowConfirmLogout = () => {
   confirm.require({
         message: t('toast.message_confirm_logout'),
@@ -56,7 +60,12 @@ const handleChangeLanguage = (langCode) => {
 
 <template>
   <div
-    class="flex justify-end bg-[rgba(74,144,226,0.1)] h-[50px] w-[100%] pr-[20px]"
+    class="flex justify-end bg-[#eaf2fb] h-[50px] pr-[20px]"
+    :style="{
+      position: 'fixed',
+      zIndex: 99,
+      width: `calc(100vw - ${sidebarWidth})`
+    }"
   >
     <div
       class="flex items-center justify-center gap-[10px] cursor-pointer"

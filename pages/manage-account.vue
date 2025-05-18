@@ -140,10 +140,10 @@ onMounted(async () => {
 </script>
 
 <template>
-   <div>
+   <div class="overflow-x: auto">
     <!-- Data for account management -->
       <DataTable v-model:filters="filters" scrollable resizableColumns columnResizeMode="fit" showGridlines :value="accounts" paginator :rows="8" :first="first" @page="onPage" :rowsPerPageOptions="[5, 10, 20, 50]"
-      filterDisplay="menu" :loading="loading" :globalFilterFields="['fullName', 'email', 'role', 'active']"
+      filterDisplay="'menu'" :loading="loading" :globalFilterFields="['fullName', 'email', 'role', 'active']"
       >
       <template #header>
         <div class="flex justify-between">

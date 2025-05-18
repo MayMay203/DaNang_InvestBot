@@ -192,7 +192,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="overflow-auto w-full">
+  <div class="overflow-x: auto">
     <DataTable
       v-model:filters="filters"
       showGridlines

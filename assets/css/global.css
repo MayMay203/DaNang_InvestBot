@@ -11,6 +11,7 @@ html{
 body{
     font-size: 1rem;
     font-family: 'Roboto', sans-serif;
+    overflow-x: hidden
 }
 
 a, button{
@@ -68,4 +69,8 @@ input::placeholder{
             color: rgba(0,0,0,0.5);
         }
     }
+}
+
+.p-datatable-header{
+    overflow-x: auto
 }
