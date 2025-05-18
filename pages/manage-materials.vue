@@ -27,8 +27,8 @@ const formData = reactive({
   name: "",
   description: "",
   content: "",
-  accessLevel: null,
-  materialTypeId: "",
+  accessLevel: accessList.value[0],
+  materialTypeId: '1',
 });
 const $primevue = usePrimeVue();
 const totalSize = ref(0);
@@ -179,6 +179,13 @@ const autoResize = () => {
     el.style.height = `${el.scrollHeight}px`;
   }
 };
+
+watch(() => formData.materialTypeId, (newValue) => {
+  if (newValue == 1) {
+    formData.name = '';
+    formData.description = ''
+  }
+})
 
 onMounted(async () => {
   await fetchAllMaterials();
@@ -409,6 +416,7 @@ onMounted(async () => {
           type="button"
           :label="t('action.save')"
           @click="addNewMaterial"
+          :disabled="formData.materialTypeId != 1 && !formData.name || formData.materialTypeId != 1 && !formData.description"
         ></Button>
       </div>
     </Dialog>
@@ -418,6 +426,7 @@ onMounted(async () => {
       modal
       :header="t('management.material.create_new_material')"
       :style="{ width: '35rem' }"
+      @hide="handleCloseDetailModal"
     >
       <div class="flex flex-col gap-4 mb-4">
         <label for="content" class="font-medium w-24 text-[15px]">{{
@@ -443,6 +452,7 @@ onMounted(async () => {
           type="button"
           :label="t('action.save')"
           @click="confirmAddNewMaterial"
+          :disabled="!formData.content"
         ></Button>
       </div>
     </Dialog>
@@ -452,6 +462,7 @@ onMounted(async () => {
       modal
       :header="t('management.material.create_new_material')"
       :style="{ width: '35rem' }"
+      @hide="handleCloseDetailModal"
     >
       <FileUpload
         name="demo[]"

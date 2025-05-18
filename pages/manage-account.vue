@@ -1,6 +1,8 @@
 <script setup>
 import { FilterMatchMode, FilterOperator } from '@primevue/core/api';
 import BaseButton from '~/components/base-components/BaseButton.vue';
+import BaseInput from '~/components/base-components/BaseInput.vue';
+import { getAddAccountSchema } from '~/schemas/addAccountSchema';
 import { accountService } from '~/service-api/accountService';
 
 definePageMeta({
@@ -22,14 +24,26 @@ const roles = ref([
     { name: t('management.account.admin'), id: 1 },
     { name: t('management.account.employee'), id: 3 },
 ]);
+const addAccountSchema = getAddAccountSchema(t)
 const formData = reactive({
   email: '',
   fullName: '',
   password: '',
   confirmPassword: '',
-  role: null
+  role: roles.value[0]
 })
 
+const formErrors = ref({
+  email: '',
+  fullName: '',
+  password: '',
+  confirmPassword: '',
+})
+
+const isDisabled = computed(() => {
+  return !formData.email || !formData.fullName || !formData.password || !formData.confirmPassword || !!formErrors.value.email ||
+    !!formErrors.value.password || !!formErrors.value.fullName || !!formErrors.value.confirmPassword
+})
 
 const fetchAllAccounts = async () => {
   try {
@@ -104,6 +118,21 @@ const handleAddNewAccount = async () => {
     createDialog.value = false
   }
 }
+
+const handleBlurInput = (field) => {
+  const result = addAccountSchema.safeParse(formData)
+  if (!result.success) {
+    const error = result.error.errors.find(err => err.path[0] === field)
+    if (error) {
+      formErrors.value[field] = error.message
+    } else {
+      formErrors.value[field] = ''
+    }
+  } else {
+    formErrors.value[field] = ''
+  }
+}
+
 
 onMounted(async () => {
    await fetchAllAccounts()
@@ -185,28 +214,24 @@ onMounted(async () => {
   <!-- Modal add account -->
     <Dialog v-model:visible="createDialog" modal :header="t('management.account.create_new_account')" :style="{ width: '35rem', height: 'fit-content' }">
       <div class="flex flex-col gap-1 mb-2">
-          <label for="email" class="font-medium w-24 text-[15px]">{{ t('management.account.email') }}</label>
-          <InputText v-model="formData.email" id="email" class="flex-auto" autocomplete="off" />
+          <BaseInput v-model="formData.email" :label="t('management.account.email')" :placeholder="t('auth.email_placeholder')" :error="formErrors.email" @blur="handleBlurInput('email')"/>
       </div>
       <div class="flex flex-col gap-1 mb-2">
-          <label for="fullName" class="font-medium w-24 text-[15px]">{{ t('management.account.fullName') }}</label>
-          <InputText v-model="formData.fullName" id="fullName" class="flex-auto" autocomplete="off" />
+        <BaseInput v-model="formData.fullName" :label="t('management.account.fullName')" :placeholder="t('auth.full_name_placeholder')" :error="formErrors.fullName" @blur="handleBlurInput('fullName')"/>
       </div>
       <div class="flex flex-col gap-1 mb-2">
-        <label for="password" class="font-medium w-24 text-[15px]">{{ t('management.account.password') }}</label>
-        <Password v-model="formData.password" toggleMask class="flex-1 w-full"/>
+        <BaseInput v-model="formData.password" :label="t('management.account.password')" cursorIcon="pointer" :placeholder="t('auth.password_placeholder')" typeTag="password" :error="formErrors.password" @blur="handleBlurInput('password')"/>
       </div>
       <div class="flex flex-col gap-1 mb-2">
-        <label for="content" class="font-medium w-60 text-[15px]">{{ t('management.account.confirm_password') }}</label>
-        <Password v-model="formData.confirmPassword" toggleMask class="w-full block" />
+        <BaseInput v-model="formData.confirmPassword" :label="t('management.account.confirm_password')" cursorIcon="pointer" :placeholder="t('auth.confirm_password_placeholder')" typeTag="password" :error="formErrors.confirmPassword" @blur="handleBlurInput('confirmPassword')"/>
       </div>
-      <div class="flex flex-col gap-1 mb-3">
+      <div class="flex flex-col gap-1 mb-5">
         <label for="content" class="font-medium w-24 text-[15px]">{{ t('management.account.role') }}</label>
         <Select v-model="formData.role" :options="roles" optionLabel="name" :placeholder="t('action.select_a_role')" class="w-full md:w-56" />
       </div>
       <div class="flex justify-end gap-4">
           <Button type="button" :label="t('action.cancel')" severity="secondary" @click="createDialog = false"></Button>
-          <Button type="button" :label="t('action.save')" @click="handleAddNewAccount"></Button>
+          <Button type="button" :label="t('action.save')" @click="handleAddNewAccount" :disabled="isDisabled"></Button>
       </div>
       </Dialog>
     </div>

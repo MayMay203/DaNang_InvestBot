@@ -67,7 +67,8 @@
       "reason": "Lý do khoá",
       "create_new_account": "Tạo mới tài khoản",
       "admin": "Quản trị viên",
-      "employee": "Nhân viên"
+      "employee": "Nhân viên",
+      "role_required": "Vui lòng chọn một vai trò"
     },
     "material": {
       "name": "Tên",

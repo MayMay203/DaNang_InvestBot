@@ -37,7 +37,7 @@
       "max": "Full name must not exceed 50 characters,"
     },
     "password_placeholder": "Enter your password",
-    "confirm_password_placeholder": "Confirm your password",
+    "confirm_password_placeholder": "Enter your confirm password",
     "confirm_password_message": "Confirm password does not match",
     "reset_password": "Reset password"
   },
@@ -67,7 +67,8 @@
       "reason": "Lock reasons",
       "create_new_account": "Create new account",
       "admin": "Admin",
-      "employee": "Employee"
+      "employee": "Employee",
+      "role_required": "Please enter a role"
     },
     "material": {
       "name": "Name",
