@@ -2,8 +2,11 @@ import { jwtDecode } from "jwt-decode";
 import { ROUTES } from "~/constants/routes";
 
 interface TokenPayload {
+  id: number,
+  fullName: string,
+  email: string,
   exp: number;
-  roleId: string;
+  roleId: number;
 }
 
 const excludedUrls = [
@@ -26,8 +29,17 @@ export default defineNuxtRouteMiddleware(async (to) => {
   if (accessToken) {
     try {
       const decoded = jwtDecode<TokenPayload>(accessToken);
-      const { roleId } = decoded;
+      const { roleId, id, email, fullName } = decoded;
 
+      const userStore = useUserStore();
+      if (!userStore.email || !userStore.id) {
+        userStore.saveUserInfo({
+          id,
+          email,
+          role_id: roleId,
+          full_name: fullName,
+        });
+      }
       if (to.path.includes("manage")) {
         if (Number(roleId) !== 1) {
           return await navigateTo(ROUTES.HOME);

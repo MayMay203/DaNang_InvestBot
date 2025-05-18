@@ -125,8 +125,8 @@ watch(() => route.fullPath, (newValue) => {
                   class="w-[36px] h-[36px] object-cover"
                 />
                 <div class="flex flex-col">
-                  <span class="text-[13px] font-medium">Lê Thị Hồng Nhung</span>
-                  <span class="text-[11px]">lethihongnhung2021n@gmail.com</span>
+                  <span class="text-[13px] font-medium">{{userStore.fullName}}</span>
+                  <span class="text-[11px]">{{userStore.email}}</span>
                 </div>
               </div>
             </div>
