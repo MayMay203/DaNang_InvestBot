@@ -50,7 +50,7 @@ export default defineNuxtPlugin(() => {
         "/auth/forget-password",
       ];
 
-      const lang = localStorage.getItem("lang") || "en";
+      const lang = localStorage.getItem("lang") || "vi";
       config.headers["Accept-Language"] = lang;
 
       const isExcluded = excludedUrls.some((url) => config.url?.includes(url));

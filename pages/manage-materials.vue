@@ -114,7 +114,6 @@ const confirmAddNewMaterial = async () => {
     });
     await fetchAllMaterials();
   } catch (error) {
-    console.error(error);
     toast.add({
       severity: "error",
       summary: t("toast.error"),
@@ -163,7 +162,7 @@ const formatSize = (bytes) => {
   const sizes = $primevue.config.locale.fileSizeTypes;
 
   if (bytes === 0) {
-    return `0 ${sizes[0]}`;
+    return `0 ${sizes[0]}`
   }
 
   const i = Math.floor(Math.log(bytes) / Math.log(k));
