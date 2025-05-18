@@ -39,7 +39,8 @@
     "password_placeholder": "Nhập mật khẩu của bạn",
     "confirm_password_placeholder": "Xác nhận mật khẩu của bạn",
     "confirm_password_message": "Mật khẩu xác nhận không khớp",
-    "reset_password": "Đặt lại mật khẩu"
+    "reset_password": "Đặt lại mật khẩu",
+    "email_forget_messsage": "Kiểm tra email để thiết lập lại mật khẩu"
   },
   "menu": {
     "language": "Ngôn ngữ",
@@ -47,7 +48,7 @@
     "english": "Tiếng anh",
     "logout": "Đăng xuất",
     "manage_account": "Tài khoản",
-    "manage_knowlege": "Kho kiến thức",
+    "manage_knowledge": "Kho kiến thức",
     "manage_material": "Tài liệu",
     "chatbot": "Hỏi đáp",
     "home": "Trang chủ",
@@ -67,7 +68,8 @@
       "reason": "Lý do khoá",
       "create_new_account": "Tạo mới tài khoản",
       "admin": "Quản trị viên",
-      "employee": "Nhân viên"
+      "employee": "Nhân viên",
+      "role_required": "Vui lòng chọn một vai trò"
     },
     "material": {
       "name": "Tên",
@@ -109,7 +111,8 @@
   "action": {
     "save": "Lưu",
     "cancel": "Thoát",
-    "select_a_role": "Lựa chọn vai trò"
+    "select_a_role": "Lựa chọn vai trò",
+    "logout": "Đăng xuất"
   },
   "home": {
     "sliderDesc": "Hỗ trợ thông tin xúc tiến đầu tư tại Đà Nẵng",
@@ -133,7 +136,10 @@
   "toast": {
     "success": "Thành công",
     "error": "Lỗi",
+    "confirm": "Xác nhận",
     "message_error": "Đã có lỗi xảy ra, vui lòng thử lại",
-    "message_success": "Hành động thực hiện thành công"
+    "message_success": "Hành động thực hiện thành công",
+    "message_expired_login": "Hết phiên đăng nhập, Vui lòng thử lại!",
+    "message_confirm_logout": "Bạn có chắc là bạn muốn đăng xuất?"
   }
 }

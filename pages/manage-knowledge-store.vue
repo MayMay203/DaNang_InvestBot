@@ -65,8 +65,8 @@ const clearFilter = () => {
 
 const fetchAllMaterialsByStore = async () => {
   try {
-    const {data} = await materialService.getAllMaterials("empty")
-    materialList.value = data.data
+    const {data} = await materialService.getAllMaterials("empty") || {}
+    materialList.value = data?.data
   }
   catch (error) {
     console.error(error)
@@ -281,7 +281,7 @@ onMounted(async () => {
     </div>
     <div class="flex justify-end gap-4">
         <Button type="button" :label="t('action.cancel')" severity="secondary" @click="isStoreVisible = false"></Button>
-        <Button type="button" :label="t('action.save')" @click="handleAddNewStore"></Button>
+        <Button type="button" :label="t('action.save')" @click="handleAddNewStore" :disabled="!newStoreData.name || !newStoreData.description"></Button>
     </div>
     </Dialog>
     <!-- Modal add material for knowledge store -->
@@ -290,7 +290,7 @@ onMounted(async () => {
         <label for="name" class="font-medium w-50 text-[15px]">{{ t('management.store.materials') }}</label>
         <MultiSelect v-model="selectedMaterials" showClear :options="materialList" optionLabel="name" filter :placeholder="t('management.store.materials')" :maxSelectedLabels="3" class="w-full md:w-80" />
     </div>
-    <div class="flex flex-col gap-4 mb-2" v-if="selectedMaterials.length > 0">
+    <div class="flex flex-col gap-4 mb-2" v-if="selectedMaterials?.length > 0">
       <label for="list" class="font-medium w-50 text-[15px]">{{ t('management.store.selected_list') }}</label>
       <div class="flex flex-col gap-3 bg-[white] border-[1px] border-[#cbd5e1] px-[40px] py-[30px] rounded-[10px]">
         <div v-for="material in selectedMaterials"  class="flex justify-between gap-1 border-[1px] border-[rgba(0,0,0,0.2)] px-3 py-2 rounded-[8px] items-center" :key="material.id">
@@ -307,7 +307,7 @@ onMounted(async () => {
     </div>
     <div class="flex justify-end gap-4">
         <Button type="button" :label="t('action.cancel')" severity="secondary" @click="addMaterialDialog = false"></Button>
-        <Button type="button" :label="t('action.save')" @click="handleAddMaterialToStore"></Button>
+        <Button type="button" :label="t('action.save')" @click="handleAddMaterialToStore" :disabled="!selectedMaterials?.length"></Button>
     </div>
     </Dialog>
   </div>

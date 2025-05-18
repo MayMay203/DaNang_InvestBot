@@ -1,7 +1,11 @@
-import axios, { type AxiosInstance } from "axios";
+import axios, { type AxiosInstance, type AxiosResponse } from "axios";
+import { ROUTES } from "~/constants/routes";
+import { useToast } from "primevue/usetoast";
 
+// axios plugin
 export default defineNuxtPlugin(() => {
   const config = useRuntimeConfig();
+  const toast = useToast();
   const axiosInstance: AxiosInstance = axios.create({
     baseURL: config.public.apiBaseUrl,
     headers: {
@@ -9,33 +13,93 @@ export default defineNuxtPlugin(() => {
     },
   });
 
+  const refreshToken = async (response: AxiosResponse) => {
+    const authStore = useAuthStore();
+    const originalRequest: any = response.config;
+
+    if (!originalRequest._retry && localStorage.getItem("refreshToken")) {
+      originalRequest._retry = true;
+
+      try {
+        const reloadState = await authStore.refresh();
+        if (reloadState) {
+          originalRequest.headers.Authorization = `Bearer ${authStore.accessToken}`;
+          return axiosInstance(originalRequest); // gọi lại request
+        }
+      } catch (e) {
+        return Promise.reject(e);
+      }
+    }
+
+    const lang = (localStorage.getItem("lang") || "vi") as "en" | "vi";
+    const messages = {
+      en: {
+        summary: "Expired Session",
+        detail: "Expired Login Session",
+      },
+      vi: {
+        summary: "Phiên hết hạn",
+        detail: "Phiên đăng nhập đã kết thúc",
+      },
+    };
+    const summary = messages[lang].summary;
+    const detail = messages[lang].detail;
+
+    toast.add({
+      severity: "error",
+      summary,
+      detail,
+      life: 3000,
+    });
+    authStore.reset();
+    return navigateTo(ROUTES.LOGIN);
+  };
+
   axiosInstance.interceptors.request.use(
     async (config) => {
       const excludedUrls = [
         "/auth/login",
         "/auth/register",
-        "/auth/refresh-token",
         "/auth/verify-otp",
         "/auth/forget-password",
       ];
 
+      const lang = localStorage.getItem("lang") || "vi";
+      config.headers["Accept-Language"] = lang;
+
       const isExcluded = excludedUrls.some((url) => config.url?.includes(url));
-      if (!isExcluded) {
+      if (config.url?.includes("/auth/refresh-token")) {
+        config.headers.Authorization = `Bearer ${localStorage.getItem(
+          "refreshToken"
+        )}`;
+      } else if (!isExcluded) {
         config.headers.Authorization = `Bearer ${localStorage.getItem(
           "accessToken"
         )}`;
       }
-
       return config;
     },
     (error) => Promise.reject(error)
   );
 
   axiosInstance.interceptors.response.use(
-    function (response) {
-       return response
+    (response) => {
+      return response;
     },
-    function (error) {
+    async (error) => {
+      console.error("error response", error);
+      const originalRequest = error.config;
+
+      if (error.response && error.response.status === 401) {
+        if (originalRequest.url?.includes("/auth/refresh-token")) {
+          const authStore = useAuthStore();
+          authStore.reset();
+          return await navigateTo(ROUTES.LOGIN);
+        } else {
+          return await refreshToken(error.response);
+        }
+      }
+
       return Promise.reject(error);
     }
   );

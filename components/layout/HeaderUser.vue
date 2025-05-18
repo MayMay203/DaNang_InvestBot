@@ -3,7 +3,8 @@ import { ROUTES } from "~/constants/routes";
 import BaseIcon from "../base-components/BaseIcon.vue";
 import { ref } from "vue";
 
-const { t } = useTranslation();
+const { t, locale } = useTranslation();
+const confirm = useConfirm();
 const route = useRoute();
 const op = ref();
 const isDetail = ref(false);
@@ -12,57 +13,90 @@ const toggle = (event) => {
 };
 const authStore = useAuthStore()
 const userStore = useUserStore()
+const activeMenu = ref('');
 
 const menuList = [
-  {
-    label: t("menu.home"),
-    path: ROUTES.HOME,
-  },
-  {
-    label: t("menu.service"),
-    path: "#services",
-  },
-  {
-    label: t("menu.chatbot"),
-    path: ROUTES.CHAT_BOT,
-  },
+  { key: 'home', label: 'Home', path: '/' },
+  { key: 'service', label: 'Service', path: '/#services' },
+  { key: 'chatbot', label: 'Chatbot', path: '/chatbot' },
 ];
-const isActive = ref(false);
 
-const handleLogout = () => {
-  localStorage.removeItem('accessToken')
-  localStorage.removeItem('refreshToken')
+function updateActiveMenu(value) {
+  if (value === '/#services') {
+    activeMenu.value = 'service';
+  } else if (value === '/') {
+    activeMenu.value = 'home';
+  } else if(value === '/chatbot') {
+    activeMenu.value = 'chatbot';
+  }
+}
+
+const handleShowConfirmLogout = () => {
+  confirm.require({
+        message: t('toast.message_confirm_logout'),
+        header: t('toast.confirm'),
+        icon: 'pi pi-exclamation-triangle',
+        rejectProps: {
+            label: t('action.cancel'),
+            severity: 'secondary',
+            outlined: true
+        },
+        acceptProps: {
+          label: t('action.logout')
+        },
+        accept: () => {
+            handleConfirmLogout()
+        },
+        reject: () => {
+            
+        }
+    });
+}
+
+const handleConfirmLogout = () => {
+  localStorage.clear()
   authStore.reset()
   userStore.reset()
   return navigateTo(ROUTES.LOGIN)
 }
+
+const handleChangeLanguage = (langCode) => {
+  locale.value = langCode
+  const currentLang = localStorage.getItem('lang')
+  if (currentLang !== langCode) {
+    localStorage.setItem('lang', langCode);
+    location.reload()
+  }
+}
+
+watch(() => route.fullPath, (newValue) => {
+  updateActiveMenu(newValue);
+}, { immediate: true });
 </script>
 
 <template>
   <div
-    class="flex justify-between items-center bg-[rgba(74,144,226,0.1)] h-[60px] w-[100%] px-[40px]"
+    class="flex justify-between items-center bg-[rgba(74,144,226,0.1)] h-[60px] w-[100%] px-[20px] md:px-[40px]"
   >
-    <NuxtLink :to="ROUTES.HOME">
+    <NuxtLink :to="ROUTES.HOME" class="hidden md:inline-block">
       <img src="/images/logo.png" alt="logo" class="w-[175px]" />
     </NuxtLink>
-    <div class="flex gap-[30px] items-center">
-      <div class="flex gap-2">
+    <div class="flex gap-[30px] items-center justify-between lg:justify-start flex-1 md:flex-initial">
+      <div class="flex gap-4 lg:gap-2">
         <template v-for="(item, index) in menuList" :key="index">
           <NuxtLink
-            v-if="item.label !== t('menu.service')"
+            v-if="!item.path.includes('#')"
             :to="item.path"
-            class="py-[11px] px-[20px] flex items-center gap-[10px]"
-            :class="{ active: route.path.startsWith(item.path) && !isActive }"
-            @click="isActive = false"
+            class="px-[4px] py-[11px] md:px-[20px] flex items-center gap-[10px]"
+            :class="{ active: activeMenu === item.key }"
           >
             {{ item.label }}
           </NuxtLink>
           <a
             v-else
-            href="#services"
-            class="py-[11px] px-[20px] flex items-center gap-[10px] cursor-pointer"
-            :class="{ active: isActive }"
-            @click="isActive = true"
+            :href="item.path"
+            class="px-[4px] py-[11px] md:px-[20px] flex items-center gap-[10px] cursor-pointer"
+            :class="{ active: activeMenu === item.key }"
           >
             {{ item.label }}
           </a>
@@ -121,12 +155,8 @@ const handleLogout = () => {
               class="flex flex-col pl-[30px] text-[14px] gap-[6px]"
               v-if="isDetail"
             >
-              <span class="px-[10px] py-[8px] menu-item">{{
-                t("menu.vietnamese")
-              }}</span>
-              <span class="px-[10px] py-[8px] menu-item">{{
-                t("menu.english")
-              }}</span>
+            <button class="px-[10px] py-[8px] menu-item flex justify-start" @click="handleChangeLanguage('vi')">{{t('menu.vietnamese')}}</button>
+            <button class="px-[10px] py-[8px] menu-item flex justify-start" @click="handleChangeLanguage('en')">{{t('menu.english')}}</button>
             </div>
             <div
               class="h-[0.8px] bg-[#000] menu-item"
@@ -134,13 +164,14 @@ const handleLogout = () => {
             ></div>
             <button
               class="flex gap-[8px] items-center px-[8px] py-[10px] menu-item"
-              @click="handleLogout"
+              @click="handleShowConfirmLogout"
             >
               <BaseIcon name="logout" sizeIcon="22px"></BaseIcon>
               <span class="text-[14px]">{{ t("menu.logout") }}</span>
             </button>
           </div>
         </Popover>
+        <ConfirmDialog></ConfirmDialog>
       </div>
     </div>
   </div>
@@ -161,5 +192,15 @@ const handleLogout = () => {
     left: 50%;
     transform: translateX(-50%);
   }
+}
+
+.menu-item:hover {
+  background-color: rgba(#ccc, 0.15);
+  cursor: pointer;
+  border-radius: 6px;
+}
+
+.filter-black {
+  filter: invert(1) brightness(0);
 }
 </style>

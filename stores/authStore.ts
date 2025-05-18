@@ -47,6 +47,21 @@ export const useAuthStore = defineStore("authStore", {
     setIsAthenticated(status: boolean) {
       this.is_athenticated = status;
     },
+    async refresh() {
+      try {
+        const res = await authService.refreshToken();
+        const {data, status} = res || {}
+        if (status == 200) {
+          this.setToken(data.data);
+          this.setIsAthenticated(true);
+          return true;
+        }
+      } catch (error) {
+        console.error("error to refreshToken", error)
+        this.reset();
+        return Promise.reject(error);
+      }
+    },
     async login(user: ILogin) {
       try {
         const { data, status } = await authService.login({ ...user });

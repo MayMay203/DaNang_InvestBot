@@ -3,8 +3,8 @@
     <div class="flex-1 p-[20px] md:p-[30px] lg:py-[20px] lg:px-[60px]">
         <h1 class="text-[rgba(6,80,118,0.9)] font-bold text-[24px] text-center">{{ t('auth.reset_password').toUpperCase() }}</h1>
        <div class="flex flex-col gap-[10px]">
-            <BaseInput v-model="resetData.password" :error="resetErrors.password" :label="t('auth.password')" icon="visibility" cursorIcon="pointer" :placeholder="t('auth.password_placeholder')" @blur="handleBlurInput('password')"/>
-            <BaseInput v-model="resetData.confirmPassword" :error="resetErrors.confirmPassword" :label="t('auth.confirm_password')" icon="visibility" cursorIcon="pointer" :placeholder="t('auth.confirm_password_placeholder')" @blur="handleBlurInput('confirmPassword')"/>
+            <BaseInput v-model="resetData.password" :error="resetErrors.password" :label="t('auth.password')" typeTag="password" :placeholder="t('auth.password_placeholder')" @blur="handleBlurInput('password')"/>
+            <BaseInput v-model="resetData.confirmPassword" :error="resetErrors.confirmPassword" :label="t('auth.confirm_password')" typeTag="password" :placeholder="t('auth.confirm_password_placeholder')" @blur="handleBlurInput('confirmPassword')"/>
        </div>
        <div class="mt-[30px]"><BaseButton :text="t('auth.confirm')" variant="primary" height="40px" width="100%" :disabled="isDisabled" @click="handleResetPassword"/></div>
     </div>
@@ -68,14 +68,14 @@ const handleResetPassword = async () => {
         const { data } = await authService.resetPassword({ newPassword: resetData.value.password, confirmPassword: resetData.value.confirmPassword })
         authStore.reset()
         navigateTo(ROUTES.LOGIN)
-        toast.add({ severity: 'success', summary: 'Success', detail: data.message, life: 3000 })
+        toast.add({ severity: 'success', summary: t('toast.success'), detail: data.message, life: 3000 })
     }
     catch (error) {
         if (error?.response) {
-            toast.add({ severity: 'error', summary: 'Error', detail: getMessageError(error), life: 3000 });
+            toast.add({ severity: 'error', summary: t('toast.error'), detail: getMessageError(error), life: 3000 });
         }
         else {
-            toast.add({ severity: 'error', summary: 'Error', detail: error.message, life: 3000 })
+            toast.add({ severity: 'error', summary: t('toast.error'), detail: error.message, life: 3000 })
         }
     }
 }

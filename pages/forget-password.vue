@@ -68,15 +68,23 @@ const handleBlurInput = (field) => {
 const handleForgetPassword = async () => {
     try {
         await authService.forgetPassword(forgetData.value.email)
-        toast.add({ severity: 'success', summary: 'Success', detail: 'Check your email to reset password', life: 3000 })
-        router.push(ROUTES.LOGIN)
+        toast.add({
+            severity: 'success',
+            summary: t('toast.success'),
+            detail: t('auth.email_forget_messsage'),
+            life: 3000
+            });
+
+            setTimeout(() => {
+            router.push(ROUTES.LOGIN);
+            }, 3000);
     }
     catch (error) {
          if (error?.response) {
-       toast.add({ severity: 'error', summary: 'Error', detail: getMessageError(error), life: 3000 });
+       toast.add({ severity: 'error', summary: t('toast.error'), detail: getMessageError(error), life: 3000 });
       }
       else {
-       toast.add({ severity: 'error', summary: 'Error', detail: error.message, life: 3000 })
+       toast.add({ severity: 'error', summary: t('toast.error'), detail: error.message, life: 3000 })
     }
     }
 }

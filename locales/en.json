@@ -37,9 +37,10 @@
       "max": "Full name must not exceed 50 characters,"
     },
     "password_placeholder": "Enter your password",
-    "confirm_password_placeholder": "Confirm your password",
+    "confirm_password_placeholder": "Enter your confirm password",
     "confirm_password_message": "Confirm password does not match",
-    "reset_password": "Reset password"
+    "reset_password": "Reset password",
+    "email_forget_messsage": "Check your email to reset password"
   },
   "menu": {
     "language": "Language",
@@ -67,7 +68,8 @@
       "reason": "Lock reasons",
       "create_new_account": "Create new account",
       "admin": "Admin",
-      "employee": "Employee"
+      "employee": "Employee",
+      "role_required": "Please enter a role"
     },
     "material": {
       "name": "Name",
@@ -109,7 +111,8 @@
   "action": {
     "save": "Save",
     "cancel": "Cancel",
-    "select_a_role": "Select a role"
+    "select_a_role": "Select a role",
+    "logout": "Logout"
   },
   "home": {
     "sliderDesc": "Support for investment promotion information in Da Nang",
@@ -132,8 +135,11 @@
   },
   "toast": {
     "success": "Success",
+    "confirm": "Confirmation",
     "error": "Error",
     "message_error": "There have been errors, please try again",
-    "message_success": "Action completed successfully"
+    "message_success": "Action completed successfully",
+    "message_expired_login": "At the end of the login, please try again!",
+    "message_confirm_logout": "Are you sure you want to logout?"
   }
 }

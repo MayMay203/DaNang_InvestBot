@@ -3,7 +3,8 @@ import { ROUTES } from "~/constants/routes";
 import BaseIcon from "../base-components/BaseIcon.vue";
 import { ref } from "vue";
 
-const {t} = useTranslation()
+const { t, locale } = useTranslation()
+const confirm = useConfirm();
 const op = ref();
 const isDetail = ref(false);
 const toggle = (event) => {
@@ -12,18 +13,59 @@ const toggle = (event) => {
 const authStore = useAuthStore()
 const userStore = useUserStore()
 
-const handleLogout = () => {
-  localStorage.removeItem('accessToken')
-  localStorage.removeItem('refreshToken')
+const props = defineProps({
+  sidebarWidth: String
+})
+
+const handleShowConfirmLogout = () => {
+  confirm.require({
+        message: t('toast.message_confirm_logout'),
+        header: t('toast.confirm'),
+        icon: 'pi pi-exclamation-triangle',
+        rejectProps: {
+            label: t('action.cancel'),
+            severity: 'secondary',
+            outlined: true
+        },
+        acceptProps: {
+          label: t('action.logout')
+        },
+        accept: () => {
+            handleConfirmLogout()
+        },
+        reject: () => {
+            
+        }
+    });
+}
+
+const handleConfirmLogout = () => {
   authStore.reset()
   userStore.reset()
+  localStorage.removeItem('accessToken')
+  localStorage.removeItem('refreshToken')
   return navigateTo(ROUTES.LOGIN)
+}
+
+const handleChangeLanguage = (langCode) => {
+  locale.value = langCode
+  const currentLang = localStorage.getItem('lang')
+  if (currentLang !== langCode) {
+    localStorage.setItem('lang', langCode);
+    localStorage.removeItem('activeMenu')
+    location.reload()
+  }
 }
 </script>
 
 <template>
   <div
-    class="flex justify-end bg-[rgba(74,144,226,0.1)] h-[50px] w-[100%] pr-[20px]"
+    class="flex justify-end bg-[#eaf2fb] h-[50px] pr-[20px]"
+    :style="{
+      position: 'fixed',
+      zIndex: 99,
+      width: `calc(100vw - ${sidebarWidth})`
+    }"
   >
     <div
       class="flex items-center justify-center gap-[10px] cursor-pointer"
@@ -77,8 +119,8 @@ const handleLogout = () => {
           class="flex flex-col pl-[30px] text-[14px] gap-[6px]"
           v-if="isDetail"
         >
-          <span class="px-[10px] py-[8px] menu-item">{{t('menu.vietnamese')}}</span>
-          <span class="px-[10px] py-[8px] menu-item">{{t('menu.english')}}</span>
+          <button class="px-[10px] py-[8px] menu-item flex justify-start" @click="handleChangeLanguage('vi')">{{t('menu.vietnamese')}}</button>
+          <button class="px-[10px] py-[8px] menu-item flex justify-start" @click="handleChangeLanguage('en')">{{t('menu.english')}}</button>
         </div>
         <div
           class="h-[0.8px] bg-[#000] menu-item"
@@ -86,13 +128,14 @@ const handleLogout = () => {
         ></div>
         <button
           class="flex gap-[8px] items-center px-[8px] py-[10px] menu-item"
-          @click="handleLogout"
+          @click="handleShowConfirmLogout"
         >
           <BaseIcon name="logout" sizeIcon="22px"></BaseIcon>
           <span class="text-[14px]">{{t('menu.logout')}}</span>
         </button>
       </div>
     </Popover>
+    <ConfirmDialog></ConfirmDialog>
   </div>
 </template>
 <style scoped lang="scss">

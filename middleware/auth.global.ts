@@ -25,27 +25,28 @@ export default defineNuxtRouteMiddleware(async (to) => {
   if (accessToken) {
     try {
       const decoded = jwtDecode<TokenPayload>(accessToken);
-      const { exp, roleId } = decoded;
+      const { roleId } = decoded;
 
-      const isExpired = exp * 1000 < Date.now();
-
-      if (!isExpired) {
-        if (to.path.includes("manage")) {
-          if (Number(roleId) !== 1) {
-            return await navigateTo(ROUTES.HOME);
-          }
+      if (to.path.includes("manage")) {
+        if (Number(roleId) !== 1) {
+          return await navigateTo(ROUTES.HOME);
         }
-
-        if (isExcluded) {
-          if (Number(roleId) !== 1) return await navigateTo(ROUTES.HOME);
-          else return await navigateTo(ROUTES.MANAGE_ACCOUNT);
-        }
-
-        return;
       }
+
+      if (isExcluded) {
+        if (Number(roleId) !== 1) return await navigateTo(ROUTES.HOME);
+        else return await navigateTo(ROUTES.MANAGE_ACCOUNT);
+      }
+
+      if (!isExcluded && !to.path.includes("manage")) {
+        if (Number(roleId) === 1) {
+          return await navigateTo(ROUTES.MANAGE_ACCOUNT);
+        }
+      }
+
+      return;
     } catch (e) {
       console.error(e);
-      // return await navigateTo(ROUTES.LOGIN);
     }
   }
 

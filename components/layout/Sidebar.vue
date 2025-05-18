@@ -1,40 +1,77 @@
 <script setup>
-import { NuxtLink } from "#components";
-import { ROUTES } from "~/constants/routes";
-import BaseIcon from "~/components/base-components/BaseIcon.vue";
+import { NuxtLink } from "#components"
+import { ROUTES } from "~/constants/routes"
+import BaseIcon from "~/components/base-components/BaseIcon.vue"
 
-const route = useRoute();
-const {t} = useTranslation()
-const menuList = [
+const route = useRoute()
+const { t } = useTranslation()
+const emit = defineEmits(['width-change'])
+
+const isVisible = ref(true)
+const windowWidth = ref(0)
+
+watch(windowWidth, (newWidth) => {
+  if (newWidth < 1024) {
+    isVisible.value = false
+  } else {
+    isVisible.value = true
+  }
+})
+
+const updateWindowWidth = () => {
+  windowWidth.value = window.innerWidth
+}
+
+onMounted(() => {
+  updateWindowWidth()
+  window.addEventListener('resize', updateWindowWidth)
+})
+
+onBeforeUnmount(() => {
+  window.removeEventListener('resize', updateWindowWidth)
+})
+
+const handleCollapseSidebar = () => {
+  if (windowWidth.value >= 1024) {
+    isVisible.value = !isVisible.value
+  }
+}
+
+const sidebarWidth = computed(() => {
+  return windowWidth.value < 1024 ? '70px' : isVisible.value ? '250px' : '70px'
+})
+
+watchEffect(() => {
+  emit('width-change', sidebarWidth.value)
+})
+
+const menuList = computed(() => [
   { label: t('menu.manage_account'), path: ROUTES.MANAGE_ACCOUNT, icon: "dashboard" },
   { label: t('menu.manage_material'), path: ROUTES.MANAGE_MATERIALS, icon: "material" },
-  {
-    label: t('menu.manage_knowlege'),
-    path: ROUTES.MANAGE_KNOWLEDGE_STORE,
-    icon: "store",
-  },
+  { label: t('menu.manage_knowledge'), path: ROUTES.MANAGE_KNOWLEDGE_STORE, icon: "store" },
   { label: t('menu.chatbot'), path: ROUTES.CHAT_BOT, icon: "chatbot" },
-];
-const isVisible = ref(false);
+])
 </script>
 <template>
   <div
     class="sidebar bg-[rgba(74,144,226,0.1)] min-h-screen border-r border-[rgba(6,80,118,0.1)]"
     :style="{
       width: isVisible ? '250px' : '70px',
+  position: 'fixed',
+      zIndex: 100
     }"
   >
     <div
-      class="flex items-center p-[20px]"
+      class="flex items-center p-[20px] justify-center lg:justify-start"
       :class="{ 'gap-[12px]': isVisible }"
     >
       <BaseIcon
         name="menu"
         sizeIcon="30"
         cursor="pointer"
-        @click="isVisible = !isVisible"
+        @click="handleCollapseSidebar"
       />
-      <NuxtLink :to="ROUTES.HOME" v-if="isVisible">
+      <NuxtLink :to="ROUTES.HOME" v-if="isVisible" class="hidden lg:inline-block">
         <img src="/images/logo.png" alt="logo" class="w-[150px]" />
       </NuxtLink>
     </div>
@@ -58,10 +95,11 @@ const isVisible = ref(false);
               'filter-white': route.path.startsWith(item.path),
               'filter-blue': !route.path.startsWith(item.path),
             }"
+            cursor="pointer"
           />
           <span
             v-if="isVisible"
-            class="flex-1 text-left leading-[20px]"
+            class="flex-1 text-left leading-[20px] hidden lg:inline-block"
             :class="{
               'text-white': route.path.startsWith(item.path),
               'text-[#065076]': !route.path.startsWith(item.path),
