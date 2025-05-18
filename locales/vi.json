@@ -39,7 +39,8 @@
     "password_placeholder": "Nhập mật khẩu của bạn",
     "confirm_password_placeholder": "Xác nhận mật khẩu của bạn",
     "confirm_password_message": "Mật khẩu xác nhận không khớp",
-    "reset_password": "Đặt lại mật khẩu"
+    "reset_password": "Đặt lại mật khẩu",
+    "email_forget_messsage": "Kiểm tra email để thiết lập lại mật khẩu"
   },
   "menu": {
     "language": "Ngôn ngữ",

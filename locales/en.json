@@ -39,7 +39,8 @@
     "password_placeholder": "Enter your password",
     "confirm_password_placeholder": "Enter your confirm password",
     "confirm_password_message": "Confirm password does not match",
-    "reset_password": "Reset password"
+    "reset_password": "Reset password",
+    "email_forget_messsage": "Check your email to reset password"
   },
   "menu": {
     "language": "Language",
