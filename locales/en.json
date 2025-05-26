@@ -140,6 +140,7 @@
     "message_error": "There have been errors, please try again",
     "message_success": "Action completed successfully",
     "message_expired_login": "At the end of the login, please try again!",
-    "message_confirm_logout": "Are you sure you want to logout?"
+    "message_confirm_logout": "Are you sure you want to logout?",
+    "invalid_url": "The URL is incorrectly formatted."
   }
 }

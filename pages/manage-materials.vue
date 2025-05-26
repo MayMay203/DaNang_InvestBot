@@ -84,8 +84,33 @@ const addNewMaterial = () => {
   }
 };
 
+const resetFormData = () => {
+  formData.files = null;
+  formData.name = '';
+  formData.description = '';
+  formData.content = '';
+  formData.accessLevel = accessList.value[0];
+  formData.materialTypeId = '1';
+};
+
 const confirmAddNewMaterial = async () => {
   try {
+    if (formData.materialTypeId == '3') {
+      const matches = formData.content.split(/(?=https?:\/\/)/g)
+                      .map(str => str.trim())
+                      .filter(str => /^https?:\/\/[^\s]+$/.test(str));
+      if (!matches) {
+        toast.add({
+        severity: "error",
+        summary: t("toast.error"),
+        detail: t("toast.invalid_url"),
+        life: 3000,
+        });
+        return  
+      }
+      formData.content = matches.join(',')
+    }
+
     let { name, description, files, content, materialTypeId, accessLevel } =
       formData;
     materialTypeId = Number(materialTypeId);
@@ -112,18 +137,25 @@ const confirmAddNewMaterial = async () => {
       detail: t("toast.message_success"),
       life: 3000,
     });
+  
+    resetFormData()
     await fetchAllMaterials();
+
+    isVisible.value = false;
+    visible.value = false;
+    isUploadVisible.value = false;
+
   } catch (error) {
+    console.error(error)
+    isVisible.value = false;
+    visible.value = false;
+    isUploadVisible.value = false;
     toast.add({
       severity: "error",
       summary: t("toast.error"),
       detail: t("toast.message_error"),
       life: 3000,
     });
-  } finally {
-    isVisible.value = false;
-    visible.value = false;
-    isUploadVisible.value = false;
   }
 };
 
@@ -140,10 +172,10 @@ const fetchAllMaterials = async () => {
   }
 };
 
-const handleCloseDetailModal = () => {
+const handleCloseDetailModal = (value) => {
+  value? visible.value = true : visible.value = false
   isVisible.value = false;
   isUploadVisible.value = false;
-  visible.value = true;
 };
 
 const onRemoveTemplatingFile = (file, removeFileCallback, index) => {
@@ -445,7 +477,7 @@ onMounted(async () => {
           type="button"
           :label="t('action.cancel')"
           severity="secondary"
-          @click="handleCloseDetailModal"
+          @click="handleCloseDetailModal('closeHalf')"
         ></Button>
         <Button
           type="button"
