@@ -34,6 +34,10 @@ const $primevue = usePrimeVue();
 const totalSize = ref(0);
 const totalSizePercent = ref(0);
 const autoTextarea = ref(null);
+const updatedStatus = ref({ status: null, id: null })
+const confirm = useConfirm();
+const detailMaterial = ref()
+const isVisibleDetail = ref(false)
 
 const onPage = (event) => {
   first.value = event.first;
@@ -211,6 +215,121 @@ const autoResize = () => {
   }
 };
 
+const handleToggleMaterial = async () => {
+  try {
+    const material = materials.value.find(material => material.id == updatedStatus.value.id);
+
+    if (material) {
+      material.isActive = updatedStatus.value.status;
+    }
+    
+    await materialService.changeStatusMaterial(updatedStatus.value)
+
+    toast.add({
+      severity: "success",
+      summary: t("toast.success"),
+      detail: t("toast.message_success"),
+      life: 3000,
+    });
+  }
+  catch (error) {
+    toast.add({
+      severity: "error",
+      summary: t("toast.error"),
+      detail: t("toast.message_error"),
+      life: 3000,
+    });
+  }
+}
+
+const toggleActive = (value, materialData) => {
+  updatedStatus.value = {
+        status: value,
+        id: materialData.id,
+  };
+
+  const material = materials.value.find(item => item.id === updatedStatus.value.id);
+  if (material) {
+    material.isActive = value;
+  }
+      
+  confirm.require({
+    message: t('toast.message_toggle_material'),
+    header: t('toast.confirm'),
+    icon: 'pi pi-exclamation-triangle',
+    rejectProps: {
+      label: t('action.cancel'),
+      severity: 'secondary',
+      outlined: true
+    },
+    acceptProps: {
+      label: t('action.toggle_status')
+    },
+    accept: async () => {
+      await handleToggleMaterial()
+    },
+    reject: () => {
+      handleCancel()
+    }
+  });
+}
+
+
+const handleCancel = () => {
+  const material = materials.value.find(item => item.id === updatedStatus.value.id);
+  if (material) {
+    material.isActive = !updatedStatus.value.status;
+  }
+}
+
+const handleDeleteMaterial = async (id) => {
+  confirm.require({
+    message: t('management.material.delete_material'),
+    header: t('toast.confirm'),
+    icon: 'pi pi-exclamation-triangle',
+    rejectProps: {
+      label: t('action.cancel'),
+      severity: 'secondary',
+      outlined: true
+    },
+    acceptProps: {
+      label: t('action.delete')
+    },
+    accept: async () => {
+      try {
+        await materialService.deleteMaterial(id)
+        toast.add({
+          severity: "success",
+          summary: t("toast.success"),
+          detail: t("toast.message_success"),
+          life: 3000,
+        });
+      }
+      catch (error) {
+        toast.add({
+          severity: "error",
+          summary: t("toast.error"),
+          detail: t("toast.message_error"),
+          life: 3000,
+        });
+      }
+    },
+    reject: () => {
+    }
+  });
+}
+
+const handleViewDetailMaterial = async (id) => {
+  try {
+    const res = await materialService.getDetailMaterial(id)
+    detailMaterial.value = res.data.data
+    isVisibleDetail.value = true
+  }
+  catch(error){
+    console.error(error)
+  }
+}
+
 watch(() => formData.materialTypeId, (newValue) => {
   if (newValue == 1) {
     formData.name = '';
@@ -324,11 +443,13 @@ onMounted(async () => {
         style="width: 10%"
       >
         <template #body="slotProps">
-          <ToggleSwitch v-model="slotProps.data.isActive" />
+          <ToggleSwitch 
+            :modelValue="slotProps.data.isActive" 
+            @update:modelValue="(value) => toggleActive(value, slotProps.data)"  />
         </template>
       </Column>
       <Column style="width: 15%">
-        <template #body>
+        <template #body="slotProps">
           <div class="flex gap-[6px]">
             <BaseButton
               left-icon="item"
@@ -339,23 +460,26 @@ onMounted(async () => {
               height="30px"
               sizeIcon="18px"
               border-color="#065076"
+              @click="handleViewDetailMaterial(slotProps.data.id)"
             ></BaseButton>
             <BaseButton
-              left-icon="edit"
-              :text="t('management.edit')"
+              left-icon="delete"
+              :text="t('management.delete')"
               variant="outline"
               color="red"
               width="80px"
               height="30px"
               sizeIcon="18px"
               border-color="red"
+              @click="handleDeleteMaterial(slotProps.data.id)"
             ></BaseButton>
           </div>
         </template>
       </Column>
     </DataTable>
-    <!-- modal add new material -->
-    <Dialog
+  </div>
+  <!-- modal add new material -->
+  <Dialog
       v-model:visible="visible"
       modal
       :header="t('management.material.create_new_material')"
@@ -640,5 +764,58 @@ onMounted(async () => {
         </template>
       </FileUpload>
     </Dialog>
-  </div>
+    <Dialog
+      v-model:visible="isVisibleDetail"
+      :header="t('management.material.detail_material')"
+      :modal="true"
+      :style="{ width: '80vw' }"
+      @hide="isVisibleDetail = false"
+    >
+      <div class="p-6 space-y-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="space-y-2">
+            <div>
+              <span class="font-semibold">{{ t('management.material.name') }}: </span>
+              <span class="text-gray-700">{{ detailMaterial.name }}</span>
+            </div>
+            <div>
+              <span class="font-semibold">{{ t('management.material.description') }}: </span>
+              <span class="text-gray-700">{{ detailMaterial.description }}</span>
+            </div>
+            <div>
+              <span class="font-semibold">{{ t('management.material.active') }}: </span>
+              <span :class="detailMaterial.isActive ? 'text-green-600' : 'text-red-600'">
+                {{ detailMaterial.isActive ? t('management.material.active_status') : t('management.material.deactive_status') }}
+              </span>
+            </div>
+          </div>
+          <div class="space-y-2">
+            <div>
+              <span class="font-semibold">{{ t('management.material.access') }}: </span>
+              <span class="text-gray-700">{{ detailMaterial.accessLevel.name }}</span>
+            </div>
+            <div>
+              <span class="font-semibold">{{ t('management.material.knowledge_store') }}: </span>
+              <span class="text-gray-700">
+                {{ detailMaterial.knowledgeStore ? detailMaterial.knowledgeStore : t('management.material.none') }}
+              </span>
+            </div>
+            <div>
+              <span class="font-semibold">{{ t("management.material.updatedAt") }}: </span>
+              <span class="text-gray-700">{{ dayjs(detailMaterial.updatedAt).format("HH:mm:ss DD-MM-YYYY") }}</span>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <p class="font-semibold mb-2">{{ t('management.material.view_material') }}:</p>
+          <iframe
+            v-if="detailMaterial.materialType.id !== 2"
+            :src="detailMaterial.url"
+            class="w-full h-[500px] border rounded-md shadow"
+          />
+          <div v-if="detailMaterial.materialType.id === 2" class="w-full h-[500px] border rounded-md shadow px-[30px] py-[20px]">{{ detailMaterial.text }}</div>
+        </div>
+      </div>
+    </Dialog>
 </template>

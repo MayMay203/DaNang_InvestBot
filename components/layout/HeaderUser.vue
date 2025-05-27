@@ -171,7 +171,6 @@ watch(() => route.fullPath, (newValue) => {
             </button>
           </div>
         </Popover>
-        <ConfirmDialog></ConfirmDialog>
       </div>
     </div>
   </div>

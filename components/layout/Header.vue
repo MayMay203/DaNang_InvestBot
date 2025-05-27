@@ -135,7 +135,6 @@ const handleChangeLanguage = (langCode) => {
         </button>
       </div>
     </Popover>
-    <ConfirmDialog></ConfirmDialog>
   </div>
 </template>
 <style scoped lang="scss">

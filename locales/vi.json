@@ -78,6 +78,9 @@
       "updatedAt": "Cập nhật lúc",
       "access": "Quyền truy cập",
       "active": "Hoạt động",
+      "knowledge_store": "Kho kiến thức",
+      "active_title": "Dừng hoạt động tài liệu",
+      "deactive_title": "Mở hoạt động tài liệu",
       "item": "Chi tiết",
       "create_new_material": "Thêm tài liệu mới",
       "file_upload": "Tải File",
@@ -87,7 +90,13 @@
       "select_access_message": "Lựa chọn một quyền truy cập",
       "public": "Công khai",
       "private": "Riêng tư",
-      "internal": "Nội bộ"
+      "internal": "Nội bộ",
+      "delete_material": "Bạn có chắc chắn muốn xoá tài liệu này?",
+      "detail_material": "Chi tiết tài liệu",
+      "view_material": "Xem tài liệu",
+      "active_status": "Đang hoạt động",
+      "deactive_status": "Ngừng hoạt động",
+      "none": "Không"
     },
     "store": {
       "name": "Tên",
@@ -105,6 +114,7 @@
     },
     "sync": "Đồng bộ",
     "edit": "Sửa",
+    "delete": "Xoá",
     "create": "Thêm mới",
     "order": "STT"
   },
@@ -112,7 +122,9 @@
     "save": "Lưu",
     "cancel": "Thoát",
     "select_a_role": "Lựa chọn vai trò",
-    "logout": "Đăng xuất"
+    "logout": "Đăng xuất",
+    "toggle_status": "Thay đổi trạng thái",
+    "delete": "Xoá"
   },
   "home": {
     "sliderDesc": "Hỗ trợ thông tin xúc tiến đầu tư tại Đà Nẵng",
@@ -141,6 +153,7 @@
     "message_success": "Hành động thực hiện thành công",
     "message_expired_login": "Hết phiên đăng nhập, Vui lòng thử lại!",
     "message_confirm_logout": "Bạn có chắc là bạn muốn đăng xuất?",
-    "invalid_url": "Định dạng url nhập vào không hợp lệ."
+    "invalid_url": "Định dạng url nhập vào không hợp lệ.",
+    "message_toggle_material": "Bạn có chắc chắn là bạn muốn thay đổi trạng thái hoạt động của tài liệu này?"
   }
 }

@@ -132,20 +132,6 @@ const handleDeleteMaterial = async (materialId) => {
   selectedMaterials.value = selectedMaterials.value.filter(item => item.id !== materialId)
 }
 
-const handleSyncKnowledgeStore = async (id) => {
-  try {
-    await knowledgestoreService.asyncKnowledgeStore(id)
-    toast.add({ severity: 'success', summary: t("toast.success"), detail: t("toast.message_success"), life: 3000 })
-    await fetchAllKnowledgeStores()
-  }
-  catch (error) {
-    console.error(error)
-    console.error(error)
-    toast.add({ severity: 'error', summary: t("toast.error"), detail: t("toast.message_error"), life: 3000 })
-  }
-}
-
-
 onMounted(async () => {
   await fetchAllKnowledgeStores()
   await fetchAllMaterialsByStore()
@@ -221,7 +207,6 @@ onMounted(async () => {
           />
         </template>
       </Column>
-      <!-- <Column field="createdBy" :header="t('management.store.createdBy')" style="width: 15%"></Column> -->
       <Column field="updatedAt" :header="t('management.store.updatedAt')" style="width: 20%"></Column>
       <Column field="status" :header="t('management.store.status')" style="width: 10%"></Column>
       <Column field="isActive" :header="t('management.store.active')" style="width: 10%">
@@ -252,18 +237,6 @@ onMounted(async () => {
               height="30px"
               sizeIcon="18px"
               border-color="red"
-            ></BaseButton>
-            <BaseButton
-              :disabled="slotProps.data.status !== 'Changed'"
-              left-icon="sync"
-              :text="t('management.sync')"
-              variant="outline"
-              color="#4A9F59"
-              width="110px"
-              height="30px"
-              sizeIcon="18px"
-              border-color="#4A9F59"
-              @click="handleSyncKnowledgeStore(slotProps.data.id)"
             ></BaseButton>
           </div>
         </template>
