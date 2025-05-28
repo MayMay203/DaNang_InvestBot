@@ -2,9 +2,16 @@ import { API_ENPOINT } from "~/constants/api-endpoints";
 import type {
   IAddMaterialToKnowledgeStore,
   ICreateKnowledgeStore,
+  IUpdate,
 } from "~/models/IKnowledStore";
+import type { IChangeStatus } from "~/models/IMaterial";
 
 class KnowledgeStoreService {
+  getDetailKnowledgeStore(id: number) {
+    const { $axiosApi } = useNuxtApp();
+    return $axiosApi.get(`${API_ENPOINT.DETAIL_KNOWLEDGE_STORE}/${id}`);
+  }
+
   getAllKnowledgeStore() {
     const { $axiosApi } = useNuxtApp();
     return $axiosApi.get(API_ENPOINT.GET_ALL_KNOWLEDGE_STROE);
@@ -22,9 +29,21 @@ class KnowledgeStoreService {
     });
   }
 
-  asyncKnowledgeStore(id: number) {
+  removeMaterialsFromKnowledgeStore(data: IAddMaterialToKnowledgeStore) {
     const { $axiosApi } = useNuxtApp();
-    return $axiosApi.post(`${API_ENPOINT.ASYNC_KNOWLEDGE_STORE}?id=${id}`);
+    return $axiosApi.post(API_ENPOINT.REMOVE_MATERIAL_FROM_KNOWLEDGE_STORE, {
+      ...data,
+    });
+  }
+
+  changeStatusStore(data: IChangeStatus) {
+    const { $axiosApi } = useNuxtApp();
+    return $axiosApi.patch(API_ENPOINT.CHANGE_STATUS_STORE, { ...data });
+  }
+
+  updateKnowledgeStore(id: number, data: IUpdate) {
+    const { $axiosApi } = useNuxtApp();
+    return $axiosApi.patch(API_ENPOINT.CHANGE_STATUS_STORE, { ...data });
   }
 }
 

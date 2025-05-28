@@ -110,7 +110,9 @@
       "add_materials_to_store": "Thêm tài liệu vào kho kiến thức",
       "materials": "Tài liệu",
       "selected_list": "Danh sách đã chọn",
-      "placeholder_select_list": "Lựa chọn các tài liệu"
+      "placeholder_select_list": "Lựa chọn các tài liệu",
+      "number_materials": "Số lượng tài liệu",
+      "no_material_selected": "Không có tài liệu nào được chọn"
     },
     "sync": "Đồng bộ",
     "edit": "Sửa",

@@ -110,7 +110,9 @@
       "add_materials_to_store": "Add materials to store",
       "materials": "Materials",
       "selected_list": "Selected List",
-      "placeholder_select_list": "Select materials"
+      "placeholder_select_list": "Select materials",
+      "number_materials": "Number of materials",
+      "no_material_selected": "There is no selected document"
     },
     "sync": "sync",
     "edit": "Edit",
