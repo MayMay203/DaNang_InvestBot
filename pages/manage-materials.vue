@@ -297,11 +297,13 @@ const handleDeleteMaterial = async (id) => {
     },
     accept: async () => {
       try {
-        await materialService.deleteMaterial(id)
+        const res = await materialService.deleteMaterial(id)
+        await fetchAllMaterials();
+        
         toast.add({
           severity: "success",
           summary: t("toast.success"),
-          detail: t("toast.message_success"),
+          detail: res.data.message,
           life: 3000,
         });
       }
@@ -426,7 +428,27 @@ onMounted(async () => {
         field="materialType.name"
         :header="t('management.material.materialType')"
         style="width: 10%"
-      ></Column>
+      >
+        <template #body="slotProps">
+          <span
+            class="flex items-center gap-2 px-2 py-0.5 rounded-md text-sm font-medium w-fit"
+            :class="{
+              'bg-blue-100 text-blue-700': slotProps.data.materialType.name === 'file',
+              'bg-green-100 text-green-700': slotProps.data.materialType.name === 'url',
+              'bg-yellow-100 text-yellow-700': slotProps.data.materialType.name === 'content'
+            }"
+          >
+            <i
+              :class="{
+                'pi pi-file': slotProps.data.materialType.name === 'file',
+                'pi pi-link': slotProps.data.materialType.name === 'url',
+                'pi pi-align-left': slotProps.data.materialType.name === 'content'
+              }"
+            ></i>
+            <span>{{slotProps.data.materialType.name}}</span>
+          </span>
+        </template>
+      </Column>
       <Column
         field="updatedAt"
         :header="t('management.material.updatedAt')"
@@ -436,7 +458,20 @@ onMounted(async () => {
         field="accessLevel.name"
         :header="t('management.material.access')"
         style="width: 10%"
-      ></Column>
+      >
+        <template #body="slotProps">
+          <span
+            class="px-2 py-0.5 rounded-md text-sm font-medium"
+            :class="{
+              'text-green-700 bg-green-100': slotProps.data.accessLevel.name === 'public',
+              'text-blue-700 bg-blue-100': slotProps.data.accessLevel.name === 'internal',
+              'text-red-700 bg-red-100': slotProps.data.accessLevel.name === 'private'
+            }"
+          >
+            {{ slotProps.data.accessLevel.name }}
+          </span>
+        </template>
+      </Column>
       <Column
         field="isActive"
         :header="t('management.material.active')"
@@ -467,9 +502,9 @@ onMounted(async () => {
               :text="t('management.delete')"
               variant="outline"
               color="red"
-              width="80px"
+              width="90px"
               height="30px"
-              sizeIcon="18px"
+              sizeIcon="20px"
               border-color="red"
               @click="handleDeleteMaterial(slotProps.data.id)"
             ></BaseButton>
@@ -768,10 +803,13 @@ onMounted(async () => {
       v-model:visible="isVisibleDetail"
       :header="t('management.material.detail_material')"
       :modal="true"
-      :style="{ width: '80vw' }"
+      :maximizable="true"
+      :maximized="true"
+      :closable="true"
+      :dismissableMask="true"
       @hide="isVisibleDetail = false"
     >
-      <div class="p-6 space-y-6">
+      <div class="p-3 lg:p-6 space-y-6">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div class="space-y-2">
             <div>
@@ -791,8 +829,19 @@ onMounted(async () => {
           </div>
           <div class="space-y-2">
             <div>
-              <span class="font-semibold">{{ t('management.material.access') }}: </span>
-              <span class="text-gray-700">{{ detailMaterial.accessLevel.name }}</span>
+              <span class="font-semibold">
+                {{ t('management.material.access') }}:
+              </span>
+              <span
+                class="px-2 py-0.5 rounded-md text-sm font-medium"
+                :class="{
+                  'text-green-700 bg-green-100': detailMaterial.accessLevel.name === 'public',
+                  'text-blue-700 bg-blue-100': detailMaterial.accessLevel.name === 'internal',
+                  'text-red-700 bg-red-100': detailMaterial.accessLevel.name === 'private'
+                }"
+              >
+                {{ detailMaterial.accessLevel.name }}
+              </span>
             </div>
             <div>
               <span class="font-semibold">{{ t('management.material.knowledge_store') }}: </span>
@@ -810,12 +859,50 @@ onMounted(async () => {
         <div>
           <p class="font-semibold mb-2">{{ t('management.material.view_material') }}:</p>
           <iframe
-            v-if="detailMaterial.materialType.id !== 2"
-            :src="detailMaterial.url"
-            class="w-full h-[500px] border rounded-md shadow"
-          />
-          <div v-if="detailMaterial.materialType.id === 2" class="w-full h-[500px] border rounded-md shadow px-[30px] py-[20px]">{{ detailMaterial.text }}</div>
+          v-if="detailMaterial.materialType.id !== 2 && detailMaterial.materialType.id !== 3"
+          :src="`${detailMaterial.url.split('/view')[0]}/preview`"
+          class="w-full h-[500px] border rounded-md shadow"
+        />
+
+        <div
+          v-else-if="detailMaterial.materialType.id === 2"
+          class="w-full min-h-[500px] border rounded-md shadow px-3 py-3 lg:px-6 lg:py-4"
+        >
+          {{ detailMaterial.text }}
+        </div>
+
+        <div
+          v-else-if="detailMaterial.materialType.id === 3"
+          class="w-full min-h-[150px] border rounded-xl shadow px-3 py-3 lg:px-6 lg:py-4 bg-gray-50 hover:bg-gray-100 transition-all duration-200"
+        >
+          <a
+            :href="detailMaterial.url"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4 text-blue-600 hover:text-blue-800 w-full break-words"
+          >
+            <div class="text-2xl">🌐</div>
+            <div class="flex-1 w-full">
+              <p class="font-semibold text-lg mb-1">Mở liên kết:</p>
+              <p class="text-sm text-gray-700 w-full break-words">{{ detailMaterial.url }}</p>
+            </div>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              class="w-5 h-5"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M14 3h7v7m0 0L10 21l-7-7 11-11z"
+              />
+            </svg>
+          </a>
         </div>
       </div>
-    </Dialog>
+    </div>
+  </Dialog>
 </template>
