@@ -194,7 +194,6 @@ onMounted(async () => {
         <Column field="isActive" :header="t('management.account.active')" style="width: 15%">
          <template #body="slotProps">
           <ToggleSwitch 
-            :key="slotProps.data.id + '-' + slotProps.data.isActive"
             :modelValue="slotProps.data.isActive" 
             @update:modelValue="(value) => toggleActive(value, slotProps.data)" 
           />

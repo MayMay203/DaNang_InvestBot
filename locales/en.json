@@ -77,6 +77,8 @@
       "materialType": "Material Type",
       "updatedAt": "Updated At",
       "access": "Access",
+      "active_title": "Active Material",
+      "deactive_title": "Deactive Material",
       "active": "Active",
       "item": "Item",
       "create_new_material": "Create new material",
@@ -87,7 +89,14 @@
       "select_access_message": "Select a access type",
       "public": "Public",
       "private": "Private",
-      "internal": "Internal"
+      "internal": "Internal",
+      "delete_material": "Are you sure to delete this material?",
+      "detail_material": "Detail Material",
+      "active_status": "Active",
+      "deactive_status": "Deactive",
+      "knowledge_store": "Knowledge store",
+      "none": "None",
+      "view_material": "View material"
     },
     "store": {
       "name": "Name",
@@ -105,6 +114,7 @@
     },
     "sync": "sync",
     "edit": "Edit",
+    "delete": "Delete",
     "create": "Create",
     "order": "Order"
   },
@@ -112,7 +122,9 @@
     "save": "Save",
     "cancel": "Cancel",
     "select_a_role": "Select a role",
-    "logout": "Logout"
+    "logout": "Logout",
+    "toggle_status": "Change status",
+    "delete": "Delete"
   },
   "home": {
     "sliderDesc": "Support for investment promotion information in Da Nang",
@@ -140,6 +152,8 @@
     "message_error": "There have been errors, please try again",
     "message_success": "Action completed successfully",
     "message_expired_login": "At the end of the login, please try again!",
-    "message_confirm_logout": "Are you sure you want to logout?"
+    "message_confirm_logout": "Are you sure you want to logout?",
+    "invalid_url": "The URL is incorrectly formatted.",
+    "message_toggle_material": "Are you sure you want to change active status this material?"
   }
 }

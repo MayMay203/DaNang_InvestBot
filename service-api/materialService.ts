@@ -30,7 +30,12 @@ class MaterialService{
 
     changeStatusMaterial(data: IChangeStatus) {
         const { $axiosApi } = useNuxtApp();
-        return $axiosApi.post(API_ENPOINT.CHANGE_STATUS_MATERIAL, { ...data });
+        return $axiosApi.patch(API_ENPOINT.CHANGE_STATUS_MATERIAL, { ...data });
+    }
+
+    deleteMaterial(id: number) {
+        const { $axiosApi } = useNuxtApp();
+        return $axiosApi.delete(`${API_ENPOINT.DELETE_MATERIAL}/${id}`);
     }
 }
 

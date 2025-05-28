@@ -34,6 +34,10 @@ const $primevue = usePrimeVue();
 const totalSize = ref(0);
 const totalSizePercent = ref(0);
 const autoTextarea = ref(null);
+const updatedStatus = ref({ status: null, id: null })
+const confirm = useConfirm();
+const detailMaterial = ref()
+const isVisibleDetail = ref(false)
 
 const onPage = (event) => {
   first.value = event.first;
@@ -84,8 +88,33 @@ const addNewMaterial = () => {
   }
 };
 
+const resetFormData = () => {
+  formData.files = null;
+  formData.name = '';
+  formData.description = '';
+  formData.content = '';
+  formData.accessLevel = accessList.value[0];
+  formData.materialTypeId = '1';
+};
+
 const confirmAddNewMaterial = async () => {
   try {
+    if (formData.materialTypeId == '3') {
+      const matches = formData.content.split(/(?=https?:\/\/)/g)
+                      .map(str => str.trim())
+                      .filter(str => /^https?:\/\/[^\s]+$/.test(str));
+      if (!matches) {
+        toast.add({
+        severity: "error",
+        summary: t("toast.error"),
+        detail: t("toast.invalid_url"),
+        life: 3000,
+        });
+        return  
+      }
+      formData.content = matches.join(',')
+    }
+
     let { name, description, files, content, materialTypeId, accessLevel } =
       formData;
     materialTypeId = Number(materialTypeId);
@@ -112,18 +141,25 @@ const confirmAddNewMaterial = async () => {
       detail: t("toast.message_success"),
       life: 3000,
     });
+  
+    resetFormData()
     await fetchAllMaterials();
+
+    isVisible.value = false;
+    visible.value = false;
+    isUploadVisible.value = false;
+
   } catch (error) {
+    console.error(error)
+    isVisible.value = false;
+    visible.value = false;
+    isUploadVisible.value = false;
     toast.add({
       severity: "error",
       summary: t("toast.error"),
       detail: t("toast.message_error"),
       life: 3000,
     });
-  } finally {
-    isVisible.value = false;
-    visible.value = false;
-    isUploadVisible.value = false;
   }
 };
 
@@ -140,10 +176,10 @@ const fetchAllMaterials = async () => {
   }
 };
 
-const handleCloseDetailModal = () => {
+const handleCloseDetailModal = (value) => {
+  value? visible.value = true : visible.value = false
   isVisible.value = false;
   isUploadVisible.value = false;
-  visible.value = true;
 };
 
 const onRemoveTemplatingFile = (file, removeFileCallback, index) => {
@@ -178,6 +214,123 @@ const autoResize = () => {
     el.style.height = `${el.scrollHeight}px`;
   }
 };
+
+const handleToggleMaterial = async () => {
+  try {
+    const material = materials.value.find(material => material.id == updatedStatus.value.id);
+
+    if (material) {
+      material.isActive = updatedStatus.value.status;
+    }
+    
+    await materialService.changeStatusMaterial(updatedStatus.value)
+
+    toast.add({
+      severity: "success",
+      summary: t("toast.success"),
+      detail: t("toast.message_success"),
+      life: 3000,
+    });
+  }
+  catch (error) {
+    toast.add({
+      severity: "error",
+      summary: t("toast.error"),
+      detail: t("toast.message_error"),
+      life: 3000,
+    });
+  }
+}
+
+const toggleActive = (value, materialData) => {
+  updatedStatus.value = {
+        status: value,
+        id: materialData.id,
+  };
+
+  const material = materials.value.find(item => item.id === updatedStatus.value.id);
+  if (material) {
+    material.isActive = value;
+  }
+      
+  confirm.require({
+    message: t('toast.message_toggle_material'),
+    header: t('toast.confirm'),
+    icon: 'pi pi-exclamation-triangle',
+    rejectProps: {
+      label: t('action.cancel'),
+      severity: 'secondary',
+      outlined: true
+    },
+    acceptProps: {
+      label: t('action.toggle_status')
+    },
+    accept: async () => {
+      await handleToggleMaterial()
+    },
+    reject: () => {
+      handleCancel()
+    }
+  });
+}
+
+
+const handleCancel = () => {
+  const material = materials.value.find(item => item.id === updatedStatus.value.id);
+  if (material) {
+    material.isActive = !updatedStatus.value.status;
+  }
+}
+
+const handleDeleteMaterial = async (id) => {
+  confirm.require({
+    message: t('management.material.delete_material'),
+    header: t('toast.confirm'),
+    icon: 'pi pi-exclamation-triangle',
+    rejectProps: {
+      label: t('action.cancel'),
+      severity: 'secondary',
+      outlined: true
+    },
+    acceptProps: {
+      label: t('action.delete')
+    },
+    accept: async () => {
+      try {
+        const res = await materialService.deleteMaterial(id)
+        await fetchAllMaterials();
+        
+        toast.add({
+          severity: "success",
+          summary: t("toast.success"),
+          detail: res.data.message,
+          life: 3000,
+        });
+      }
+      catch (error) {
+        toast.add({
+          severity: "error",
+          summary: t("toast.error"),
+          detail: t("toast.message_error"),
+          life: 3000,
+        });
+      }
+    },
+    reject: () => {
+    }
+  });
+}
+
+const handleViewDetailMaterial = async (id) => {
+  try {
+    const res = await materialService.getDetailMaterial(id)
+    detailMaterial.value = res.data.data
+    isVisibleDetail.value = true
+  }
+  catch(error){
+    console.error(error)
+  }
+}
 
 watch(() => formData.materialTypeId, (newValue) => {
   if (newValue == 1) {
@@ -275,7 +428,27 @@ onMounted(async () => {
         field="materialType.name"
         :header="t('management.material.materialType')"
         style="width: 10%"
-      ></Column>
+      >
+        <template #body="slotProps">
+          <span
+            class="flex items-center gap-2 px-2 py-0.5 rounded-md text-sm font-medium w-fit"
+            :class="{
+              'bg-blue-100 text-blue-700': slotProps.data.materialType.name === 'file',
+              'bg-green-100 text-green-700': slotProps.data.materialType.name === 'url',
+              'bg-yellow-100 text-yellow-700': slotProps.data.materialType.name === 'content'
+            }"
+          >
+            <i
+              :class="{
+                'pi pi-file': slotProps.data.materialType.name === 'file',
+                'pi pi-link': slotProps.data.materialType.name === 'url',
+                'pi pi-align-left': slotProps.data.materialType.name === 'content'
+              }"
+            ></i>
+            <span>{{slotProps.data.materialType.name}}</span>
+          </span>
+        </template>
+      </Column>
       <Column
         field="updatedAt"
         :header="t('management.material.updatedAt')"
@@ -285,18 +458,33 @@ onMounted(async () => {
         field="accessLevel.name"
         :header="t('management.material.access')"
         style="width: 10%"
-      ></Column>
+      >
+        <template #body="slotProps">
+          <span
+            class="px-2 py-0.5 rounded-md text-sm font-medium"
+            :class="{
+              'text-green-700 bg-green-100': slotProps.data.accessLevel.name === 'public',
+              'text-blue-700 bg-blue-100': slotProps.data.accessLevel.name === 'internal',
+              'text-red-700 bg-red-100': slotProps.data.accessLevel.name === 'private'
+            }"
+          >
+            {{ slotProps.data.accessLevel.name }}
+          </span>
+        </template>
+      </Column>
       <Column
         field="isActive"
         :header="t('management.material.active')"
         style="width: 10%"
       >
         <template #body="slotProps">
-          <ToggleSwitch v-model="slotProps.data.isActive" />
+          <ToggleSwitch 
+            :modelValue="slotProps.data.isActive" 
+            @update:modelValue="(value) => toggleActive(value, slotProps.data)"  />
         </template>
       </Column>
       <Column style="width: 15%">
-        <template #body>
+        <template #body="slotProps">
           <div class="flex gap-[6px]">
             <BaseButton
               left-icon="item"
@@ -307,23 +495,26 @@ onMounted(async () => {
               height="30px"
               sizeIcon="18px"
               border-color="#065076"
+              @click="handleViewDetailMaterial(slotProps.data.id)"
             ></BaseButton>
             <BaseButton
-              left-icon="edit"
-              :text="t('management.edit')"
+              left-icon="delete"
+              :text="t('management.delete')"
               variant="outline"
               color="red"
-              width="80px"
+              width="90px"
               height="30px"
-              sizeIcon="18px"
+              sizeIcon="20px"
               border-color="red"
+              @click="handleDeleteMaterial(slotProps.data.id)"
             ></BaseButton>
           </div>
         </template>
       </Column>
     </DataTable>
-    <!-- modal add new material -->
-    <Dialog
+  </div>
+  <!-- modal add new material -->
+  <Dialog
       v-model:visible="visible"
       modal
       :header="t('management.material.create_new_material')"
@@ -445,7 +636,7 @@ onMounted(async () => {
           type="button"
           :label="t('action.cancel')"
           severity="secondary"
-          @click="handleCloseDetailModal"
+          @click="handleCloseDetailModal('closeHalf')"
         ></Button>
         <Button
           type="button"
@@ -608,5 +799,110 @@ onMounted(async () => {
         </template>
       </FileUpload>
     </Dialog>
-  </div>
+    <Dialog
+      v-model:visible="isVisibleDetail"
+      :header="t('management.material.detail_material')"
+      :modal="true"
+      :maximizable="true"
+      :maximized="true"
+      :closable="true"
+      :dismissableMask="true"
+      @hide="isVisibleDetail = false"
+    >
+      <div class="p-3 lg:p-6 space-y-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="space-y-2">
+            <div>
+              <span class="font-semibold">{{ t('management.material.name') }}: </span>
+              <span class="text-gray-700">{{ detailMaterial.name }}</span>
+            </div>
+            <div>
+              <span class="font-semibold">{{ t('management.material.description') }}: </span>
+              <span class="text-gray-700">{{ detailMaterial.description }}</span>
+            </div>
+            <div>
+              <span class="font-semibold">{{ t('management.material.active') }}: </span>
+              <span :class="detailMaterial.isActive ? 'text-green-600' : 'text-red-600'">
+                {{ detailMaterial.isActive ? t('management.material.active_status') : t('management.material.deactive_status') }}
+              </span>
+            </div>
+          </div>
+          <div class="space-y-2">
+            <div>
+              <span class="font-semibold">
+                {{ t('management.material.access') }}:
+              </span>
+              <span
+                class="px-2 py-0.5 rounded-md text-sm font-medium"
+                :class="{
+                  'text-green-700 bg-green-100': detailMaterial.accessLevel.name === 'public',
+                  'text-blue-700 bg-blue-100': detailMaterial.accessLevel.name === 'internal',
+                  'text-red-700 bg-red-100': detailMaterial.accessLevel.name === 'private'
+                }"
+              >
+                {{ detailMaterial.accessLevel.name }}
+              </span>
+            </div>
+            <div>
+              <span class="font-semibold">{{ t('management.material.knowledge_store') }}: </span>
+              <span class="text-gray-700">
+                {{ detailMaterial.knowledgeStore ? detailMaterial.knowledgeStore : t('management.material.none') }}
+              </span>
+            </div>
+            <div>
+              <span class="font-semibold">{{ t("management.material.updatedAt") }}: </span>
+              <span class="text-gray-700">{{ dayjs(detailMaterial.updatedAt).format("HH:mm:ss DD-MM-YYYY") }}</span>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <p class="font-semibold mb-2">{{ t('management.material.view_material') }}:</p>
+          <iframe
+          v-if="detailMaterial.materialType.id !== 2 && detailMaterial.materialType.id !== 3"
+          :src="`${detailMaterial.url.split('/view')[0]}/preview`"
+          class="w-full h-[500px] border rounded-md shadow"
+        />
+
+        <div
+          v-else-if="detailMaterial.materialType.id === 2"
+          class="w-full min-h-[500px] border rounded-md shadow px-3 py-3 lg:px-6 lg:py-4"
+        >
+          {{ detailMaterial.text }}
+        </div>
+
+        <div
+          v-else-if="detailMaterial.materialType.id === 3"
+          class="w-full min-h-[150px] border rounded-xl shadow px-3 py-3 lg:px-6 lg:py-4 bg-gray-50 hover:bg-gray-100 transition-all duration-200"
+        >
+          <a
+            :href="detailMaterial.url"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4 text-blue-600 hover:text-blue-800 w-full break-words"
+          >
+            <div class="text-2xl">🌐</div>
+            <div class="flex-1 w-full">
+              <p class="font-semibold text-lg mb-1">Mở liên kết:</p>
+              <p class="text-sm text-gray-700 w-full break-words">{{ detailMaterial.url }}</p>
+            </div>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              class="w-5 h-5"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M14 3h7v7m0 0L10 21l-7-7 11-11z"
+              />
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </Dialog>
 </template>
