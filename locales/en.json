@@ -52,7 +52,8 @@
     "manage_material": "Materials",
     "chatbot": "Chatbot",
     "home": "Home",
-    "service": "Service"
+    "service": "Service",
+    "uploaded_material": "Uploaded Material"
   },
   "management": {
     "account": {
@@ -96,7 +97,9 @@
       "deactive_status": "Deactive",
       "knowledge_store": "Knowledge store",
       "none": "None",
-      "view_material": "View material"
+      "view_material": "View material",
+      "author": "Owner",
+      "sync_material": "Are you sure to synchronize this document into the system?"
     },
     "store": {
       "name": "Name",
@@ -126,7 +129,8 @@
     "select_a_role": "Select a role",
     "logout": "Logout",
     "toggle_status": "Change status",
-    "delete": "Delete"
+    "delete": "Delete",
+    "sync": "Sync"
   },
   "home": {
     "sliderDesc": "Support for investment promotion information in Da Nang",
