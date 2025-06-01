@@ -52,7 +52,8 @@
     "manage_material": "Tài liệu",
     "chatbot": "Hỏi đáp",
     "home": "Trang chủ",
-    "service": "Dịch vụ"
+    "service": "Dịch vụ",
+    "uploaded_material": "Tài liệu tải lên"
   },
   "management": {
     "account": {
@@ -96,7 +97,9 @@
       "view_material": "Xem tài liệu",
       "active_status": "Đang hoạt động",
       "deactive_status": "Ngừng hoạt động",
-      "none": "Không"
+      "none": "Không",
+      "author": "Chủ sở hữu",
+      "sync_material": "Bạn chắc chắn muốn đồng bộ tài liệu này vào hệ thống?"
     },
     "store": {
       "name": "Tên",
@@ -126,7 +129,8 @@
     "select_a_role": "Lựa chọn vai trò",
     "logout": "Đăng xuất",
     "toggle_status": "Thay đổi trạng thái",
-    "delete": "Xoá"
+    "delete": "Xoá",
+    "sync": "Đồng bộ"
   },
   "home": {
     "sliderDesc": "Hỗ trợ thông tin xúc tiến đầu tư tại Đà Nẵng",

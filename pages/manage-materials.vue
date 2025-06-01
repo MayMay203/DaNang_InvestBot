@@ -401,9 +401,14 @@ onMounted(async () => {
       <Column
         field="name"
         :header="t('management.material.name')"
-        style="width: 15%"
+        style="width: 10%"
         search
       >
+        <template #body="{ data }">
+          <div style="white-space: normal; word-break: break-word;">
+            {{ data.name }}
+          </div>
+        </template>
         <template #filter="{ filterModel }">
           <InputText
             v-model="filterModel.value"
@@ -415,8 +420,13 @@ onMounted(async () => {
       <Column
         field="description"
         :header="t('management.material.description')"
-        style="width: 15%"
+        style="width: 25%"
       >
+        <template #body="{ data }">
+          <div style="white-space: normal; word-break: break-word;">
+            {{ data.description }}
+          </div>
+        </template>
         <template #filter="{ filterModel }">
           <InputText
             v-model="filterModel.value"
@@ -428,11 +438,11 @@ onMounted(async () => {
       <Column
         field="materialType.name"
         :header="t('management.material.materialType')"
-        style="width: 10%"
+        style="width: 5%"
       >
         <template #body="slotProps">
           <span
-            class="flex items-center gap-2 px-2 py-0.5 rounded-md text-sm font-medium w-fit"
+            class="flex items-center m-auto gap-2 px-2 py-0.5 rounded-md text-sm font-medium w-fit text-center"
             :class="{
               'bg-blue-100 text-blue-700': slotProps.data.materialType.name === 'file',
               'bg-green-100 text-green-700': slotProps.data.materialType.name === 'url',
@@ -453,7 +463,7 @@ onMounted(async () => {
       <Column
         field="updatedAt"
         :header="t('management.material.updatedAt')"
-        style="width: 20%"
+        style="width: 15%"
       ></Column>
       <Column
         field="accessLevel.name"
@@ -461,16 +471,18 @@ onMounted(async () => {
         style="width: 10%"
       >
         <template #body="slotProps">
-          <span
-            class="px-2 py-0.5 rounded-md text-sm font-medium"
-            :class="{
-              'text-green-700 bg-green-100': slotProps.data.accessLevel.name === 'public',
-              'text-blue-700 bg-blue-100': slotProps.data.accessLevel.name === 'internal',
-              'text-red-700 bg-red-100': slotProps.data.accessLevel.name === 'private'
-            }"
-          >
-            {{ slotProps.data.accessLevel.name }}
-          </span>
+          <div class="flex justify-center">
+            <span
+              class="px-2 py-0.5 rounded-md text-sm font-medium"
+              :class="{
+                'text-green-700 bg-green-100': slotProps.data.accessLevel.name === 'public',
+                'text-blue-700 bg-blue-100': slotProps.data.accessLevel.name === 'internal',
+                'text-red-700 bg-red-100': slotProps.data.accessLevel.name === 'private'
+              }"
+            >
+              {{ slotProps.data.accessLevel.name }}
+            </span>
+          </div>
         </template>
       </Column>
       <Column

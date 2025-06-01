@@ -24,4 +24,6 @@ export const API_ENPOINT = {
   CHANGE_STATUS_STORE: "/knowledge-store/change-status",
   DETAIL_KNOWLEDGE_STORE: "/knowledge-store",
   UPDATE_KNOWLEDGE_STORE: "/knowledge-store/update",
+  DELETE_USER_MATERIAL: "/material/delete-user-material",
+  SYNC_MATERIAL: "/material/sync-user-material",
 };
