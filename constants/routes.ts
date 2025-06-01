@@ -10,4 +10,5 @@ export const ROUTES = {
   CHAT_BOT: "/chatbot",
   RESET_PASSWORD: "/reset-password",
   OAUTH_SUCCESS: "/oauth-success",
+  UPLOADED_MATERIAL: "/manage-user-material",
 };
