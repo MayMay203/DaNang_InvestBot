@@ -233,6 +233,7 @@ const handleToggleMaterial = async () => {
     });
   }
   catch (error) {
+    handleCancel()
     toast.add({
       severity: "error",
       summary: t("toast.error"),
@@ -846,7 +847,7 @@ onMounted(async () => {
             <div>
               <span class="font-semibold">{{ t('management.material.knowledge_store') }}: </span>
               <span class="text-gray-700">
-                {{ detailMaterial.knowledgeStore ? detailMaterial.knowledgeStore : t('management.material.none') }}
+                {{ detailMaterial.knowledgeStore ? detailMaterial.knowledgeStore.name : t('management.material.none') }}
               </span>
             </div>
             <div>
@@ -904,5 +905,5 @@ onMounted(async () => {
         </div>
       </div>
     </div>
-  </Dialog>
+    </Dialog>
 </template>

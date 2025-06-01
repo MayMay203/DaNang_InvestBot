@@ -19,6 +19,9 @@ export const API_ENPOINT = {
   GET_ALL_KNOWLEDGE_STROE: "/knowledge-store/get-all",
   CREATE_KNOWLEDGE_STORE: "/knowledge-store/create",
   ADD_MATERIAL_TO_KNOWLEDGE_STORE: "/knowledge-store/add-materials",
-  ASYNC_KNOWLEDGE_STORE: "/knowledge-store/async",
+  REMOVE_MATERIAL_FROM_KNOWLEDGE_STORE: "knowledge-store/remove-materials",
   LOGIN_GOOGLE: "/auth/login-with-google",
+  CHANGE_STATUS_STORE: "/knowledge-store/change-status",
+  DETAIL_KNOWLEDGE_STORE: "/knowledge-store",
+  UPDATE_KNOWLEDGE_STORE: "/knowledge-store/update",
 };

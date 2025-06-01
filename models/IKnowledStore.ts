@@ -7,3 +7,8 @@ export interface IAddMaterialToKnowledgeStore {
   knowledgeStoreId: number;
   materialIds: Array<number>
 }
+
+export interface IUpdate{
+  name: string,
+  description: string
+}
