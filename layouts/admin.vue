@@ -1,10 +1,12 @@
 <script setup>
 import Header from "~/components/layout/Header.vue";
 import Sidebar from "~/components/layout/Sidebar.vue";
+import { ROUTES } from "~/constants/routes";
 
 const contentSlot = ref(null)
 const mainContent = ref(null)
 const sidebarWidth = ref('')
+const router = useRouter()
 
 const handleChangeWidth = (value) => {
   sidebarWidth.value = value
@@ -20,7 +22,7 @@ const handleChangeWidth = (value) => {
     <Sidebar @width-change="handleChangeWidth"/>
     <div class="flex-1" ref="mainContent">
       <Header :sidebarWidth="sidebarWidth"/>
-      <div ref="contentSlot" class="p-[30px] mt-[50px]"><slot></slot></div>
+      <div ref="contentSlot" class="mt-[50px]" :class="{ 'p-[30px]': !router.currentRoute.value.path.includes(ROUTES.CHAT_BOT)}"><slot></slot></div>
     </div>
   </div>
 </template>
