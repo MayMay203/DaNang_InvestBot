@@ -26,12 +26,25 @@ const scrollToBottom = () => {
   }
 };
 
-const handleAddNewChat = async() => {
+const checkEmptyNewChat = async () => {
+  for (const { id } of conversations.value) {
+    const { data } = await conversationService.getDetailConversation(id);
+    if (!data.data || data.data?.length === 0) {
+      return true;
+    }
+  }
+  return false;
+};
+
+const handleAddNewChat = async () => {
   try {
-    const newChat = await conversationService.addNewConversation(userStore.id)
-    await getAllConversations()
-    selectedConvers.value =  newChat.id
-    await getDetailConversation(selectedConvers.value)
+    const isEmpty = await checkEmptyNewChat()
+    if (!isEmpty) {
+      const {data} = await conversationService.addNewConversation(userStore.id)
+      await getAllConversations()
+      selectedConvers.value =  data.data.id
+      await getDetailConversation(selectedConvers.value)
+    }
   }
   catch (error) {
     toast.add({
@@ -53,16 +66,28 @@ const getAllConversations = async () => {
     const rawList = data.data
     conversations.value = rawList
 
-    const grouped = rawList.reduce((acc, conver) => {
-      const dateKey = dayjs(conver.createdAt).format('DD-MM-YYYY')
-      if (!acc[dateKey]) acc[dateKey] = []
-      acc[dateKey].push(conver)
+    const tempGroup = rawList.reduce((acc, conver) => {
+      const date = dayjs(conver.createdAt).startOf('day') 
+      const timestamp = date.valueOf() 
+
+      if (!acc[timestamp]) acc[timestamp] = { date, items: [] }
+      acc[timestamp].items.push(conver)
+
       return acc
     }, {})
 
-    groupedConversations.value = grouped
-  }
-  catch (error) {
+    // Sort by timestamp descending
+    const sortedGrouped = Object.keys(tempGroup)
+      .sort((a, b) => Number(b) - Number(a))
+      .reduce((acc, timestamp) => {
+        const { date, items } = tempGroup[timestamp]
+        const formattedDate = date.format('DD-MM-YYYY')
+        acc[formattedDate] = items
+        return acc
+      }, {})
+
+    groupedConversations.value = sortedGrouped
+  } catch (error) {
     console.error(error)
   }
 }
@@ -131,6 +156,8 @@ const handleSendMessage = async () => {
   }
   catch (error) {
     console.error(error)
+    const item = detailConversation.value[detailConversation.value.length - 1];
+    item.answerContent = t('toast.message_error');
     isLoading.value = false
     toast.add({
         severity: "error",
@@ -274,7 +301,7 @@ const splitAnswerContent = (content) => {
 
 onMounted(async() => {
   await getAllConversations()
-  selectedConvers.value = conversations.value[0].id
+  selectedConvers.value = conversations.value[conversations.value.length - 1].id;
   await getDetailConversation(selectedConvers.value)
 
   await nextTick();
@@ -300,8 +327,8 @@ onMounted(async() => {
       <div :class="['top-[16px] flex w-full pr-[36px]', 'absolute']">
         <BaseIcon name="right_panel_close" size-icon="24" cursor="pointer" @click="isExpanded = !isExpanded"></BaseIcon>
         <div class="flex gap-[10px] ml-auto">
-          <BaseIcon name="search" size-icon="24" cursor="pointer" @click="handleAddNewChat"></BaseIcon>
-          <BaseIcon name="edit_square" size-icon="22" cursor="pointer" @click="handleSearchChat"></BaseIcon>
+          <BaseIcon name="search" size-icon="24" cursor="pointer" @click="handleSearchChat"></BaseIcon>
+          <BaseIcon name="edit_square" size-icon="22" cursor="pointer" @click="handleAddNewChat"></BaseIcon>
         </div>
       </div>
       <div class="mt-[30px] overflow-auto max-h-[80vh] mr-[-16px]">
