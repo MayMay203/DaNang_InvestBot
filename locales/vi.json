@@ -154,12 +154,18 @@
   "toast": {
     "success": "Thành công",
     "error": "Lỗi",
+    "warn": "Cảnh báo",
     "confirm": "Xác nhận",
     "message_error": "Đã có lỗi xảy ra, vui lòng thử lại",
     "message_success": "Hành động thực hiện thành công",
     "message_expired_login": "Hết phiên đăng nhập, Vui lòng thử lại!",
     "message_confirm_logout": "Bạn có chắc là bạn muốn đăng xuất?",
     "invalid_url": "Định dạng url nhập vào không hợp lệ.",
-    "message_toggle_material": "Bạn có chắc chắn là bạn muốn thay đổi trạng thái hoạt động của tài liệu này?"
+    "message_toggle_material": "Bạn có chắc chắn là bạn muốn thay đổi trạng thái hoạt động của tài liệu này?",
+    "over_upload_file": "Số lượng file tải lên không vượt quá 3",
+    "existed_file": "File này đã được chọn"
+  },
+  "conversation": {
+    "delete_conversation": "Bạn có chắc chắn xoá đoạn chat này?"
   }
 }

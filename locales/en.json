@@ -155,11 +155,18 @@
     "success": "Success",
     "confirm": "Confirmation",
     "error": "Error",
+    "warn": "Warn",
     "message_error": "There have been errors, please try again",
     "message_success": "Action completed successfully",
     "message_expired_login": "At the end of the login, please try again!",
     "message_confirm_logout": "Are you sure you want to logout?",
     "invalid_url": "The URL is incorrectly formatted.",
-    "message_toggle_material": "Are you sure you want to change active status this material?"
+    "message_toggle_material": "Are you sure you want to change active status this material?",
+    "over_upload_file": "Number of files uploaded no more than 3",
+    "existed_file": "This file has been selected"
+  },
+  "conversation": {
+    "delete_conversation": "Are you sure to delete conversation?"
   }
 }
+

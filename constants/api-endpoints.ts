@@ -26,4 +26,10 @@ export const API_ENPOINT = {
   UPDATE_KNOWLEDGE_STORE: "/knowledge-store/update",
   DELETE_USER_MATERIAL: "/material/delete-user-material",
   SYNC_MATERIAL: "/material/sync-user-material",
+  GET_ALL_CONVERSATIONS: "/conversation/get-all-conversations",
+  GET_DETAIL_CONVERSATION: "/conversation/detail-conversation",
+  DELETE_CONVERSATION: "/conversation/delete",
+  ADD_NEW_CONVERSATION: "/conversation/create",
+  SEND_TEXT_MESSAGE: "conversation/send-message",
+  SEND_FILE_MESSAGE: "/conversation/send-file-question",
 };

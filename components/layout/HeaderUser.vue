@@ -76,7 +76,7 @@ watch(() => route.fullPath, (newValue) => {
 
 <template>
   <div
-    class="flex justify-between items-center bg-[rgba(74,144,226,0.1)] h-[60px] w-[100%] px-[20px] md:px-[40px]"
+    class="flex justify-between items-center bg-[#eaf2fb] h-[60px] w-[100%] px-[20px] md:px-[40px]"
   >
     <NuxtLink :to="ROUTES.HOME" class="hidden md:inline-block">
       <img src="/images/logo.png" alt="logo" class="w-[175px]" />

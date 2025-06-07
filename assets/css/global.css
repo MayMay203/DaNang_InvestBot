@@ -11,7 +11,7 @@ html{
 body{
     font-size: 1rem;
     font-family: 'Roboto', sans-serif;
-    overflow-x: hidden
+    overflow-x: hidden;
 }
 
 a, button{
@@ -74,3 +74,16 @@ input::placeholder{
 .p-datatable-header{
     overflow-x: auto
 }
+
+button[disabled] {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+.text-area-wrap .p-textarea{
+    border: none;
+    outline: none;
+    box-shadow: none;
+    padding: 0
+}
+  

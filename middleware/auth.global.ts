@@ -31,6 +31,10 @@ export default defineNuxtRouteMiddleware(async (to) => {
       const decoded = jwtDecode<TokenPayload>(accessToken);
       const { roleId, id, email, fullName } = decoded;
 
+      if (!roleId || !id || !email || !fullName) {
+        return await navigateTo(ROUTES.LOGIN);
+      }
+
       const userStore = useUserStore();
       if (!userStore.email || !userStore.id) {
         userStore.saveUserInfo({
@@ -40,6 +44,16 @@ export default defineNuxtRouteMiddleware(async (to) => {
           full_name: fullName,
         });
       }
+
+      if (to.path.includes("chatbot")) {
+        if (roleId === 1) {
+          to.meta.layout = "admin";
+        } else {
+          to.meta.layout = "user-layout";
+        }
+        return;
+      }
+
       if (to.path.includes("manage")) {
         if (Number(roleId) !== 1) {
           return await navigateTo(ROUTES.HOME);
