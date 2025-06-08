@@ -67,8 +67,16 @@ const handleResetPassword = async () => {
         authStore.setToken({refreshToken: '', accessToken: secretParam.value})
         const { data } = await authService.resetPassword({ newPassword: resetData.value.password, confirmPassword: resetData.value.confirmPassword })
         authStore.reset()
-        navigateTo(ROUTES.LOGIN)
-        toast.add({ severity: 'success', summary: t('toast.success'), detail: data.message, life: 3000 })
+         toast.add({
+            severity: 'success',
+            summary: t('toast.success'),
+            detail: data.message,
+            life: 3000
+        })
+        
+        setTimeout(() => {
+            navigateTo(ROUTES.LOGIN)
+        }, 3000)
     }
     catch (error) {
         if (error?.response) {
