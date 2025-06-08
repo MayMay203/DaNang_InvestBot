@@ -1,6 +1,7 @@
 <script setup>
 import { ROUTES } from "~/constants/routes";
 import BaseIcon from "../base-components/BaseIcon.vue";
+import AvatarComponent from "../components/AvatarComponent.vue";
 import { ref } from "vue";
 
 const { t, locale } = useTranslation()
@@ -15,6 +16,10 @@ const userStore = useUserStore()
 
 const props = defineProps({
   sidebarWidth: String
+})
+
+const nameUser = computed(() => {
+  return userStore.fullName?.split(' ')[userStore.fullName.split(' ').length - 1][0].toUpperCase()
 })
 
 const handleShowConfirmLogout = () => {
@@ -71,12 +76,13 @@ const handleChangeLanguage = (langCode) => {
       class="flex items-center justify-center gap-[10px] cursor-pointer"
       @click="toggle"
     >
-      <div class="w-[36px] h-[36px]">
+      <!-- <div class="w-[36px] h-[36px]">
         <img
           src="/images/avatar.jpg"
           class="w-[100%] h-[100%] rounded-[50%] object-cover"
         />
-      </div>
+      </div> -->
+      <AvatarComponent :name="nameUser"/>
       <BaseIcon name="arrow_down" sizeIcon="14" cursor="pointer" />
     </div>
     <Popover ref="op">

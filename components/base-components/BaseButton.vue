@@ -34,7 +34,7 @@
 </template>
 <script setup>
 import BaseIcon from "../base-components/BaseIcon.vue";
-import LoadingSpinner from "./LoadingSpinner.vue";
+import LoadingSpinner from "../components/LoadingSpinner.vue";
 
 const props = defineProps({
   variant: {
