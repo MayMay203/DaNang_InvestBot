@@ -3,7 +3,7 @@ import BaseIcon from '~/components/base-components/BaseIcon.vue';
 import { conversationService } from '~/service-api/conversationService';
 import dayjs from 'dayjs'
 
-definePageMeta({layout: 'user-layout'})
+definePageMeta({layout: 'admin'})
 
 const {t} = useTranslation()
 const isExpanded = ref(true) 
@@ -323,32 +323,42 @@ const splitAnswerContent = (content) => {
   };
 }
 
+const handleResize = () => {
+  if (window.innerWidth < 1200) isExpanded.value = false;
+};
+
 onMounted(async() => {
   await getAllConversations()
   selectedConvers.value = conversations.value[conversations.value.length - 1]?.id;
   await getDetailConversation(selectedConvers.value)
+  window.addEventListener('resize', handleResize);
+  handleResize()
 
   await nextTick();
     scrollToBottom();
 })
 
+onBeforeUnmount(() => {
+  window.removeEventListener('resize', handleResize);
+});
+
 </script>
 <template>
   <div>
     <!-- Fixed sidebar -->
-    <div class="fixed z-1 flex gap-4 top-[76px] left-[16px] items-center" v-if="!isExpanded">
-      <BaseIcon name="right_panel_close" size-icon="24" cursor="pointer" @click="isExpanded = !isExpanded"></BaseIcon>
+    <div class="fixed z-1 flex gap-4 top-[74px] right-[20px] items-center" v-if="!isExpanded">
+      <BaseIcon name="right_panel_close" size-icon="24" cursor="pointer" class="hidden xl:inline-block" @click="isExpanded = !isExpanded"></BaseIcon>
       <BaseIcon name="edit_square" size-icon="22" cursor="pointer" @click="handleSearchChat"></BaseIcon>
+      <BaseIcon name="search" size-icon="24" class="inline-block xl:hidden" cursor="pointer" @click="handleSearchChat"></BaseIcon>
     </div>
 
+    <!-- Chat history -->
     <div :class="[
-      'transition-all duration-500 ease-in-out z-1',
-      isExpanded ? 'w-[250px]' : 'w-0 overflow-hidden',
-      'fixed px-[8px] py-[24px] bg-[#F7FAFE] h-screen'
+      'fixed px-[8px] py-[24px] bg-[#F7FAFE] h-screen top-[50px] right-0 w-[250px] z-1 hidden xl:inline-block'
     ]"
     v-if="isExpanded"
     >
-      <div :class="['top-[16px] flex w-full pr-[36px]', 'absolute']">
+      <div :class="['top-[50px] right-0 flex w-full']">
         <BaseIcon name="right_panel_close" size-icon="24" cursor="pointer" @click="isExpanded = !isExpanded"></BaseIcon>
         <div class="flex gap-[10px] ml-auto">
           <BaseIcon name="search" size-icon="24" cursor="pointer" @click="handleSearchChat"></BaseIcon>
@@ -367,8 +377,8 @@ onMounted(async() => {
         </div>
       </div>
      </div>
-     <div ref="chatContainer" :class="['fixed pt-[30px] top-[100px] lg:top-[60px] bottom-[160px] overflow-y-auto w-full']">
-        <div :class="['h-full w-[350px] md:w-[500px] lg:w-[640px] flex flex-col gap-[36px] absolute', isExpanded ? 'left-[calc(50%_+_125px)]' : 'left-[50%]',
+     <div ref="chatContainer" :class="['fixed pt-[30px] left-0 right-0 top-[100px] lg:top-[60px] bottom-[160px] overflow-y-auto w-full']">
+        <div :class="['h-full w-[350px] md:w-[500px] lg:w-[640px] flex flex-col gap-[36px] absolute', isExpanded ? 'left-[50%]' : 'left-[calc(50%_+_125px)]',
         'transform -translate-x-1/2']">
           <div class="flex flex-col gap-[20px]" v-for="item in detailConversation" :key="item.id">
                 <div class="flex flex-col gap-3">
@@ -430,7 +440,7 @@ onMounted(async() => {
         </div>
       </div>
      <div :class="['fixed bottom-[25px] w-[350px] md:w-[520px] lg:w-[660px] rounded-[20px] px-[16px] py-[12px] overflow-hidden bg-white',
-        isExpanded ? 'left-[calc(50%_+_125px)]' : 'left-[50%]', selectedFiles.length > 0 ? 'h-[180px]' : 'h-[130px]',
+        isExpanded ? 'left-[50%]' : 'left-[calc(50%_+_125px)]', selectedFiles.length > 0 ? 'h-[180px]' : 'h-[130px]',
         'transform -translate-x-1/2 border-1 border-[#ccc] overflow-hidden'
         ]">
         <div class="top-[8px] left-[8px] flex flex-wrap gap-2 max-w-full mb-2" v-if="selectedFiles.length > 0">
