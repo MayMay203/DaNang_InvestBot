@@ -4,6 +4,7 @@
   <div>
     <NuxtLayout :key="$route.path">
       <Toast/>
+      <NuxtLoadingIndicator />
       <ConfirmDialog></ConfirmDialog>
       <NuxtPage />
     </NuxtLayout>
