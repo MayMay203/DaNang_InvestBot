@@ -6,7 +6,7 @@
             <BaseInput v-model="resetData.password" :error="resetErrors.password" :label="t('auth.password')" typeTag="password" :placeholder="t('auth.password_placeholder')" @blur="handleBlurInput('password')"/>
             <BaseInput v-model="resetData.confirmPassword" :error="resetErrors.confirmPassword" :label="t('auth.confirm_password')" typeTag="password" :placeholder="t('auth.confirm_password_placeholder')" @blur="handleBlurInput('confirmPassword')"/>
        </div>
-       <div class="mt-[30px]"><BaseButton :text="t('auth.confirm')" variant="primary" height="40px" width="100%" :disabled="isDisabled" @click="handleResetPassword"/></div>
+       <div class="mt-[30px]"><BaseButton :isLoading="isLoading" :text="t('auth.confirm')" variant="primary" height="40px" width="100%" :disabled="isDisabled" @click="handleResetPassword"/></div>
     </div>
     <div class="hidden sm:block h-[100vh] flex-1" >
         <img class="w-[100%] h-[100%] object-fit-contain" src="/images/login.png" alt="sign-up"/>
@@ -26,8 +26,8 @@ const { t } = useTranslation()
 const resetPassSchema = getResetPassSchema(t)
 const authStore = useAuthStore()
 const route = useRoute()
-const router = useRouter()
 const toast = useToast()
+const isLoading = ref()
 
 const resetData = ref({
     password: '',
@@ -64,8 +64,12 @@ const handleBlurInput = (field) => {
 
 const handleResetPassword = async () => {
     try {
+        isLoading.value = true
+        isDisabled.value = true
         authStore.setToken({refreshToken: '', accessToken: secretParam.value})
         const { data } = await authService.resetPassword({ newPassword: resetData.value.password, confirmPassword: resetData.value.confirmPassword })
+        isLoading.value = false
+        isDisabled.value = false
         authStore.reset()
          toast.add({
             severity: 'success',
@@ -79,6 +83,8 @@ const handleResetPassword = async () => {
         }, 3000)
     }
     catch (error) {
+        isDisabled.value = false
+        isLoading.value = false
         if (error?.response) {
             toast.add({ severity: 'error', summary: t('toast.error'), detail: getMessageError(error), life: 3000 });
         }

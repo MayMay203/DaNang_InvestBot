@@ -581,6 +581,7 @@ onMounted(async () => {
           class="flex-auto"
           autocomplete="off"
           :disabled="formData.materialTypeId == 1"
+          maxlength="255"
         />
       </div>
       <div class="flex flex-col gap-4 mb-4">
@@ -593,6 +594,7 @@ onMounted(async () => {
           class="flex-auto"
           autocomplete="off"
           :disabled="formData.materialTypeId == 1"
+          maxlength="255"
         />
       </div>
       <div class="flex flex-col gap-4 mb-7">

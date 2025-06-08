@@ -36,6 +36,7 @@ const { t } = useTranslation()
 const toast = useToast()
 const loginSchema = getLoginSchema(t)
 const authStore = useAuthStore()
+const isLoading = ref()
 
 const loginForm = ref({
   email: '',
@@ -54,7 +55,9 @@ const isDisabled = computed(() => {
 // Functions
  const handleLogin = async () => {
    try {
-     await authStore.login({ email: loginForm.value.email, password: loginForm.value.password })
+    isLoading.value = true
+    isDisabled.value = true
+    await authStore.login({ email: loginForm.value.email, password: loginForm.value.password })
   }
    catch (error) {
      if (error?.response) {
@@ -63,6 +66,10 @@ const isDisabled = computed(() => {
       else {
        toast.add({ severity: 'error', summary: t('toast.error'), detail: error.message, life: 3000 })
     }
+  }
+  finally {
+      isLoading.value = false
+      isDisabled.value = false
   }
 }
 

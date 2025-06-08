@@ -9,7 +9,7 @@
             <BaseInput v-model="signUpForm.confirmPassword" :label="t('auth.confirm_password')" typeTag="password" :placeholder="t('auth.confirm_password_placeholder')" :error="signUpErrors.confirmPassword" @blur="handleBlurInput('confirmPassword')"/>
        </div>
        <div class="mt-[20px]">
-        <BaseButton :text="t('auth.sign_up')" variant="primary" height="40px" width="100%" :disabled="isDisabled" @click="handleRegister"/>
+        <BaseButton :text="t('auth.sign_up')" variant="primary" height="40px" width="100%" :disabled="isDisabled" :isLoading="isLoading" @click="handleRegister"/>
     </div>
        <div class="mt-[16px] text-center">
         <span class="text-[14px]">{{ t('auth.already_have_account') }}</span>
@@ -39,6 +39,7 @@ const authStore = useAuthStore()
 const userStore = useUserStore()
 const toast = useToast()
 const router = useRouter()
+const isLoading = ref()
 
 const signUpForm = ref({
     email: '',
@@ -74,6 +75,8 @@ const handleBlurInput = (field) => {
 
 const handleRegister = async () => {
   try {
+    isLoading.value = true
+    isDisabled.value = true
     const registerData = {
       email: signUpForm.value.email,
       fullName: signUpForm.value.fullname,
@@ -81,6 +84,8 @@ const handleRegister = async () => {
       confirmPassword: signUpForm.value.confirmPassword
     }
     const message = await authStore.register(registerData)
+    isLoading.value = false
+    isDisabled.value = false
     toast.add({severity: 'success', summary: 'Register', detail: message, life: 3000})
     router.push(ROUTES.VERIFY_OTP)
     if (!message.includes('Please check your email to enter OTP') && !message.includes('Vui lòng kiểm tra email để nhập mã OTP')) {
@@ -88,11 +93,13 @@ const handleRegister = async () => {
     }
   }
   catch (error) {
-     if (error?.response) {
-       toast.add({ severity: 'error', summary: t('toast.error'), detail: getMessageError(error), life: 3000 });
-      }
-      else {
-       toast.add({ severity: 'error', summary: t('toast.error'), detail: error.message, life: 3000 })
+    isLoading.value = false
+    isDisabled.value = false
+    if (error?.response) {
+      toast.add({ severity: 'error', summary: t('toast.error'), detail: getMessageError(error), life: 3000 });
+    }
+    else {
+      toast.add({ severity: 'error', summary: t('toast.error'), detail: error.message, life: 3000 })
     }
   }
 }

@@ -1,29 +1,40 @@
 <template>
-  <button class="base-button" :style="{ ...buttonStyle }" :variant="variant" :disabled="disabled" @click="handleClick"
+  <button
+    class="base-button"
+    :style="{ ...buttonStyle }"
+    :variant="variant"
+    :disabled="disabled || isLoading"
+    @click="handleClick"
   >
-    <div class="icon-input" v-if="leftIcon">
-      <BaseIcon
-        :name="leftIcon"
-        :sizeIcon="sizeIcon"
-        :width="widthIcon"
-        :height="heightIcon"
-        :cursor="cursor"
-      />
-    </div>
-    {{ text }}
-    <div class="icon-input" v-if="rightIcon">
-      <BaseIcon
-        :name="rightIcon"
-        :sizeIcon="sizeIcon"
-        :width="widthIcon"
-        :height="heightIcon"
-        :cursor="cursor"
-      />
-    </div>
+    <template v-if="isLoading">
+      <LoadingSpinner />
+    </template>
+    <template v-else>
+      <div class="icon-input" v-if="leftIcon">
+        <BaseIcon
+          :name="leftIcon"
+          :sizeIcon="sizeIcon"
+          :width="widthIcon"
+          :height="heightIcon"
+          :cursor="cursor"
+        />
+      </div>
+      {{ text }}
+      <div class="icon-input" v-if="rightIcon">
+        <BaseIcon
+          :name="rightIcon"
+          :sizeIcon="sizeIcon"
+          :width="widthIcon"
+          :height="heightIcon"
+          :cursor="cursor"
+        />
+      </div>
+    </template>
   </button>
 </template>
 <script setup>
 import BaseIcon from "../base-components/BaseIcon.vue";
+import LoadingSpinner from "./LoadingSpinner.vue";
 
 const props = defineProps({
   variant: {
@@ -88,6 +99,9 @@ const props = defineProps({
   rightIcon: {
     type: String,
   },
+  isLoading: {
+    type: Boolean
+  }
 });
 
 const buttonStyle = computed(() => ({
