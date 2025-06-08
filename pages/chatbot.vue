@@ -150,6 +150,16 @@ const handleSendMessage = async () => {
   try {
     isLoading.value = true
     const { data } = await conversationService.sendMessage({conversationId: selectedConvers.value, query: inputValue.value})
+    if (data.statusCode === 429){
+      toast.add({
+        severity: "error",
+        summary: t("toast.error"),
+        detail: data.message,
+        life: 3000,
+      });
+      isLoading.value = false;
+      return
+    }
     const item = detailConversation.value[detailConversation.value.length - 1];
     item.answerContent = data.data;
     isLoading.value = false
@@ -301,7 +311,7 @@ const splitAnswerContent = (content) => {
 
 onMounted(async() => {
   await getAllConversations()
-  selectedConvers.value = conversations.value[conversations.value.length - 1].id;
+  selectedConvers.value = conversations.value[conversations.value.length - 1]?.id;
   await getDetailConversation(selectedConvers.value)
 
   await nextTick();
