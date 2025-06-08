@@ -4,7 +4,7 @@
         <h1 class="text-[rgba(6,80,118,0.9)] font-bold text-[24px] text-center">{{ t('auth.login').toUpperCase() }}</h1>
        <div class="flex flex-col gap-[10px]">
             <BaseInput v-model="loginForm.email" :label="t('auth.email')" :placeholder="t('auth.email_placeholder')" :error="formErrors.email" @blur="handleBlurInput('email')"/>
-            <BaseInput v-model="loginForm.password" :label="t('auth.password')" cursorIcon="pointer" :placeholder="t('auth.password_placeholder')" typeTag="password" :error="formErrors.password" @blur="handleBlurInput('password')"/>
+            <BaseInput v-model="loginForm.password" :label="t('auth.password')" cursorIcon="pointer" :placeholder="t('auth.password_placeholder')" typeTag="password" :error="formErrors.password" @blur="handleBlurInput('password')"  @keyup.enter="handleEnter"/>
        </div>
        <div class="flex justify-end mt-[12px]">
         <NuxtLink :to="ROUTES.FORGET_PASSWORD" class="text-[14px] text-[rgba(6,80,118,0.9)] italic inline-block">{{ t('auth.forget_password') }}?</NuxtLink>
@@ -89,6 +89,13 @@ const handleBlurInput = (field) => {
 
 const handleLoginGoogle = async () => {
   window.location.href = 'http://localhost:3001/auth/login-with-google';
+}
+
+const handleEnter = async() => {
+  const {email, password} = formErrors.value
+  if(!email && !password && loginForm.value.email && loginForm.value.password){
+    await handleLogin()
+  }
 }
 </script>
 <style scoped>

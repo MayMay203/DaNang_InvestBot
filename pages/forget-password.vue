@@ -4,7 +4,7 @@
             <div>
                 <h1 class="text-[rgba(6,80,118,0.9)] font-bold text-[24px] text-center">{{ t('auth.forget_password').toUpperCase() }}</h1>
             <div class="mt-[20px]">
-                <BaseInput v-model="forgetData.email" :error="forgetErrors.email" :label="t('auth.forget_password_message')" cursorIcon="pointer" :placeholder="t('auth.email_placeholder')" @blur="handleBlurInput('email')"/>
+                <BaseInput v-model="forgetData.email" :error="forgetErrors.email" :label="t('auth.forget_password_message')" cursorIcon="pointer" :placeholder="t('auth.email_placeholder')" @blur="handleBlurInput('email')" @keyup.enter="handleEnter"/>
             </div>
            <div class="mt-[30px]">
             <BaseButton :text="t('auth.confirm')" variant="primary" height="40px" width="100%" :disabled="isDisabled" @click="handleForgetPassword" :isLoading="isLoading"/>
@@ -93,6 +93,12 @@ const handleForgetPassword = async () => {
         else {
             toast.add({ severity: 'error', summary: t('toast.error'), detail: error.message, life: 3000 })
         }
+    }
+}
+
+const handleEnter = async() => {
+    if(!forgetErrors.value.email && forgetData.value.email){
+        await handleForgetPassword()
     }
 }
 </script>

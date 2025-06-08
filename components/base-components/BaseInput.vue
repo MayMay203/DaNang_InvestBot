@@ -9,12 +9,14 @@
         :placeholder="placeholder"
         class="input"
         @blur="handleBlurInput"
+        @keyup.enter="$emit('keyup.enter', $event)"
       />
       <textarea
         v-model="modelValue"
         v-else-if="typeTag === 'textarea'"
         :placeholder="placeholder"
         class="input"
+        @keyup.enter="$emit('keyup.enter', $event)"
       />
       <Password
         v-if="typeTag === 'password'"
@@ -25,6 +27,7 @@
         :feedback="false"
         inputClass="w-full"
         @blur="handleBlurInput"
+        @keyup.enter="$emit('keyup.enter', $event)"
       />
       <div class="icon-input" v-if="icon">
         <BaseIcon
@@ -104,7 +107,7 @@ const props = defineProps({
   }
 });
 const modelValue = defineModel();
-const emit = defineEmits(["blur"]);
+const emit = defineEmits(["blur", "keyup.enter"]);
 
 const inputStyle = computed(() => ({
   width: formatStyle(props.width),
