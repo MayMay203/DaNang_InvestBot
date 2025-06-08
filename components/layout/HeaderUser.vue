@@ -72,7 +72,6 @@ const handleChangeLanguage = (langCode) => {
   const currentLang = localStorage.getItem('lang')
   if (currentLang !== langCode) {
     localStorage.setItem('lang', langCode);
-    location.reload()
   }
 }
 
