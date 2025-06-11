@@ -149,7 +149,9 @@
     "service_footer": "Dịch vụ"
   },
   "chatbot": {
-    "placeholder_chat": "Hỏi bất cứ điều gì về xúc tiến đầu tư Đà Nẵng"
+    "placeholder_chat": "Hỏi bất cứ điều gì về xúc tiến đầu tư Đà Nẵng",
+    "view_detail_chat": "Xem chi tiết hội thoại",
+    "search_chat_placeholder": "Tìm kiếm trong đoạn chat..."
   },
   "toast": {
     "success": "Thành công",
@@ -166,6 +168,13 @@
     "existed_file": "File này đã được chọn"
   },
   "conversation": {
-    "delete_conversation": "Bạn có chắc chắn xoá đoạn chat này?"
+    "delete_conversation": "Bạn có chắc chắn xoá đoạn chat này?",
+    "no_conversation": "Chưa có cuộc hội thoại nào.",
+    "conversation_message": "Bạn đã đóng hội thoại với chatbot. Nếu cần, bạn có thể mở lại cuộc trò chuyện bất cứ lúc nào.",
+    "reopen_conversation": "Mở lại cuộc hội thoại",
+    "closed_conversation": "Hội thoại đã đóng"
+  },
+  "common": {
+    "no_data": "Dữ liệu không có sẵn"
   }
 }

@@ -2,6 +2,7 @@
 import BaseIcon from '~/components/base-components/BaseIcon.vue';
 import { conversationService } from '~/service-api/conversationService';
 import dayjs from 'dayjs'
+import EmptyState from './EmptyState.vue';
 
 definePageMeta({layout: 'user-layout'})
 
@@ -18,6 +19,19 @@ const selectedFiles = ref([]);
 const isLoading = ref(false)
 const chatContainer = ref(null);
 const inputValue = ref('')
+const isVisibleSearch = ref(false)
+const searchText = ref('')
+const searchResult = ref([])
+const emit = defineEmits(['update:visible'])
+
+const props = defineProps({
+    accountId: {
+      type: Number
+    },
+    visible: {
+      type: Boolean
+    }
+})
 
 const scrollToBottom = () => {
   if (chatContainer.value) {
@@ -58,13 +72,46 @@ const handleAddNewChat = async () => {
   }
 }
 
-const handleSearchChat = () => {
+const handleSearchChat = async() => {
+  const searchVal = searchText.value.trim()
+  if(!searchVal){
+    searchResult = [...groupedConversations.value]
+    return
+  }
+  try {
+    const { data } = await conversationService.searchChat(searchVal, props.accountId)
+    const rawList = data.data
 
+    const tempGroup = rawList.reduce((acc, conver) => {
+      const date = dayjs(conver.createdAt).startOf('day') 
+      const timestamp = date.valueOf() 
+
+      if (!acc[timestamp]) acc[timestamp] = { date, items: [] }
+      acc[timestamp].items.push(conver)
+
+      return acc
+    }, {})
+
+    // Sort by timestamp descending
+    const sortedGrouped = Object.keys(tempGroup)
+      .sort((a, b) => Number(b) - Number(a))
+      .reduce((acc, timestamp) => {
+        const { date, items } = tempGroup[timestamp]
+        const formattedDate = date.format('DD-MM-YYYY')
+        acc[formattedDate] = items
+        return acc
+      }, {})
+    
+    searchResult.value = sortedGrouped
+  }
+  catch(error){
+    console.error(error)
+  }
 }
 
 const getAllConversations = async () => {
   try {
-    const { data } = await conversationService.getAllConversations()
+    const { data } = props.accountId !== userStore.id ? await conversationService.getConversationByAccount(props.accountId) : await conversationService.getAllConversations()
     const rawList = data.data
     conversations.value = rawList
 
@@ -89,12 +136,13 @@ const getAllConversations = async () => {
       }, {})
 
     groupedConversations.value = sortedGrouped
+    searchResult.value = sortedGrouped
   } catch (error) {
     console.error(error)
   }
 }
 
-const getDetailConversation = async (id) => {
+const getDetailConversation = async (id, isSearch) => {
   try {
     const { data } = await conversationService.getDetailConversation(id)
     selectedConvers.value = id
@@ -104,6 +152,7 @@ const getDetailConversation = async (id) => {
       files: item.materials || [], 
       materials: undefined 
     }))
+    if(isSearch) isVisibleSearch.value = false
   } catch (error) {
     console.error(error)
   }
@@ -323,40 +372,78 @@ const splitAnswerContent = (content) => {
   };
 }
 
-onMounted(async() => {
-  await getAllConversations()
-  selectedConvers.value = conversations.value[conversations.value.length - 1]?.id;
-  await getDetailConversation(selectedConvers.value)
+const handleCloseModal = () => {
+  emit('update:visible', false)
+}
 
-  await nextTick();
-    scrollToBottom();
-})
+const highlightSearch = (text) => {
+ if (!searchText.value || !text) return text;
+
+  const escaped = searchText.value?.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const regex = new RegExp(`(${escaped})`, 'gi');
+  return text.replace(regex, '<span class="font-bold text-black">$1</span>');
+}
+
+watch(
+  () => props.accountId,
+  async () => {
+    if (props.accountId) {
+      await getAllConversations();
+      selectedConvers.value = conversations.value[conversations.value.length - 1]?.id;
+      await getDetailConversation(selectedConvers.value);
+      await nextTick();
+      scrollToBottom();
+    }
+  },
+  { immediate: true }
+);
 
 </script>
 <template>
-  <div>
+    <Dialog
+      v-model:visible="props.visible"   
+      :modal="true"
+      :closable="true"
+      :dismissableMask="true"
+      @hide="handleCloseModal"
+      :style="{ width: '100vw', height: '100vh', 'max-height': '100%', 'border-radius': 0, 'overflow-y': 'hidden'}"
+      pt:root:class="chatbot-dialog"
+    >
+  <div class="w-[100%] relative h-[100vh]">
+    <!-- Close btn -->
+     <div class="absolute right-[16px] top-[10px]">
+        <button
+          class="w-[40px] h-[40px] cursor-pointer rounded-[50%] hover:bg-[#F7FAFE] flex justify-center items-center"
+          @click="handleCloseModal"
+        >
+          <i
+          class="pi pi-times"
+          style="font-size: 1.2rem; cursor: pointer;"
+        ></i>
+        </button>
+    </div>
     <!-- Fixed sidebar -->
-    <div class="fixed z-1 flex gap-4 top-[76px] left-[16px] items-center" v-if="!isExpanded">
+    <div class="absolute z-1 top-[20px] flex gap-4 top-0 left-[12px] items-center" v-if="!isExpanded">
       <BaseIcon name="right_panel_close" size-icon="24" cursor="pointer" @click="isExpanded = !isExpanded"></BaseIcon>
-      <BaseIcon name="edit_square" size-icon="22" cursor="pointer" @click="handleSearchChat"></BaseIcon>
+      <BaseIcon name="edit_square" size-icon="22" cursor="pointer" @click="isSearch = true"></BaseIcon>
     </div>
 
     <div :class="[
       'transition-all duration-500 ease-in-out z-1',
       isExpanded ? 'w-[250px]' : 'w-0 overflow-hidden',
-      'fixed px-[8px] py-[24px] bg-[#F7FAFE] h-screen'
+      'absolute left-0 top-0 bottom-0 px-[12px] py-[24px] bg-[#F7FAFE] h-screen'
     ]"
     v-if="isExpanded"
     >
-      <div :class="['top-[16px] flex w-full pr-[36px]', 'absolute']">
+      <div :class="['top-[20px] flex w-full pr-[24px]', 'absolute']">
         <BaseIcon name="right_panel_close" size-icon="24" cursor="pointer" @click="isExpanded = !isExpanded"></BaseIcon>
         <div class="flex gap-[10px] ml-auto">
-          <BaseIcon name="search" size-icon="24" cursor="pointer" @click="handleSearchChat"></BaseIcon>
+          <BaseIcon name="search" size-icon="24" cursor="pointer" @click="isVisibleSearch = true"></BaseIcon>
           <BaseIcon name="edit_square" size-icon="22" cursor="pointer" @click="handleAddNewChat"></BaseIcon>
         </div>
       </div>
       <div class="mt-[30px] overflow-auto max-h-[80vh]">
-        <div v-for="[date, conversations] in Object.entries(groupedConversations)" :key="date" class="mt-[16px]">
+        <div v-if="conversations.length > 0" v-for="[date, conversations] in Object.entries(groupedConversations)" :key="date" class="mt-[16px]">
           <span class="text-[12px] font-medium text-[rgb(143,143,143)]">{{ date }}</span>
           <div class="flex flex-col mt-[4px]">
             <div class="flex gap-[8px] items-center px-[10px] py-[8px] hover:bg-[#0d0d0d0d] cursor-pointer rounded-[8px]" :class="{'bg-[#0d0d0d0d]':selectedConvers === convers.id}" v-for="convers in conversations" :key="convers.id" @click="getDetailConversation(convers.id)">
@@ -365,11 +452,15 @@ onMounted(async() => {
             </div>
           </div>
         </div>
+        <div v-else class="mt-[30px]">
+          <EmptyState :message="t('conversation.no_conversation')"/>
+        </div>
       </div>
      </div>
-     <div ref="chatContainer" :class="['fixed pt-[30px] top-[100px] lg:top-[60px] bottom-[160px] overflow-y-auto w-full']">
-        <div :class="['h-full w-[350px] md:w-[500px] lg:w-[640px] flex flex-col gap-[36px] absolute', isExpanded ? 'left-[calc(50%_+_125px)]' : 'left-[50%]',
-        'transform -translate-x-1/2']">
+
+     <div ref="chatContainer" :class="['relative h-[70vh] top-[50px] lg:top-[60px] bottom-[160px] overflow-y-auto w-full']">
+        <div :class="['mt-[20px] w-[350px] md:w-[500px] overflow-y:auto lg:w-[660px] flex flex-col gap-[36px] absolute', isExpanded ? 'left-[calc(50%_+_125px)]' : 'left-[50%]', accountId === userStore.id ? 'h-[500px]' : 'h-[87vh]',
+        'transform -translate-x-1/2 z-10']">
           <div class="flex flex-col gap-[20px]" v-for="item in detailConversation" :key="item.id">
                 <div class="flex flex-col gap-3">
                   <div
@@ -428,10 +519,10 @@ onMounted(async() => {
                 </div>
               </div>
         </div>
-      </div>
-     <div :class="['fixed bottom-[25px] w-[350px] md:w-[520px] lg:w-[660px] rounded-[20px] px-[16px] py-[12px] overflow-hidden bg-white',
+     </div>
+     <div v-if="accountId == userStore.id" :class="['absolute top-[80vh] w-[350px] md:w-[520px] lg:w-[680px] rounded-[20px] px-[16px] py-[12px] overflow-hidden',
         isExpanded ? 'left-[calc(50%_+_125px)]' : 'left-[50%]', selectedFiles.length > 0 ? 'h-[180px]' : 'h-[130px]',
-        'transform -translate-x-1/2 border-1 border-[#ccc]'
+        'transform -translate-x-1/2 border-1 border-[#ccc] overflow-hidden'
         ]">
         <div class="top-[8px] left-[8px] flex flex-wrap gap-2 max-w-full mb-2" v-if="selectedFiles.length > 0">
           <div
@@ -453,7 +544,7 @@ onMounted(async() => {
       </div>
       <div class="text-area-wrap">
         <Textarea id="queryInput" v-model="inputValue" @keydown.enter.exact.prevent="handleSendQuery" cols="30" class="w-[100%] h-[100%]" :style="{ 'resize': 'none', 'overflow': 'hidden', 'font-size': '14px' }" :placeholder="t('chatbot.placeholder_chat')"/>
-        </div>
+      </div>
       <div class="absolute bottom-[8px] left-[16px]">
         <FileUpload mode="basic" @select="onFileSelect" customUpload auto severity="secondary" class="p-button-outlined my-upload-button" chooseLabel=" "/>
       </div>
@@ -467,6 +558,45 @@ onMounted(async() => {
       </div>
     </div>
   </div>
+  </Dialog>
+  <Dialog 
+    v-model:visible="isVisibleSearch" 
+    :modal="true" 
+    :style="{ width: '50vw', height: '60vh'}" 
+    :breakpoints="{ '1199px': '75vw', '575px': '90vw' }"
+    pt:root:class="search-dialog"
+    >
+      <!-- Header với border-bottom -->
+      <template #header>
+        <div class="w-100 flex-1">
+          <InputText 
+            v-model="searchText" 
+            :placeholder="t('chatbot.search_chat_placeholder')" 
+            class="w-full border-none shadow-none focus:ring-0 focus:border-transparent bg-transparent text-[15px]"
+            :style="{ border: 'none', outline: 'none', background: 'transparent', 'box-shadow': 'none'}"
+            @keydown.enter="handleSearchChat"
+          />
+        </div>
+      </template>
+      <div v-if="Object.keys(searchResult).length > 0" v-for="[date, conversations] in Object.entries(searchResult)" :key="date" class="mt-[16px]">
+        <span class="text-[13px] font-medium text-[rgb(143,143,143)] px-[8px]">{{ date }}</span>
+        <div class="flex flex-col mt-[6px]">
+          <div class="flex gap-[10px] items-center px-[10px] py-[10px] hover:bg-[#0d0d0d0d] cursor-pointer rounded-[8px]" v-for="convers in conversations" :key="convers.id" @click="getDetailConversation(convers.id, true)">
+            <i class="pi pi-comments"></i>
+            <div class="flex flex-col overflow-hidden w-full">
+              <span class="text-[14px] truncate inline-block">{{ convers.name }}</span>
+              <span
+                class="text-[13px] text-gray-500 truncate inline-block"
+                v-html="highlightSearch(convers.resultSearch?.join(', '))"
+              ></span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div v-else class="mt-[30px]">
+        <EmptyState :message="t('conversation.no_conversation')"/>
+      </div>
+  </Dialog>
 </template>
 
 <style lang="scss">
@@ -489,6 +619,13 @@ onMounted(async() => {
     width: 0;
     padding: 0;
     overflow: hidden;
+  }
+}
+
+.search-dialog {
+  .p-dialog-header{
+    border-bottom: 1px solid #ddd;
+    padding: 8px 12px;
   }
 }
 </style>

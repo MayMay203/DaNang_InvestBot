@@ -86,4 +86,14 @@ button[disabled] {
     box-shadow: none;
     padding: 0
 }
+
+.chatbot-dialog .p-dialog-content{
+    height: 100vh;
+    padding: 0;
+    overflow-y: hidden;
+}
+
+.chatbot-dialog .p-dialog-header{
+    display: none;
+}
   

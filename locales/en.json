@@ -149,7 +149,9 @@
     "service_footer": "Service"
   },
   "chatbot": {
-    "placeholder_chat": "Ask anything about DaNang Investment"
+    "placeholder_chat": "Ask anything about DaNang Investment",
+    "view_detail_chat": "View detail conversations",
+    "search_chat_placeholder": "Search chats..."
   },
   "toast": {
     "success": "Success",
@@ -166,7 +168,14 @@
     "existed_file": "This file has been selected"
   },
   "conversation": {
-    "delete_conversation": "Are you sure to delete conversation?"
+    "delete_conversation": "Are you sure to delete conversation?",
+    "no_conversation": "No conversations yet.",
+    "conversation_message": "You have closed the conversation with chatbot. If necessary, you can reopen the conversation at any time.",
+    "reopen_conversation": "Open the conversation",
+    "closed_conversation": "The conversation has been closed"
+  },
+  "common": {
+    "no_data": "No data available"
   }
 }
 

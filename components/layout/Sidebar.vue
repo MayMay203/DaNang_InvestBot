@@ -9,7 +9,7 @@ const emit = defineEmits(['width-change'])
 
 const isVisible = ref(true)
 const windowWidth = ref(0)
-// const userStore = useUserStore()
+const isVisibleChatbot  = ref(false)
 
 watch(windowWidth, (newWidth) => {
   if (newWidth < 1200) {
@@ -46,7 +46,6 @@ watchEffect(() => {
   emit('width-change', sidebarWidth.value)
 })
 
-// console.log(userStore)
 const menuList = computed(() => [
   { label: t('menu.manage_account'), path: ROUTES.MANAGE_ACCOUNT, icon: "dashboard" },
   { label: t('menu.manage_material'), path: ROUTES.MANAGE_MATERIALS, icon: "material" },

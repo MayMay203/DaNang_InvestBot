@@ -4,6 +4,7 @@ import BaseButton from '~/components/base-components/BaseButton.vue';
 import BaseInput from '~/components/base-components/BaseInput.vue';
 import { getAddAccountSchema } from '~/schemas/addAccountSchema';
 import { accountService } from '~/service-api/accountService';
+import ChatBotDialog from '~/components/components/ChatBotDialog.vue';
 
 definePageMeta({
   layout: "admin",
@@ -17,6 +18,8 @@ const accounts = ref([])
 const first = ref(0);
 const title = ref()
 const isVisible = ref(false)
+const isVisibleChatbot = ref(false)
+const selectedAccountId = ref()
 const reason = ref()
 const updatedStatus = ref({ status: null, id: null })
 const createDialog = ref(false)
@@ -133,6 +136,12 @@ const handleBlurInput = (field) => {
   }
 }
 
+const handleShowHistoryChat = (id) => {
+  console.log('id: ', id)
+  selectedAccountId.value = id
+  isVisibleChatbot.value = true
+}
+
 
 onMounted(async () => {
    await fetchAllAccounts()
@@ -200,6 +209,23 @@ onMounted(async () => {
         </template>
       </Column>
       <Column field="reason" :header="t('management.account.reason')" style="width: 15%"></Column>
+      <Column style="width: 25%">
+        <template #body="slotProps">
+          <div class="flex gap-[6px]">
+            <BaseButton
+              left-icon="item"
+              :text="t('chatbot.view_detail_chat')"
+              variant="outline"
+              color="#065076"
+              width="230px"
+              height="40px"
+              sizeIcon="20px"
+              border-color="#065076"
+              @click="handleShowHistoryChat(slotProps.data.id)"
+            ></BaseButton>
+          </div>
+        </template>
+      </Column>
     </DataTable>
     <!-- Dialog active account -->
      <Dialog v-model:visible="isVisible" modal :header="title" :style="{ width: '25rem' }">
@@ -210,7 +236,7 @@ onMounted(async () => {
         <Button type="button" :label="t('action.save')" @click="handleToggleAccount" :disabled="!reason"></Button>
     </div>
 </Dialog>
-  <!-- Modal add account -->
+    <!-- Modal add account -->
     <Dialog v-model:visible="createDialog" modal :header="t('management.account.create_new_account')" :style="{ width: '35rem', height: 'fit-content' }">
       <div class="flex flex-col gap-1 mb-2">
           <BaseInput v-model="formData.email" :label="t('management.account.email')" :placeholder="t('auth.email_placeholder')" :error="formErrors.email" @blur="handleBlurInput('email')"/>
@@ -232,6 +258,8 @@ onMounted(async () => {
           <Button type="button" :label="t('action.cancel')" severity="secondary" @click="createDialog = false"></Button>
           <Button type="button" :label="t('action.save')" @click="handleAddNewAccount" :disabled="isDisabled"></Button>
       </div>
-      </Dialog>
+    </Dialog>
+    <!-- Modal chatbot -->
+    <ChatBotDialog :accountId="selectedAccountId" v-model:visible="isVisibleChatbot" @on-close="isVisibleChatbot = false" />
     </div>
 </template>
