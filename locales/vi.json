@@ -175,6 +175,7 @@
     "closed_conversation": "Hội thoại đã đóng"
   },
   "common": {
-    "no_data": "Dữ liệu không có sẵn"
+    "no_data": "Dữ liệu không có sẵn",
+    "source": "Nguồn"
   }
 }

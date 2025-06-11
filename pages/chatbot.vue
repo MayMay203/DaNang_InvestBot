@@ -1,5 +1,6 @@
 <script setup>
 import BaseIcon from '~/components/base-components/BaseIcon.vue';
+import EmptyState from '~/components/components/EmptyState.vue';
 import { conversationService } from '~/service-api/conversationService';
 import dayjs from 'dayjs'
 
@@ -18,6 +19,9 @@ const selectedFiles = ref([]);
 const isLoading = ref(false)
 const chatContainer = ref(null);
 const inputValue = ref('')
+const isVisibleSearch = ref(false)
+const searchResult = ref([])
+const searchText = ref('')
 
 const scrollToBottom = () => {
   if (chatContainer.value) {
@@ -58,10 +62,6 @@ const handleAddNewChat = async () => {
   }
 }
 
-const handleSearchChat = () => {
-
-}
-
 const getAllConversations = async () => {
   try {
     const { data } = await conversationService.getAllConversations()
@@ -89,21 +89,25 @@ const getAllConversations = async () => {
       }, {})
 
     groupedConversations.value = sortedGrouped
+    searchResult.value = sortedGrouped
   } catch (error) {
     console.error(error)
   }
 }
 
-const getDetailConversation = async (id) => {
+const getDetailConversation = async (id, isSearch) => {
   try {
-    const { data } = await conversationService.getDetailConversation(id)
-    selectedConvers.value = id
+    if(selectedConvers.id !== id){
+      const { data } = await conversationService.getDetailConversation(id)
+      selectedConvers.value = id
 
-    detailConversation.value = data.data.map((item) => ({
-      ...item,
-      files: item.materials || [], 
-      materials: undefined 
-    }))
+      detailConversation.value = data.data.map((item) => ({
+        ...item,
+        files: item.materials || [], 
+        materials: undefined 
+      }))
+    }
+    if(isSearch) isVisibleSearch.value = false
   } catch (error) {
     console.error(error)
   }
@@ -305,7 +309,7 @@ const handleSendQuery = async (event) => {
 const splitAnswerContent = (content) => {
   if (!content) return {}
   
-  const [main, source] = content.split(/Nguồn:/);
+  const [main, source] = content.split(/`${t('common.source')}:`/);
   const sourceText = source?.trim() || null;
 
   let link = null;
@@ -323,6 +327,51 @@ const splitAnswerContent = (content) => {
   };
 }
 
+const handleSearchChat = async() => {
+  const searchVal = searchText.value.trim()
+  if(!searchVal){
+    searchResult = [...groupedConversations.value]
+    return
+  }
+  try {
+    const { data } = await conversationService.searchChat(searchVal, userStore.id)
+    const rawList = data.data
+
+    const tempGroup = rawList.reduce((acc, conver) => {
+      const date = dayjs(conver.createdAt).startOf('day') 
+      const timestamp = date.valueOf() 
+
+      if (!acc[timestamp]) acc[timestamp] = { date, items: [] }
+      acc[timestamp].items.push(conver)
+
+      return acc
+    }, {})
+
+    // Sort by timestamp descending
+    const sortedGrouped = Object.keys(tempGroup)
+      .sort((a, b) => Number(b) - Number(a))
+      .reduce((acc, timestamp) => {
+        const { date, items } = tempGroup[timestamp]
+        const formattedDate = date.format('DD-MM-YYYY')
+        acc[formattedDate] = items
+        return acc
+      }, {})
+    
+    searchResult.value = sortedGrouped
+  }
+  catch(error){
+    console.error(error)
+  }
+}
+
+const highlightSearch = (text) => {
+ if (!searchText.value || !text) return text;
+
+  const escaped = searchText.value?.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const regex = new RegExp(`(${escaped})`, 'gi');
+  return text.replace(regex, '<span class="font-bold text-black">$1</span>');
+}
+
 onMounted(async() => {
   await getAllConversations()
   selectedConvers.value = conversations.value[conversations.value.length - 1]?.id;
@@ -338,7 +387,7 @@ onMounted(async() => {
     <!-- Fixed sidebar -->
     <div class="fixed z-1 flex gap-4 top-[76px] left-[16px] items-center" v-if="!isExpanded">
       <BaseIcon name="right_panel_close" size-icon="24" cursor="pointer" @click="isExpanded = !isExpanded"></BaseIcon>
-      <BaseIcon name="edit_square" size-icon="22" cursor="pointer" @click="handleSearchChat"></BaseIcon>
+      <BaseIcon name="edit_square" size-icon="22" cursor="pointer" @click="handleAddNewChat"></BaseIcon>
     </div>
 
     <div :class="[
@@ -351,7 +400,7 @@ onMounted(async() => {
       <div :class="['top-[16px] flex w-full pr-[36px]', 'absolute']">
         <BaseIcon name="right_panel_close" size-icon="24" cursor="pointer" @click="isExpanded = !isExpanded"></BaseIcon>
         <div class="flex gap-[10px] ml-auto">
-          <BaseIcon name="search" size-icon="24" cursor="pointer" @click="handleSearchChat"></BaseIcon>
+          <BaseIcon name="search" size-icon="24" cursor="pointer" @click="isVisibleSearch = true"></BaseIcon>
           <BaseIcon name="edit_square" size-icon="22" cursor="pointer" @click="handleAddNewChat"></BaseIcon>
         </div>
       </div>
@@ -411,7 +460,7 @@ onMounted(async() => {
                     <div>{{ splitAnswerContent(item.answerContent).content }}</div>
                     <div v-if="splitAnswerContent(item.answerContent).source" class="mt-1 text-gray-500 italic">
                       <template v-if="splitAnswerContent(item.answerContent).link">
-                        Nguồn:
+                        {{ `${t('common.source')}:` }}:
                         <a
                           :href="splitAnswerContent(item.answerContent).link"
                           target="_blank"
@@ -422,7 +471,7 @@ onMounted(async() => {
                         </a>
                       </template>
                       <template v-else>
-                        Nguồn: {{ splitAnswerContent(item.answerContent).source }}
+                         {{ t('common.source') + ': ' + splitAnswerContent(item.answerContent).source }}
                       </template>
                     </div>
                 </div>
@@ -466,6 +515,44 @@ onMounted(async() => {
         </button>
       </div>
     </div>
+     <Dialog 
+    v-model:visible="isVisibleSearch" 
+    :modal="true" 
+    :style="{ width: '50vw', height: '60vh'}" 
+    :breakpoints="{ '1199px': '75vw', '575px': '90vw' }"
+    pt:root:class="search-dialog"
+    >
+      <!-- Header với border-bottom -->
+      <template #header>
+        <div class="w-100 flex-1">
+          <InputText 
+            v-model="searchText" 
+            :placeholder="t('chatbot.search_chat_placeholder')" 
+            class="w-full border-none shadow-none focus:ring-0 focus:border-transparent bg-transparent text-[15px]"
+            :style="{ border: 'none', outline: 'none', background: 'transparent', 'box-shadow': 'none'}"
+            @keydown.enter="handleSearchChat"
+          />
+        </div>
+      </template>
+      <div v-if="Object.keys(searchResult).length > 0" v-for="[date, conversations] in Object.entries(searchResult)" :key="date" class="mt-[16px]">
+        <span class="text-[13px] font-medium text-[rgb(143,143,143)] px-[8px]">{{ date }}</span>
+        <div class="flex flex-col mt-[6px]">
+          <div class="flex gap-[10px] items-center px-[10px] py-[10px] hover:bg-[#0d0d0d0d] cursor-pointer rounded-[8px]" v-for="convers in conversations" :key="convers.id" @click="getDetailConversation(convers.id, true)">
+            <i class="pi pi-comments"></i>
+            <div class="flex flex-col overflow-hidden w-full">
+              <span class="text-[14px] truncate inline-block">{{ convers.name }}</span>
+              <span
+                class="text-[13px] text-gray-500 truncate inline-block"
+                v-html="highlightSearch(convers.resultSearch?.join(', '))"
+              ></span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div v-else class="mt-[30px]">
+        <EmptyState :message="t('conversation.no_conversation')"/>
+      </div>
+  </Dialog>
   </div>
 </template>
 

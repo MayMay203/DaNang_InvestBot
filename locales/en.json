@@ -175,7 +175,8 @@
     "closed_conversation": "The conversation has been closed"
   },
   "common": {
-    "no_data": "No data available"
+    "no_data": "No data available",
+    "source": "Sources"
   }
 }
 

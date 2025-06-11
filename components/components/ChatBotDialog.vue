@@ -144,14 +144,16 @@ const getAllConversations = async () => {
 
 const getDetailConversation = async (id, isSearch) => {
   try {
-    const { data } = await conversationService.getDetailConversation(id)
-    selectedConvers.value = id
+     if(selectedConvers.id !== id){
+      const { data } = await conversationService.getDetailConversation(id)
+      selectedConvers.value = id
 
-    detailConversation.value = data.data.map((item) => ({
-      ...item,
-      files: item.materials || [], 
-      materials: undefined 
-    }))
+      detailConversation.value = data.data.map((item) => ({
+        ...item,
+        files: item.materials || [], 
+        materials: undefined 
+      }))
+    }
     if(isSearch) isVisibleSearch.value = false
   } catch (error) {
     console.error(error)
