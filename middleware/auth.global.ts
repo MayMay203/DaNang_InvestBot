@@ -45,16 +45,7 @@ export default defineNuxtRouteMiddleware(async (to) => {
         });
       }
 
-      if (to.path.includes("chatbot")) {
-        if (roleId === 1) {
-          to.meta.layout = "admin";
-        } else {
-          to.meta.layout = "user-layout";
-        }
-        return;
-      }
-
-      if (to.path.includes("manage")) {
+      if (to.path.includes("manage") || to.path.includes('admin')) {
         if (Number(roleId) !== 1) {
           return await navigateTo(ROUTES.HOME);
         }
@@ -65,7 +56,7 @@ export default defineNuxtRouteMiddleware(async (to) => {
         else return await navigateTo(ROUTES.MANAGE_ACCOUNT);
       }
 
-      if (!isExcluded && !to.path.includes("manage")) {
+      if (!isExcluded && !to.path.includes("manage") && !to.path.includes('admin')) {
         if (Number(roleId) === 1) {
           return await navigateTo(ROUTES.MANAGE_ACCOUNT);
         }

@@ -37,5 +37,16 @@ class ConversationService {
       },
     });
   }
+
+  getConversationByAccount(id: number){
+    const { $axiosApi } = useNuxtApp();
+    return $axiosApi.get(`${API_ENPOINT.GET_CONVERSATIONS_BY_ACCOUNT}/${id}`);
+  }
+
+  searchChat(searchText: string, accountId: number){
+    const { $axiosApi } = useNuxtApp();
+    const body = {searchText, accountId}
+    return $axiosApi.post(`${API_ENPOINT.SEARCH_CHAT}`, body);
+  }
 }
 export const conversationService = new ConversationService();

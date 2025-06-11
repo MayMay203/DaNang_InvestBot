@@ -3,7 +3,7 @@
     <div class="flex-1 p-[20px] md:p-[30px] lg:py-[20px] lg:px-[60px]">
         <h1 class="text-[rgba(6,80,118,0.9)] font-bold text-[24px] text-center">{{ t('auth.verify_OTP').toUpperCase() }}</h1>
         <div class="mt-[20px]">
-            <BaseInput v-model="verifyData.OTP" :error="verifyError.OTP" :label="t('auth.OTP_message')" cursorIcon="pointer" :placeholder="t('auth.OTP_placeholder')" @blur="handleBlurInput('OTP')"/>
+            <BaseInput v-model="verifyData.OTP" :error="verifyError.OTP" :label="t('auth.OTP_message')" cursorIcon="pointer" :placeholder="t('auth.OTP_placeholder')" @blur="handleBlurInput('OTP')" @keyup.enter="handleEnter"/>
         </div>
         <div class="flex justify-between mt-[12px]">
             <button class="text-[rgba(6,80,118,0.9)] italic p-[4px] cursor-pointer" @click="handleResendOTP">{{ t('auth.resend_OTP') }}</button>
@@ -110,6 +110,12 @@ const handleConfirmOTP = async () => {
       else {
        toast.add({ severity: 'error', summary: t('toast.error'), detail: error.message, life: 3000 })
     }
+  }
+}
+
+const handleEnter = async() =>{
+  if(verifyData.value.OTP && !verifyError.value.OTP){
+    await handleConfirmOTP()
   }
 }
 

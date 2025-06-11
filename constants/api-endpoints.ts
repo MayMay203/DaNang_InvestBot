@@ -32,4 +32,6 @@ export const API_ENPOINT = {
   ADD_NEW_CONVERSATION: "/conversation/create",
   SEND_TEXT_MESSAGE: "conversation/send-message",
   SEND_FILE_MESSAGE: "/conversation/send-file-question",
+  GET_CONVERSATIONS_BY_ACCOUNT: '/conversation/get-conversations-by-account',
+  SEARCH_CHAT: '/conversation/search-chat',
 };

@@ -2,6 +2,7 @@
 import { ROUTES } from "~/constants/routes";
 import BaseIcon from "../base-components/BaseIcon.vue";
 import { ref } from "vue";
+import AvatarComponent from "../components/AvatarComponent.vue";
 
 const { t, locale } = useTranslation();
 const confirm = useConfirm();
@@ -20,6 +21,12 @@ const menuList = [
   { key: 'service', label: 'Service', path: '/#services' },
   { key: 'chatbot', label: 'Chatbot', path: '/chatbot' },
 ];
+
+
+const nameUser = computed(() => {
+  return userStore.fullName?.split(' ')[userStore.fullName.split(' ').length - 1][0].toUpperCase()
+})
+
 
 function updateActiveMenu(value) {
   if (value === '/#services') {
@@ -65,7 +72,6 @@ const handleChangeLanguage = (langCode) => {
   const currentLang = localStorage.getItem('lang')
   if (currentLang !== langCode) {
     localStorage.setItem('lang', langCode);
-    location.reload()
   }
 }
 
@@ -107,12 +113,7 @@ watch(() => route.fullPath, (newValue) => {
           class="flex items-center justify-center gap-[10px] cursor-pointer"
           @click="toggle"
         >
-          <div class="w-[36px] h-[36px]">
-            <img
-              src="/images/avatar.jpg"
-              class="w-[100%] h-[100%] rounded-[50%] object-cover"
-            />
-          </div>
+          <AvatarComponent :name="nameUser"/>
           <BaseIcon name="arrow_down" sizeIcon="14" cursor="pointer" />
         </div>
         <Popover ref="op">

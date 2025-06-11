@@ -1,6 +1,7 @@
 <script setup>
 import { ROUTES } from "~/constants/routes";
 import BaseIcon from "../base-components/BaseIcon.vue";
+import AvatarComponent from "../components/AvatarComponent.vue";
 import { ref } from "vue";
 
 const { t, locale } = useTranslation()
@@ -13,8 +14,16 @@ const toggle = (event) => {
 const authStore = useAuthStore()
 const userStore = useUserStore()
 
+const currentLang = computed(() => {
+  return localStorage.getItem('lang') || 'vi'
+})
+
 const props = defineProps({
   sidebarWidth: String
+})
+
+const nameUser = computed(() => {
+  return userStore.fullName?.split(' ')[userStore.fullName.split(' ').length - 1][0].toUpperCase()
 })
 
 const handleShowConfirmLogout = () => {
@@ -53,14 +62,13 @@ const handleChangeLanguage = (langCode) => {
   if (currentLang !== langCode) {
     localStorage.setItem('lang', langCode);
     localStorage.removeItem('activeMenu')
-    location.reload()
   }
 }
 </script>
 
 <template>
   <div
-    class="flex justify-end bg-[#eaf2fb] h-[50px] pr-[20px]"
+    class="flex justify-end bg-[#eaf2fb] h-[50px] pr-[20px] w-full"
     :style="{
       position: 'fixed',
       zIndex: 99,
@@ -71,12 +79,7 @@ const handleChangeLanguage = (langCode) => {
       class="flex items-center justify-center gap-[10px] cursor-pointer"
       @click="toggle"
     >
-      <div class="w-[36px] h-[36px]">
-        <img
-          src="/images/avatar.jpg"
-          class="w-[100%] h-[100%] rounded-[50%] object-cover"
-        />
-      </div>
+      <AvatarComponent :name="nameUser"/>
       <BaseIcon name="arrow_down" sizeIcon="14" cursor="pointer" />
     </div>
     <Popover ref="op">
@@ -119,8 +122,8 @@ const handleChangeLanguage = (langCode) => {
           class="flex flex-col pl-[30px] text-[14px] gap-[6px]"
           v-if="isDetail"
         >
-          <button class="px-[10px] py-[8px] menu-item flex justify-start" @click="handleChangeLanguage('vi')">{{t('menu.vietnamese')}}</button>
-          <button class="px-[10px] py-[8px] menu-item flex justify-start" @click="handleChangeLanguage('en')">{{t('menu.english')}}</button>
+          <button class="px-[10px] py-[8px] menu-item flex justify-start" :class="{active: currentLang === 'vi'}" @click="handleChangeLanguage('vi')">{{t('menu.vietnamese')}}</button>
+          <button class="px-[10px] py-[8px] menu-item flex justify-start" :class="{active: currentLang === 'en'}" @click="handleChangeLanguage('en')">{{t('menu.english')}}</button>
         </div>
         <div
           class="h-[0.8px] bg-[#000] menu-item"
@@ -141,6 +144,12 @@ const handleChangeLanguage = (langCode) => {
 .menu-item:hover {
   background-color: rgba(#ccc, 0.15);
   cursor: pointer;
+  border-radius: 6px;
+}
+
+.menu-item.active{
+  background-color: rgba(#ccc, 0.15);
+  cursor: default;
   border-radius: 6px;
 }
 

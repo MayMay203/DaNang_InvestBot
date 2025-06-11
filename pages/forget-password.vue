@@ -4,10 +4,10 @@
             <div>
                 <h1 class="text-[rgba(6,80,118,0.9)] font-bold text-[24px] text-center">{{ t('auth.forget_password').toUpperCase() }}</h1>
             <div class="mt-[20px]">
-                <BaseInput v-model="forgetData.email" :error="forgetErrors.email" :label="t('auth.forget_password_message')" cursorIcon="pointer" :placeholder="t('auth.email_placeholder')" @blur="handleBlurInput('email')"/>
+                <BaseInput v-model="forgetData.email" :error="forgetErrors.email" :label="t('auth.forget_password_message')" cursorIcon="pointer" :placeholder="t('auth.email_placeholder')" @blur="handleBlurInput('email')" @keyup.enter="handleEnter"/>
             </div>
            <div class="mt-[30px]">
-            <BaseButton :text="t('auth.confirm')" variant="primary" height="40px" width="100%" :disabled="isDisabled" @click="handleForgetPassword"/>
+            <BaseButton :text="t('auth.confirm')" variant="primary" height="40px" width="100%" :disabled="isDisabled" @click="handleForgetPassword" :isLoading="isLoading"/>
             </div>
 
             </div>
@@ -36,6 +36,7 @@ const { t } = useTranslation()
 const forgetPassSchema = getForgetPassSchema(t)
 const toast = useToast()
 const router = useRouter()
+const isLoading = ref()
 
 const forgetData = ref({
   email: ''
@@ -67,7 +68,11 @@ const handleBlurInput = (field) => {
 
 const handleForgetPassword = async () => {
     try {
+        isLoading.value = true
+        isDisabled.value = true
         await authService.forgetPassword(forgetData.value.email)
+        isLoading.value = false
+        isDisabled.value = false
         toast.add({
             severity: 'success',
             summary: t('toast.success'),
@@ -80,12 +85,20 @@ const handleForgetPassword = async () => {
             }, 3000);
     }
     catch (error) {
-         if (error?.response) {
-       toast.add({ severity: 'error', summary: t('toast.error'), detail: getMessageError(error), life: 3000 });
-      }
-      else {
-       toast.add({ severity: 'error', summary: t('toast.error'), detail: error.message, life: 3000 })
+        isDisabled.value = false
+        isLoading.value = false
+        if (error?.response) {
+            toast.add({ severity: 'error', summary: t('toast.error'), detail: getMessageError(error), life: 3000 });
+        }
+        else {
+            toast.add({ severity: 'error', summary: t('toast.error'), detail: error.message, life: 3000 })
+        }
     }
+}
+
+const handleEnter = async() => {
+    if(!forgetErrors.value.email && forgetData.value.email){
+        await handleForgetPassword()
     }
 }
 </script>

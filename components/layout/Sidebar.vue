@@ -9,9 +9,10 @@ const emit = defineEmits(['width-change'])
 
 const isVisible = ref(true)
 const windowWidth = ref(0)
+const isVisibleChatbot  = ref(false)
 
 watch(windowWidth, (newWidth) => {
-  if (newWidth < 1024) {
+  if (newWidth < 1200) {
     isVisible.value = false
   } else {
     isVisible.value = true
@@ -32,13 +33,13 @@ onBeforeUnmount(() => {
 })
 
 const handleCollapseSidebar = () => {
-  if (windowWidth.value >= 1024) {
+  if (windowWidth.value >= 1200) {
     isVisible.value = !isVisible.value
   }
 }
 
 const sidebarWidth = computed(() => {
-  return windowWidth.value < 1024 ? '70px' : isVisible.value ? '250px' : '70px'
+  return windowWidth.value < 1200 ? '70px' : isVisible.value ? '250px' : '70px'
 })
 
 watchEffect(() => {
@@ -50,7 +51,7 @@ const menuList = computed(() => [
   { label: t('menu.manage_material'), path: ROUTES.MANAGE_MATERIALS, icon: "material" },
   { label: t('menu.manage_knowledge'), path: ROUTES.MANAGE_KNOWLEDGE_STORE, icon: "store" },
   { label: t('menu.uploaded_material'), path: ROUTES.UPLOADED_MATERIAL, icon: "uploaded" },
-  { label: t('menu.chatbot'), path: ROUTES.CHAT_BOT, icon: "chatbot" },
+  { label: t('menu.chatbot'), path: ROUTES.CHAT_BOT_ADMIN ,icon: "chatbot"},
 ])
 </script>
 <template>
