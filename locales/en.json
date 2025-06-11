@@ -176,7 +176,8 @@
   },
   "common": {
     "no_data": "No data available",
-    "source": "Sources"
+    "source": "Sources",
+    "voice_error": "The browser does not support Speech Recognition"
   }
 }
 

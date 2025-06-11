@@ -17,11 +17,14 @@ const toast = useToast()
 const userStore = useUserStore()
 const selectedFiles = ref([]);
 const isLoading = ref(false)
+const isLoadingVoice = ref(false)
 const chatContainer = ref(null);
 const inputValue = ref('')
 const isVisibleSearch = ref(false)
 const searchResult = ref([])
 const searchText = ref('')
+const transcript = ref('')
+let recognition = null
 
 const scrollToBottom = () => {
   if (chatContainer.value) {
@@ -372,6 +375,16 @@ const highlightSearch = (text) => {
   return text.replace(regex, '<span class="font-bold text-black">$1</span>');
 }
 
+const handleVoice = () => {
+  if (!recognition) return
+
+  if (isLoadingVoice.value) {
+    recognition.stop() 
+  } else {
+    recognition.start() 
+  }
+}
+
 onMounted(async() => {
   await getAllConversations()
   selectedConvers.value = conversations.value[conversations.value.length - 1]?.id;
@@ -379,8 +392,35 @@ onMounted(async() => {
 
   await nextTick();
     scrollToBottom();
-})
 
+  if (process.client) {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
+    if (SpeechRecognition) {
+      recognition = new SpeechRecognition()
+      recognition.lang = 'vi-VN'
+      recognition.continuous = false
+      recognition.interimResults = false
+
+      recognition.onstart = () => {
+        isLoadingVoice.value = true
+      }
+
+      recognition.onresult = (event) => {
+        inputValue.value = event.results[0][0].transcript
+      }
+
+      recognition.onend = () => {
+        isLoadingVoice.value = false
+      }
+
+      recognition.onerror = (event) => {
+        console.error('Error voice:', event.error)
+      }
+    } else {
+      alert(t('common.voice_error'))
+    }
+  }
+})
 </script>
 <template>
   <div>
@@ -507,8 +547,15 @@ onMounted(async() => {
         <FileUpload mode="basic" @select="onFileSelect" customUpload auto severity="secondary" class="p-button-outlined my-upload-button" chooseLabel=" "/>
       </div>
       <div class="flex gap-[8px] absolute bottom-[8px] right-[16px]">
-        <button class="w-[36px] h-[36px] rounded-[50%] bg-white flex justify-center items-center cursor-pointer border-1 border-[rgba(0,0,0,0.4)]">
-          <BaseIcon name="micro" cursor="pointer" size-icon="22px"/>
+       <button
+          class="w-[36px] h-[36px] rounded-full bg-white flex justify-center items-center cursor-pointer border border-[rgba(0,0,0,0.4)]"
+          @click="handleVoice"
+        >
+          <span
+            v-if="isLoadingVoice"
+            class="w-[12px] h-[12px] bg-red-500 rounded-full animate-ping"
+          ></span>
+          <i v-else class="pi pi-microphone text-[22px]"></i>
         </button>
         <button class="w-[36px] h-[36px] rounded-[50%] bg-white flex justify-center items-center cursor-pointer border-1 border-[rgba(0,0,0,0.4)]" :disabled="!inputValue.length" @click="handleSendQuery">
           <BaseIcon name="arrow_upward" cursor="pointer" size-icon="22px" :disabled="!inputValue.length"/>
