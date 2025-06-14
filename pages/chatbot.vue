@@ -455,7 +455,7 @@ onMounted(async() => {
         <div v-for="[date, conversations] in Object.entries(groupedConversations)" :key="date" class="mt-[16px]">
           <span class="text-[12px] font-medium text-[rgb(143,143,143)]">{{ date }}</span>
           <div class="flex flex-col mt-[4px]">
-            <div class="flex gap-[8px] items-center px-[10px] py-[8px] hover:bg-[#0d0d0d0d] cursor-pointer rounded-[8px]" :class="{'bg-[#0d0d0d0d]':selectedConvers === convers.id}" v-for="convers in conversations" :key="convers.id" @click="getDetailConversation(convers.id)">
+            <div class="flex gap-[8px] mt-[2px] items-center px-[10px] py-[8px] hover:bg-[#0d0d0d0d] cursor-pointer rounded-[8px]" :class="{'bg-[#0d0d0d0d]':selectedConvers === convers.id}" v-for="convers in conversations" :key="convers.id" @click="getDetailConversation(convers.id)">
               <span class="flex-1 text-[13px] max-w-[18] truncate">{{ convers.name }}</span>
               <BaseIcon name="delete" size-icon="20px" cursor="pointer" @click="handleDeleteConvers(convers.id)"></BaseIcon>
             </div>
@@ -555,7 +555,7 @@ onMounted(async() => {
           </div>
       </div>
       <div class="text-area-wrap">
-        <Textarea id="queryInput" v-model="inputValue" @keydown.enter.exact.prevent="handleSendQuery" cols="30" class="w-[100%] h-[100%]" :style="{ 'resize': 'none', 'overflow': 'hidden', 'font-size': '14px' }" :placeholder="t('chatbot.placeholder_chat')"/>
+        <Textarea id="queryInput" v-model="inputValue" @keydown.enter.exact.prevent="handleSendQuery" cols="30" class="w-[100%] h-[68px]" :style="{ 'resize': 'none', 'overflow-y': 'auto', 'font-size': '14px' }" :placeholder="t('chatbot.placeholder_chat')"/>
         </div>
       <div class="absolute bottom-[8px] left-[16px]">
         <FileUpload mode="basic" @select="onFileSelect" customUpload auto severity="secondary" class="p-button-outlined my-upload-button" chooseLabel=" "/>

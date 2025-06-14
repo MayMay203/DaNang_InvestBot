@@ -472,7 +472,7 @@ onMounted(() => {
     <!-- Fixed sidebar -->
     <div class="absolute z-1 top-[20px] flex gap-4 top-0 left-[12px] items-center" v-if="!isExpanded">
       <BaseIcon name="right_panel_close" size-icon="24" cursor="pointer" @click="isExpanded = !isExpanded"></BaseIcon>
-      <BaseIcon name="edit_square" size-icon="22" cursor="pointer" @click="isSearch = true"></BaseIcon>
+      <BaseIcon name="edit_square" size-icon="22" cursor="pointer" @click="isSearch = true" v-if="accountId === userStore.id"></BaseIcon>
     </div>
 
     <div :class="[
@@ -484,7 +484,7 @@ onMounted(() => {
     >
       <div :class="['top-[20px] flex w-full pr-[24px]', 'absolute']">
         <BaseIcon name="right_panel_close" size-icon="24" cursor="pointer" @click="isExpanded = !isExpanded"></BaseIcon>
-        <div class="flex gap-[10px] ml-auto">
+        <div class="flex gap-[10px] ml-auto" v-if="accountId === userStore.id">
           <BaseIcon name="search" size-icon="24" cursor="pointer" @click="isVisibleSearch = true"></BaseIcon>
           <BaseIcon name="edit_square" size-icon="22" cursor="pointer" @click="handleAddNewChat"></BaseIcon>
         </div>
@@ -493,9 +493,9 @@ onMounted(() => {
         <div v-if="conversations.length > 0" v-for="[date, conversations] in Object.entries(groupedConversations)" :key="date" class="mt-[16px]">
           <span class="text-[12px] font-medium text-[rgb(143,143,143)]">{{ date }}</span>
           <div class="flex flex-col mt-[4px]">
-            <div class="flex gap-[8px] items-center px-[10px] py-[8px] hover:bg-[#0d0d0d0d] cursor-pointer rounded-[8px]" :class="{'bg-[#0d0d0d0d]':selectedConvers === convers.id}" v-for="convers in conversations" :key="convers.id" @click="getDetailConversation(convers.id)">
+            <div class="flex gap-[8px] mt-[2px] items-center px-[10px] py-[8px] hover:bg-[#0d0d0d0d] cursor-pointer rounded-[8px]" :class="{'bg-[#0d0d0d0d]':selectedConvers === convers.id}" v-for="convers in conversations" :key="convers.id" @click="getDetailConversation(convers.id)">
               <span class="flex-1 text-[13px] max-w-[18] truncate">{{ convers.name }}</span>
-              <BaseIcon name="delete" size-icon="20px" cursor="pointer" @click="handleDeleteConvers(convers.id)"></BaseIcon>
+              <BaseIcon name="delete" size-icon="20px" cursor="pointer" @click="handleDeleteConvers(convers.id)" v-if="accountId === userStore.id"></BaseIcon>
             </div>
           </div>
         </div>
@@ -574,11 +574,11 @@ onMounted(() => {
               </div>
         </div>
      </div>
-     <div v-if="accountId == userStore.id" :class="['absolute top-[80vh] w-[350px] md:w-[520px] lg:w-[680px] rounded-[20px] px-[16px] py-[12px] overflow-hidden',
+     <div v-if="accountId == userStore.id" :class="['absolute bottom-[20px] w-[350px] md:w-[520px] lg:w-[680px] rounded-[20px] px-[16px] py-[12px] overflow-hidden',
         isExpanded ? 'left-[calc(50%_+_125px)]' : 'left-[50%]', selectedFiles.length > 0 ? 'h-[180px]' : 'h-[130px]',
         'transform -translate-x-1/2 border-1 border-[#ccc] overflow-hidden'
         ]">
-        <div class="top-[8px] left-[8px] flex flex-wrap gap-2 max-w-full mb-2" v-if="selectedFiles.length > 0">
+        <div class="top-[12px] left-[8px] flex flex-wrap gap-2 max-w-full mb-[4px]" v-if="selectedFiles.length > 0">
           <div
             v-for="(file, index) in selectedFiles"
             :key="index"
@@ -597,7 +597,7 @@ onMounted(() => {
           </div>
       </div>
       <div class="text-area-wrap">
-        <Textarea id="queryInput" v-model="inputValue" @keydown.enter.exact.prevent="handleSendQuery" cols="30" class="w-[100%] h-[100%]" :style="{ 'resize': 'none', 'overflow': 'hidden', 'font-size': '14px' }" :placeholder="t('chatbot.placeholder_chat')"/>
+        <Textarea id="queryInput" v-model="inputValue" @keydown.enter.exact.prevent="handleSendQuery" cols="30" class="w-[100%] h-[68px]" :style="{ 'resize': 'none', 'overflow-y': 'auto', 'font-size': '14px'}" :placeholder="t('chatbot.placeholder_chat')"/>
       </div>
       <div class="absolute bottom-[8px] left-[16px]">
         <FileUpload mode="basic" @select="onFileSelect" customUpload auto severity="secondary" class="p-button-outlined my-upload-button" chooseLabel=" "/>
