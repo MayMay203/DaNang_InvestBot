@@ -77,7 +77,7 @@ const handleAddNewChat = async () => {
 const handleSearchChat = async() => {
   const searchVal = searchText.value.trim()
   if(!searchVal){
-    searchResult = [...groupedConversations.value]
+    searchResult.value = {...groupedConversations.value}
     return
   }
   try {
@@ -626,6 +626,7 @@ onMounted(() => {
     :style="{ width: '50vw', height: '60vh'}" 
     :breakpoints="{ '1199px': '75vw', '575px': '90vw' }"
     pt:root:class="search-dialog"
+    :draggable="false"
     >
       <!-- Header với border-bottom -->
       <template #header>
