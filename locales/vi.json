@@ -180,6 +180,8 @@
   "common": {
     "no_data": "Dữ liệu không có sẵn",
     "source": "Nguồn",
-    "voice_error": "Trình duyệt không hỗ trợ Speech Recognition"
+    "voice_error": "Trình duyệt không hỗ trợ Speech Recognition",
+    "clear": "Xóa",
+    "keyword_search": "Từ khóa tìm kiếm"
   }
 }

@@ -180,6 +180,8 @@
   "common": {
     "no_data": "No data available",
     "source": "Sources",
-    "voice_error": "The browser does not support Speech Recognition"
+    "voice_error": "The browser does not support Speech Recognition",
+    "clear": "Clear",
+    "keyword_search": "Keyword Search"
   }
 }
