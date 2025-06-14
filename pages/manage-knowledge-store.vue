@@ -108,7 +108,7 @@ const handleSaveActionStore = async() => {
   }
   catch (error) {
     console.error(error)
-    toast.add({ severity: 'error', summary: t("toast.error"), detail: t("toast.message_error"), life: 3000 })
+    toast.add({ severity: 'error', summary: t("toast.error"), detail: error.response?.data?.message || t("toast.message_error"), life: 3000 })
   }
   finally{
     isStoreVisible.value = false
@@ -269,6 +269,7 @@ onMounted(async () => {
       v-model:filters="filters"
       showGridlines
       :value="knowledgeStores"
+      resizableColumns columnResizeMode="fit"
       paginator
       :rows="8"
       :first="first"
@@ -340,7 +341,18 @@ onMounted(async () => {
             @update:modelValue="(value) => toggleActive(value, slotProps.data)"  />
         </template>
       </Column>
-      <Column field="numberMaterials" :header="t('management.store.number_materials')" style="width: 10%"></Column>
+      <Column
+        field="numberMaterials"
+        :header="t('management.store.number_materials')"
+        style="width: 10%"
+        headerClass="text-center"
+      >
+        <template #body="slotProps">
+          <div class="text-center w-full">
+            {{ slotProps.data.numberMaterials }}
+          </div>
+        </template>
+      </Column>
       <Column style="width: 20%">
         <template #body="slotProps">
           <div class="flex gap-[4px]">
