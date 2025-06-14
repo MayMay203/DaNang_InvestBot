@@ -157,7 +157,9 @@ const handleDeleteConvers = async (id) => {
 const handleSendMessage = async () => {
   try {
     isLoading.value = true
-    const { data } = await conversationService.sendMessage({conversationId: selectedConvers.value, query: inputValue.value})
+    const query = inputValue.value
+    inputValue.value = ''
+    const { data } = await conversationService.sendMessage({conversationId: selectedConvers.value, query})
     if (data.statusCode === 429){
       toast.add({
         severity: "error",
@@ -176,6 +178,8 @@ const handleSendMessage = async () => {
       await getDetailConversation(selectedConvers.value)
     }
     isLoading.value = false
+    if(detailConversation.value.length === 1) await getAllConversations()
+    inputValue.value = ''
   }
   catch (error) {
     console.error(error)
@@ -260,6 +264,7 @@ const handleSendFileMessage = async() => {
     selectedFiles.value.forEach((item) => {
       formDataToSend.append("files", item.file);
     });
+    inputValue.value = ''
     const { data } = await conversationService.sendFileMessage(formDataToSend)
     const item = detailConversation.value[detailConversation.value.length - 1];
     item.answerContent = data.data;
@@ -269,6 +274,8 @@ const handleSendFileMessage = async() => {
       await getDetailConversation(selectedConvers.value)
     }
     isLoading.value = false
+    if(detailConversation.value.length === 1) await getAllConversations()
+    inputValue.value = ''
   }
   catch (error) {
     isLoading.value = false
