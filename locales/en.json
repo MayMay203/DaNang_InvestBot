@@ -167,7 +167,8 @@
     "invalid_url": "The URL is incorrectly formatted.",
     "message_toggle_material": "Are you sure you want to change active status this material?",
     "over_upload_file": "Number of files uploaded no more than 3",
-    "existed_file": "This file has been selected"
+    "existed_file": "This file has been selected",
+    "message_cancel_query": "You have stopped receiving feedback for this question."
   },
   "conversation": {
     "delete_conversation": "Are you sure to delete conversation?",
@@ -182,4 +183,3 @@
     "voice_error": "The browser does not support Speech Recognition"
   }
 }
-

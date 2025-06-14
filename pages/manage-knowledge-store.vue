@@ -311,7 +311,8 @@ onMounted(async () => {
       v-model:filters="filters"
       showGridlines
       :value="knowledgeStores"
-      resizableColumns columnResizeMode="fit"
+      resizableColumns 
+      columnResizeMode="fit"
       paginator
       :rows="8"
       :first="first"

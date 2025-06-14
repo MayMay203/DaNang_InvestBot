@@ -404,11 +404,6 @@ onMounted(async () => {
         style="width: 10%"
         search
       >
-        <template #body="{ data }">
-          <div style="white-space: normal; word-break: break-word;">
-            {{ data.name }}
-          </div>
-        </template>
         <template #filter="{ filterModel }">
           <InputText
             v-model="filterModel.value"
@@ -422,11 +417,6 @@ onMounted(async () => {
         :header="t('management.material.description')"
         style="width: 25%"
       >
-        <template #body="{ data }">
-          <div style="white-space: normal; word-break: break-word;">
-            {{ data.description }}
-          </div>
-        </template>
         <template #filter="{ filterModel }">
           <InputText
             v-model="filterModel.value"
@@ -666,7 +656,8 @@ onMounted(async () => {
       v-model:visible="isUploadVisible"
       modal
       :header="t('management.material.create_new_material')"
-      :style="{ width: '35rem' }"
+      :style="{ width: '42rem', height: '480px' }"
+      :maximizable="true"
       @hide="handleCloseDetailModal"
     >
       <FileUpload

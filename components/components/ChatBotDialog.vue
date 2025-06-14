@@ -234,7 +234,7 @@ const handleSendMessage = async () => {
         summary: t("toast.error"),
         detail: t("toast.message_error"),
         life: 3000,
-  });
+    });
   }
 }
 
@@ -603,8 +603,8 @@ onMounted(() => {
           ></span>
           <i v-else class="pi pi-microphone text-[22px]"></i>
         </button>
-        <button class="w-[36px] h-[36px] rounded-[50%] bg-white flex justify-center items-center cursor-pointer border-1 border-[rgba(0,0,0,0.4)]" :disabled="!inputValue.length" @click="handleSendQuery">
-          <BaseIcon name="arrow_upward" cursor="pointer" size-icon="22px" :disabled="!inputValue.length"/>
+        <button class="w-[36px] h-[36px] rounded-[50%] bg-white flex justify-center items-center cursor-pointer border-1 border-[rgba(0,0,0,0.4)]" :disabled="!inputValue.length || isLoading" @click="handleSendQuery" >
+          <BaseIcon name="arrow_upward" cursor="pointer" size-icon="22px" :disabled="!inputValue.length || isLoading"/>
         </button>
       </div>
     </div>

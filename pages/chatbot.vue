@@ -23,7 +23,6 @@ const inputValue = ref('')
 const isVisibleSearch = ref(false)
 const searchResult = ref([])
 const searchText = ref('')
-const transcript = ref('')
 let recognition = null
 
 const scrollToBottom = () => {
@@ -259,7 +258,7 @@ const handleSendFileMessage = async() => {
     formDataToSend.append("query", inputValue.value);
     formDataToSend.append("conversationId", selectedConvers.value);
     selectedFiles.value.forEach((item) => {
-        formDataToSend.append("files", item.file);
+      formDataToSend.append("files", item.file);
     });
     const { data } = await conversationService.sendFileMessage(formDataToSend)
     const item = detailConversation.value[detailConversation.value.length - 1];
@@ -562,7 +561,7 @@ onMounted(async() => {
           <i v-else class="pi pi-microphone text-[22px]"></i>
         </button>
         <button class="w-[36px] h-[36px] rounded-[50%] bg-white flex justify-center items-center cursor-pointer border-1 border-[rgba(0,0,0,0.4)]" :disabled="!inputValue.length" @click="handleSendQuery">
-          <BaseIcon name="arrow_upward" cursor="pointer" size-icon="22px" :disabled="!inputValue.length"/>
+          <BaseIcon name="arrow_upward" cursor="pointer" size-icon="22px" :disabled="!inputValue.length || isLoading"/>
         </button>
       </div>
     </div>

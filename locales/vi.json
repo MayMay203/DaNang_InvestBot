@@ -167,7 +167,8 @@
     "invalid_url": "Định dạng url nhập vào không hợp lệ.",
     "message_toggle_material": "Bạn có chắc chắn là bạn muốn thay đổi trạng thái hoạt động của tài liệu này?",
     "over_upload_file": "Số lượng file tải lên không vượt quá 3",
-    "existed_file": "File này đã được chọn"
+    "existed_file": "File này đã được chọn",
+    "message_cancel_query": "Bạn đã dừng nhận phản hồi cho câu hỏi này."
   },
   "conversation": {
     "delete_conversation": "Bạn có chắc chắn xoá đoạn chat này?",

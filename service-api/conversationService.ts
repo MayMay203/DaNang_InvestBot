@@ -34,18 +34,18 @@ class ConversationService {
     return $axiosApi.post(API_ENPOINT.SEND_FILE_MESSAGE, formData, {
       headers: {
         "Content-Type": "multipart/form-data",
-      },
+      }
     });
   }
 
-  getConversationByAccount(id: number){
+  getConversationByAccount(id: number) {
     const { $axiosApi } = useNuxtApp();
     return $axiosApi.get(`${API_ENPOINT.GET_CONVERSATIONS_BY_ACCOUNT}/${id}`);
   }
 
-  searchChat(searchText: string, accountId: number){
+  searchChat(searchText: string, accountId: number) {
     const { $axiosApi } = useNuxtApp();
-    const body = {searchText, accountId}
+    const body = { searchText, accountId }
     return $axiosApi.post(`${API_ENPOINT.SEARCH_CHAT}`, body);
   }
 }
