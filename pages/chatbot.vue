@@ -310,25 +310,29 @@ const handleSendQuery = async (event) => {
 }
 
 const splitAnswerContent = (content) => {
-  if (!content) return {}
-  
-  const [main, source] = content.split(/`${t('common.source')}:`/);
-  const sourceText = source?.trim() || null;
+  if (!content) return {};
 
-  let link = null;
-  if (sourceText) {
-    const match = sourceText.match(/https?:\/\/[^\s]+/);
-    if (match) {
-      link = match[0];
-    }
+  // Tìm tất cả các link
+  const matches = [...content.matchAll(/https?:\/\/[^\s]+/g)];
+
+  if (matches.length === 0) {
+    return {
+      content: content.trim(),
+      source: null,
+      link: null,
+    };
   }
 
+  const firstMatchIndex = matches[0].index;
+  const main = content.substring(0, firstMatchIndex).trim();
+  const source = content.substring(firstMatchIndex).trim();
+
   return {
-    content: main?.trim() || '',
-    source: sourceText,
-    link: link,
+    content: main,
+    source: source,
+    link: matches[0][0], // chỉ dùng link đầu tiên để hiển thị
   };
-}
+};
 
 const handleSearchChat = async() => {
   const searchVal = searchText.value.trim()
