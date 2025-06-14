@@ -272,15 +272,32 @@ const handleCloseStore = () => {
 }
 
 const handleDeleteStore = async(id)=>{
-  try {
-    const {data} = await knowledgestoreService.deleteStore(id)
-    await fetchAllKnowledgeStores()
-    toast.add({ severity: 'success', summary: t("toast.success"), detail: data.message, life: 3000 })
+   confirm.require({
+    message: t('management.store.delete_store'),
+    header: t('toast.confirm'),
+    icon: 'pi pi-exclamation-triangle',
+    rejectProps: {
+      label: t('action.cancel'),
+      severity: 'secondary',
+      outlined: true
+    },
+    acceptProps: {
+      label: t('action.delete')
+    },
+    accept: async () => {
+      try {
+        const {data} = await knowledgestoreService.deleteStore(id)
+        await fetchAllKnowledgeStores()
+        toast.add({ severity: 'success', summary: t("toast.success"), detail: data.message, life: 3000 })
 
-  }
-  catch(error){
-    toast.add({ severity: 'error', summary: t("toast.error"), detail: error.response?.data?.message || t("toast.message_error"), life: 3000 })
-  }
+      }
+      catch(error){
+        toast.add({ severity: 'error', summary: t("toast.error"), detail: error.response?.data?.message || t("toast.message_error"), life: 3000 })
+      }
+    },
+    reject: () => {
+    }
+  });
 }
 
 onMounted(async () => {

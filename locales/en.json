@@ -116,7 +116,8 @@
       "selected_list": "Selected List",
       "placeholder_select_list": "Select materials",
       "number_materials": "Number of materials",
-      "no_material_selected": "There is no selected document"
+      "no_material_selected": "There is no selected document",
+      "delete_store": "Are you sure to delete this knowledge store?"
     },
     "sync": "sync",
     "edit": "Edit",

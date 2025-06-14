@@ -116,7 +116,8 @@
       "selected_list": "Danh sách đã chọn",
       "placeholder_select_list": "Lựa chọn các tài liệu",
       "number_materials": "Số lượng tài liệu",
-      "no_material_selected": "Không có tài liệu nào được chọn"
+      "no_material_selected": "Không có tài liệu nào được chọn",
+      "delete_store": "Bạn có chắc chắn muốn xoá kho kiến thức này?"
     },
     "sync": "Đồng bộ",
     "edit": "Sửa",
