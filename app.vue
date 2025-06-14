@@ -1,27 +1,12 @@
 <script setup>
-import { ref, watch, onMounted } from 'vue'
-import { useRoute } from 'vue-router'
-const { locale } = useTranslation()
-const route = useRoute()
+import { ref, onMounted } from 'vue'
 
 const isLocaleReady = ref(false)
 
-const updateLocaleFromStorage = () => {
-  const savedLang = localStorage.getItem('lang') || 'vi'
-  if (locale.value !== savedLang) {
-    locale.value = savedLang
-  }
-  isLocaleReady.value = true
-}
-
 onMounted(() => {
-  updateLocaleFromStorage()
+  isLocaleReady.value = true
 })
 
-watch(() => route.path, () => {
-  isLocaleReady.value = false
-  updateLocaleFromStorage()
-})
 </script>
 
 <template>

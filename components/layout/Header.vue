@@ -8,15 +8,14 @@ const { t, locale } = useTranslation()
 const confirm = useConfirm();
 const op = ref();
 const isDetail = ref(false);
+const langRef = ref(localStorage.getItem('lang') || 'vi')
 const toggle = (event) => {
   op.value.toggle(event);
 };
 const authStore = useAuthStore()
 const userStore = useUserStore()
 
-const currentLang = computed(() => {
-  return localStorage.getItem('lang') || 'vi'
-})
+const currentLang = computed(() => langRef.value)
 
 const props = defineProps({
   sidebarWidth: String
@@ -58,10 +57,9 @@ const handleConfirmLogout = () => {
 
 const handleChangeLanguage = (langCode) => {
   locale.value = langCode
-  const currentLang = localStorage.getItem('lang')
-  if (currentLang !== langCode) {
+  if (langRef.value !== langCode) {
+    langRef.value = langCode
     localStorage.setItem('lang', langCode);
-    localStorage.removeItem('activeMenu')
   }
 }
 </script>

@@ -15,18 +15,27 @@ const toggle = (event) => {
 const authStore = useAuthStore()
 const userStore = useUserStore()
 const activeMenu = ref('');
+const langRef = ref(localStorage.getItem('lang') || 'vi')
 
-const menuList = [
-  { key: 'home', label: 'Home', path: '/' },
-  { key: 'service', label: 'Service', path: '/#services' },
-  { key: 'chatbot', label: 'Chatbot', path: '/chatbot' },
-];
+const menuList = computed(() => {
+  const list = [
+    { key: 'home', label: t('menu.home'), path: '/' },
+    { key: 'service', label: t('menu.service'), path: '/#services' },
+    { key: 'chatbot', label: t('menu.chatbot'), path: '/chatbot' },
+  ]
 
+  if (route.path === '/chatbot') {
+    return list.filter(item => item.key !== 'service')
+  }
+
+  return list
+})
 
 const nameUser = computed(() => {
   return userStore.fullName?.split(' ')[userStore.fullName.split(' ').length - 1][0].toUpperCase()
 })
 
+const currentLang = computed(() => langRef.value)
 
 function updateActiveMenu(value) {
   if (value === '/#services') {
@@ -69,8 +78,8 @@ const handleConfirmLogout = () => {
 
 const handleChangeLanguage = (langCode) => {
   locale.value = langCode
-  const currentLang = localStorage.getItem('lang')
-  if (currentLang !== langCode) {
+  if (langRef.value !== langCode) {
+    langRef.value = langCode
     localStorage.setItem('lang', langCode);
   }
 }
@@ -156,8 +165,8 @@ watch(() => route.fullPath, (newValue) => {
               class="flex flex-col pl-[30px] text-[14px] gap-[6px]"
               v-if="isDetail"
             >
-            <button class="px-[10px] py-[8px] menu-item flex justify-start" @click="handleChangeLanguage('vi')">{{t('menu.vietnamese')}}</button>
-            <button class="px-[10px] py-[8px] menu-item flex justify-start" @click="handleChangeLanguage('en')">{{t('menu.english')}}</button>
+            <button class="px-[10px] py-[8px] menu-item flex justify-start" :class="{'active-menu': currentLang === 'vi'}" @click="handleChangeLanguage('vi')">{{t('menu.vietnamese')}}</button>
+            <button class="px-[10px] py-[8px] menu-item flex justify-start" :class="{'active-menu': currentLang === 'en'}" @click="handleChangeLanguage('en')">{{t('menu.english')}}</button>
             </div>
             <div
               class="h-[0.8px] bg-[#000] menu-item"
@@ -197,6 +206,12 @@ watch(() => route.fullPath, (newValue) => {
 .menu-item:hover {
   background-color: rgba(#ccc, 0.15);
   cursor: pointer;
+  border-radius: 6px;
+}
+
+.menu-item.active-menu{
+  background-color: rgba(#ccc, 0.15);
+  cursor: default;
   border-radius: 6px;
 }
 

@@ -18,7 +18,14 @@ const excludedUrls = [
 ];
 
 export default defineNuxtRouteMiddleware(async (to) => {
-  if (process.server) return;
+  if (import.meta.server) return;
+
+  const lang = localStorage.getItem('lang') || 'vi'
+    const i18n = useNuxtApp().$i18n
+
+    if (i18n.locale.value !== lang) {
+      i18n.locale.value = lang
+    }
 
   const publicPages = [ROUTES.RESET_PASSWORD];
   if (publicPages.includes(to.path)) return;
