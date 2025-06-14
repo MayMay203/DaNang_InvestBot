@@ -223,6 +223,7 @@ const handleSendMessage = async () => {
       await getDetailConversation(selectedConvers.value)
     }
     isLoading.value = false
+    if(detailConversation.value.length === 1) await getAllConversations()
   }
   catch (error) {
     console.error(error)
@@ -234,7 +235,7 @@ const handleSendMessage = async () => {
         summary: t("toast.error"),
         detail: t("toast.message_error"),
         life: 3000,
-  });
+    });
   }
 }
 
@@ -316,6 +317,7 @@ const handleSendFileMessage = async() => {
       await getDetailConversation(selectedConvers.value)
     }
     isLoading.value = false
+    if(detailConversation.value.length === 1) await getAllConversations()
   }
   catch (error) {
     isLoading.value = false
@@ -356,25 +358,24 @@ const handleSendQuery = async (event) => {
 }
 
 const splitAnswerContent = (content) => {
-  if (!content) return {}
-  
-  const [main, source] = content.split(/Nguồn:/);
-  const sourceText = source?.trim() || null;
+  if (!content) return {};
 
-  let link = null;
-  if (sourceText) {
-    const match = sourceText.match(/https?:\/\/[^\s]+/);
-    if (match) {
-      link = match[0];
-    }
-  }
+const [main, sourcePart] = content.split(new RegExp(`${t('common.source')}:`, 'i'));
+  const sourceText = sourcePart?.trim() || null;
+
+  // Bắt tất cả link, bỏ các ký tự dư như ) hoặc ]
+  const links = sourceText
+    ? Array.from(sourceText.matchAll(/https?:\/\/[^\s\])]+/g)).map((m) =>
+        m[0].replace(/[\])]+$/, '') // loại bỏ ký tự dư cuối
+      )
+    : [];
 
   return {
     content: main?.trim() || '',
     source: sourceText,
-    link: link,
+    links,
   };
-}
+};
 
 const handleCloseModal = () => {
   emit('update:visible', false)
@@ -545,19 +546,26 @@ onMounted(() => {
                     </template>
                     <div>{{ splitAnswerContent(item.answerContent).content }}</div>
                     <div v-if="splitAnswerContent(item.answerContent).source" class="mt-1 text-gray-500 italic">
-                      <template v-if="splitAnswerContent(item.answerContent).link">
-                        Nguồn:
-                        <a
-                          :href="splitAnswerContent(item.answerContent).link"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          class="text-[#1a0dab] hover:underline font-medium break-words"
-                        >
-                          {{ splitAnswerContent(item.answerContent).source }}
-                        </a>
+                      <template v-if="splitAnswerContent(item.answerContent).links.length">
+                        <span v-for="(link, index) in splitAnswerContent(item.answerContent).links" :key="index" class="block">
+                          <template v-if="splitAnswerContent(item.answerContent).links.length === 1">
+                            {{ t('common.source') }}:
+                          </template>
+                          <template v-else>
+                            {{ t('common.source') + ' ' + (index + 1) + ':' }}
+                          </template>
+                          <a
+                            :href="link"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="text-[#1a0dab] hover:underline font-medium break-words"
+                          >
+                            {{ link }}
+                          </a>
+                        </span>
                       </template>
                       <template v-else>
-                        Nguồn: {{ splitAnswerContent(item.answerContent).source }}
+                        {{ splitAnswerContent(item.answerContent).source }}
                       </template>
                     </div>
                 </div>
@@ -603,8 +611,8 @@ onMounted(() => {
           ></span>
           <i v-else class="pi pi-microphone text-[22px]"></i>
         </button>
-        <button class="w-[36px] h-[36px] rounded-[50%] bg-white flex justify-center items-center cursor-pointer border-1 border-[rgba(0,0,0,0.4)]" :disabled="!inputValue.length" @click="handleSendQuery">
-          <BaseIcon name="arrow_upward" cursor="pointer" size-icon="22px" :disabled="!inputValue.length"/>
+        <button class="w-[36px] h-[36px] rounded-[50%] bg-white flex justify-center items-center cursor-pointer border-1 border-[rgba(0,0,0,0.4)]" :disabled="!inputValue.length || isLoading" @click="handleSendQuery" >
+          <BaseIcon name="arrow_upward" cursor="pointer" size-icon="22px" :disabled="!inputValue.length || isLoading"/>
         </button>
       </div>
     </div>

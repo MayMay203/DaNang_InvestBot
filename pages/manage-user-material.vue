@@ -408,6 +408,7 @@ onMounted(async () => {
       scrollable
       resizableColumns
       columnResizeMode="fit"
+      style="min-height: 500px"
     >
       <template #header>
         <div class="flex justify-between">
@@ -450,11 +451,6 @@ onMounted(async () => {
         style="width: 15%"
         search
       >
-        <template #body="{ data }">
-          <div style="white-space: normal; word-break: break-word">
-            {{ data.name }}
-          </div>
-        </template>
         <template #filter="{ filterModel }">
           <InputText
             v-model="filterModel.value"
@@ -469,7 +465,7 @@ onMounted(async () => {
         style="width: 20%"
       >
         <template #body="{ data }">
-          <div style="white-space: normal; word-break: break-word">
+          <div>
             {{ data.description }}
           </div>
         </template>
@@ -998,3 +994,9 @@ onMounted(async () => {
     <ProgressSpinner />
   </div>
 </template>
+
+<style>
+.p-datatable-table-container{
+  min-height: 500px;
+}
+</style>

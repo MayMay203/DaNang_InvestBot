@@ -23,7 +23,6 @@ const inputValue = ref('')
 const isVisibleSearch = ref(false)
 const searchResult = ref([])
 const searchText = ref('')
-const transcript = ref('')
 let recognition = null
 
 const scrollToBottom = () => {
@@ -259,7 +258,7 @@ const handleSendFileMessage = async() => {
     formDataToSend.append("query", inputValue.value);
     formDataToSend.append("conversationId", selectedConvers.value);
     selectedFiles.value.forEach((item) => {
-        formDataToSend.append("files", item.file);
+      formDataToSend.append("files", item.file);
     });
     const { data } = await conversationService.sendFileMessage(formDataToSend)
     const item = detailConversation.value[detailConversation.value.length - 1];
@@ -307,30 +306,27 @@ const handleSendQuery = async (event) => {
   selectedFiles.value = []
   await nextTick();
     scrollToBottom();
+
+  if(detailConversation.value.length === 1) await getAllConversations()
 }
 
 const splitAnswerContent = (content) => {
   if (!content) return {};
 
-  // Tìm tất cả các link
-  const matches = [...content.matchAll(/https?:\/\/[^\s]+/g)];
+const [main, sourcePart] = content.split(new RegExp(`${t('common.source')}:`, 'i'));
+  const sourceText = sourcePart?.trim() || null;
 
-  if (matches.length === 0) {
-    return {
-      content: content.trim(),
-      source: null,
-      link: null,
-    };
-  }
-
-  const firstMatchIndex = matches[0].index;
-  const main = content.substring(0, firstMatchIndex).trim();
-  const source = content.substring(firstMatchIndex).trim();
+  // Bắt tất cả link, bỏ các ký tự dư như ) hoặc ]
+  const links = sourceText
+    ? Array.from(sourceText.matchAll(/https?:\/\/[^\s\])]+/g)).map((m) =>
+        m[0].replace(/[\])]+$/, '') // loại bỏ ký tự dư cuối
+      )
+    : [];
 
   return {
-    content: main,
-    source: source,
-    link: matches[0][0], // chỉ dùng link đầu tiên để hiển thị
+    content: main?.trim() || '',
+    source: sourceText,
+    links,
   };
 };
 
@@ -503,19 +499,26 @@ onMounted(async() => {
                     </template>
                     <div>{{ splitAnswerContent(item.answerContent).content }}</div>
                     <div v-if="splitAnswerContent(item.answerContent).source" class="mt-1 text-gray-500 italic">
-                      <template v-if="splitAnswerContent(item.answerContent).link">
-                        {{ `${t('common.source')}:` }}:
-                        <a
-                          :href="splitAnswerContent(item.answerContent).link"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          class="text-[#1a0dab] hover:underline font-medium break-words"
-                        >
-                          {{ splitAnswerContent(item.answerContent).source }}
-                        </a>
+                      <template v-if="splitAnswerContent(item.answerContent).links.length">
+                        <span v-for="(link, index) in splitAnswerContent(item.answerContent).links" :key="index" class="block">
+                          <template v-if="splitAnswerContent(item.answerContent).links.length === 1">
+                            {{ t('common.source') }}:
+                          </template>
+                          <template v-else>
+                            {{ t('common.source') + ' ' + (index + 1) + ':' }}
+                          </template>
+                          <a
+                            :href="link"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="text-[#1a0dab] hover:underline font-medium break-words"
+                          >
+                            {{ link }}
+                          </a>
+                        </span>
                       </template>
                       <template v-else>
-                         {{ t('common.source') + ': ' + splitAnswerContent(item.answerContent).source }}
+                        {{ splitAnswerContent(item.answerContent).source }}
                       </template>
                     </div>
                 </div>
@@ -562,7 +565,7 @@ onMounted(async() => {
           <i v-else class="pi pi-microphone text-[22px]"></i>
         </button>
         <button class="w-[36px] h-[36px] rounded-[50%] bg-white flex justify-center items-center cursor-pointer border-1 border-[rgba(0,0,0,0.4)]" :disabled="!inputValue.length" @click="handleSendQuery">
-          <BaseIcon name="arrow_upward" cursor="pointer" size-icon="22px" :disabled="!inputValue.length"/>
+          <BaseIcon name="arrow_upward" cursor="pointer" size-icon="22px" :disabled="!inputValue.length || isLoading"/>
         </button>
       </div>
     </div>

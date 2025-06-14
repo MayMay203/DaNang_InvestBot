@@ -110,12 +110,14 @@
       "active": "Hoạt động",
       "material": "Tài liệu",
       "create_new_knowledge_store": "Thêm mới kho kiến thức",
+      "edit_knowledge_store": "Chỉnh sửa kho kiến thức",
       "add_materials_to_store": "Thêm tài liệu vào kho kiến thức",
       "materials": "Tài liệu",
       "selected_list": "Danh sách đã chọn",
       "placeholder_select_list": "Lựa chọn các tài liệu",
       "number_materials": "Số lượng tài liệu",
-      "no_material_selected": "Không có tài liệu nào được chọn"
+      "no_material_selected": "Không có tài liệu nào được chọn",
+      "delete_store": "Bạn có chắc chắn muốn xoá kho kiến thức này?"
     },
     "sync": "Đồng bộ",
     "edit": "Sửa",
@@ -165,7 +167,8 @@
     "invalid_url": "Định dạng url nhập vào không hợp lệ.",
     "message_toggle_material": "Bạn có chắc chắn là bạn muốn thay đổi trạng thái hoạt động của tài liệu này?",
     "over_upload_file": "Số lượng file tải lên không vượt quá 3",
-    "existed_file": "File này đã được chọn"
+    "existed_file": "File này đã được chọn",
+    "message_cancel_query": "Bạn đã dừng nhận phản hồi cho câu hỏi này."
   },
   "conversation": {
     "delete_conversation": "Bạn có chắc chắn xoá đoạn chat này?",

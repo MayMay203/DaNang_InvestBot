@@ -34,4 +34,5 @@ export const API_ENPOINT = {
   SEND_FILE_MESSAGE: "/conversation/send-file-question",
   GET_CONVERSATIONS_BY_ACCOUNT: '/conversation/get-conversations-by-account',
   SEARCH_CHAT: '/conversation/search-chat',
+  DELETE_STORE: '/knowledge-store/delete-store'
 };
