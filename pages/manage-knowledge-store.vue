@@ -103,7 +103,9 @@ const handleSaveActionStore = async() => {
     }
 
     await fetchAllKnowledgeStores()
-    newStoreData = {id: null, name: '', description: ''}
+    newStoreData.name = ''
+    newStoreData.description = ''
+    newStoreData. id = ''
     toast.add({ severity: 'success', summary: t("toast.success"), detail: t("toast.message_success"), life: 3000 })
   }
   catch (error) {
@@ -241,10 +243,21 @@ const handleShowDetailMaterial = async (id) => {
   }
 }
 
-const handleEditKnowledgeStore = async (id) => {
+const handleCreateNewStore = () => {
+  isEditStoreVisible.value = false
+  isStoreVisible.value = true
+  newStoreData.id = ''
+  newStoreData.name = ''
+  newStoreData.description = ''
+}
+
+const handleEditKnowledgeStore = async (idUpdate) => {
   try {
-    const { data } = await knowledgestoreService.getDetailKnowledgeStore(id)
-    newStoreData.value = data.data
+    const { data } = await knowledgestoreService.getDetailKnowledgeStore(idUpdate)
+    const {name, description, id } = data.data
+    newStoreData.id = id
+    newStoreData.name = name
+    newStoreData.description = description
     isEditStoreVisible.value = true
     isStoreVisible.value = true
   }
@@ -256,6 +269,18 @@ const handleEditKnowledgeStore = async (id) => {
 const handleCloseStore = () => {
   isStoreVisible.value = false
   isEditStoreVisible.value = false
+}
+
+const handleDeleteStore = async(id)=>{
+  try {
+    const {data} = await knowledgestoreService.deleteStore(id)
+    await fetchAllKnowledgeStores()
+    toast.add({ severity: 'success', summary: t("toast.success"), detail: data.message, life: 3000 })
+
+  }
+  catch(error){
+    toast.add({ severity: 'error', summary: t("toast.error"), detail: error.response?.data?.message || t("toast.message_error"), life: 3000 })
+  }
 }
 
 onMounted(async () => {
@@ -306,7 +331,7 @@ onMounted(async () => {
             width="140px"
             height="42px"
             sizeIcon="22px"
-            @click="isStoreVisible = true"
+            @click="handleCreateNewStore"
           ></BaseButton>
         </div>
       </template>
@@ -371,19 +396,32 @@ onMounted(async () => {
               left-icon="edit"
               :text="t('management.edit')"
               variant="outline"
-              color="red"
+              color="#A5974A"
               width="80px"
               height="30px"
               sizeIcon="18px"
-              border-color="red"
+              border-color="#A5974A"
               @click="handleEditKnowledgeStore(slotProps.data.id)"
+            ></BaseButton>
+             <BaseButton
+              left-icon="delete"
+              :text="t('management.delete')"
+              variant="outline"
+              color="red"
+              width="90px"
+              height="30px"
+              sizeIcon="20px"
+              border-color="red"
+              @click="handleDeleteStore(slotProps.data.id)"
             ></BaseButton>
           </div>
         </template>
       </Column>
     </DataTable>
     <!-- Modal add new knowledge store -->
-      <Dialog v-model:visible="isStoreVisible" modal :header="t('management.store.create_new_knowledge_store')" :style="{ width: '35rem' }">
+     {{ newStoreData.name }}
+     {{ newStoreData.description }}
+      <Dialog v-model:visible="isStoreVisible" modal :header="isEditStoreVisible ? t('management.store.edit_knowledge_store') : t('management.store.create_new_knowledge_store')" :style="{ width: '35rem' }">
     <div class="flex flex-col gap-4 mb-4">
         <label for="name" class="font-medium w-24 text-[15px]">{{ t('management.store.name') }}</label>
         <InputText v-model="newStoreData.name" id="name" class="flex-auto" autocomplete="off" />

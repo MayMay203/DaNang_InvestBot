@@ -43,7 +43,12 @@ class KnowledgeStoreService {
 
   updateKnowledgeStore(id: number, data: IUpdate) {
     const { $axiosApi } = useNuxtApp();
-    return $axiosApi.patch(API_ENPOINT.CHANGE_STATUS_STORE, { ...data });
+    return $axiosApi.patch(`${API_ENPOINT.UPDATE_KNOWLEDGE_STORE}/${id}`, { ...data });
+  }
+
+  deleteStore(id: number){
+    const {$axiosApi} = useNuxtApp()
+    return $axiosApi.delete(`${API_ENPOINT.DELETE_STORE}/${id}`)
   }
 }
 
