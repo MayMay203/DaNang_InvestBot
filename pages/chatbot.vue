@@ -157,7 +157,9 @@ const handleDeleteConvers = async (id) => {
 const handleSendMessage = async () => {
   try {
     isLoading.value = true
-    const { data } = await conversationService.sendMessage({conversationId: selectedConvers.value, query: inputValue.value})
+    const query = inputValue.value
+    inputValue.value = ''
+    const { data } = await conversationService.sendMessage({conversationId: selectedConvers.value, query})
     if (data.statusCode === 429){
       toast.add({
         severity: "error",
@@ -176,6 +178,8 @@ const handleSendMessage = async () => {
       await getDetailConversation(selectedConvers.value)
     }
     isLoading.value = false
+    if(detailConversation.value.length === 1) await getAllConversations()
+    inputValue.value = ''
   }
   catch (error) {
     console.error(error)
@@ -260,6 +264,7 @@ const handleSendFileMessage = async() => {
     selectedFiles.value.forEach((item) => {
       formDataToSend.append("files", item.file);
     });
+    inputValue.value = ''
     const { data } = await conversationService.sendFileMessage(formDataToSend)
     const item = detailConversation.value[detailConversation.value.length - 1];
     item.answerContent = data.data;
@@ -269,6 +274,8 @@ const handleSendFileMessage = async() => {
       await getDetailConversation(selectedConvers.value)
     }
     isLoading.value = false
+    if(detailConversation.value.length === 1) await getAllConversations()
+    inputValue.value = ''
   }
   catch (error) {
     isLoading.value = false
@@ -448,7 +455,7 @@ onMounted(async() => {
         <div v-for="[date, conversations] in Object.entries(groupedConversations)" :key="date" class="mt-[16px]">
           <span class="text-[12px] font-medium text-[rgb(143,143,143)]">{{ date }}</span>
           <div class="flex flex-col mt-[4px]">
-            <div class="flex gap-[8px] items-center px-[10px] py-[8px] hover:bg-[#0d0d0d0d] cursor-pointer rounded-[8px]" :class="{'bg-[#0d0d0d0d]':selectedConvers === convers.id}" v-for="convers in conversations" :key="convers.id" @click="getDetailConversation(convers.id)">
+            <div class="flex gap-[8px] mt-[2px] items-center px-[10px] py-[8px] hover:bg-[#0d0d0d0d] cursor-pointer rounded-[8px]" :class="{'bg-[#0d0d0d0d]':selectedConvers === convers.id}" v-for="convers in conversations" :key="convers.id" @click="getDetailConversation(convers.id)">
               <span class="flex-1 text-[13px] max-w-[18] truncate">{{ convers.name }}</span>
               <BaseIcon name="delete" size-icon="20px" cursor="pointer" @click="handleDeleteConvers(convers.id)"></BaseIcon>
             </div>
@@ -548,7 +555,7 @@ onMounted(async() => {
           </div>
       </div>
       <div class="text-area-wrap">
-        <Textarea id="queryInput" v-model="inputValue" @keydown.enter.exact.prevent="handleSendQuery" cols="30" class="w-[100%] h-[100%]" :style="{ 'resize': 'none', 'overflow': 'hidden', 'font-size': '14px' }" :placeholder="t('chatbot.placeholder_chat')"/>
+        <Textarea id="queryInput" v-model="inputValue" @keydown.enter.exact.prevent="handleSendQuery" cols="30" class="w-[100%] h-[68px]" :style="{ 'resize': 'none', 'overflow-y': 'auto', 'font-size': '14px' }" :placeholder="t('chatbot.placeholder_chat')"/>
         </div>
       <div class="absolute bottom-[8px] left-[16px]">
         <FileUpload mode="basic" @select="onFileSelect" customUpload auto severity="secondary" class="p-button-outlined my-upload-button" chooseLabel=" "/>

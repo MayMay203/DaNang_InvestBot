@@ -416,7 +416,7 @@ onMounted(async () => {
             <Button
               type="button"
               icon="pi pi-filter-slash"
-              label="Clear"
+              :label="t('common.clear')"
               outlined
               @click="clearFilter()"
             />
@@ -426,7 +426,7 @@ onMounted(async () => {
               </InputIcon>
               <InputText
                 v-model="filters['global'].value"
-                placeholder="Keyword Search"
+                :placeholder="t('common.keyword_search')"
               />
             </IconField>
           </div>

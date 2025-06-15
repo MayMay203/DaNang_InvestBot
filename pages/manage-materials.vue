@@ -3,6 +3,7 @@ import { FilterMatchMode, FilterOperator } from "@primevue/core/api";
 import BaseButton from "~/components/base-components/BaseButton.vue";
 import { materialService } from "~/service-api/materialService";
 import dayjs from "dayjs";
+import { h } from 'vue'
 
 definePageMeta({
   layout: "admin",
@@ -72,6 +73,30 @@ const initFilters = () => {
     },
   };
 };
+
+
+const filterName = (options) => {
+  return h('div', [
+    h('div', t('filter.matchModeLabel')), // Match All
+    h('Dropdown', {
+      modelValue: options.filterConstraint,
+      'onUpdate:modelValue': options.onConstraintChange,
+      options: [
+        { label: t('filter.startsWith'), value: 'startsWith' },
+        { label: t('filter.contains'), value: 'contains' }
+      ]
+    }),
+    h('InputText', {
+      modelValue: options.value,
+      'onUpdate:modelValue': options.onChange,
+      placeholder: t('filter.searchByName'),
+    }),
+    h('Button', {
+      label: t('filter.apply'),
+      onClick: options.onApply,
+    })
+  ])
+}
 
 initFilters();
 
@@ -369,7 +394,7 @@ onMounted(async () => {
             <Button
               type="button"
               icon="pi pi-filter-slash"
-              label="Clear"
+              :label="t('common.clear')"
               outlined
               @click="clearFilter()"
             />
@@ -379,7 +404,7 @@ onMounted(async () => {
               </InputIcon>
               <InputText
                 v-model="filters['global'].value"
-                placeholder="Keyword Search"
+                :placeholder="t('common.keyword_search')"
               />
             </IconField>
           </div>
@@ -403,6 +428,7 @@ onMounted(async () => {
         :header="t('management.material.name')"
         style="width: 10%"
         search
+        :filterMenuTemplate="filterName"
       >
         <template #filter="{ filterModel }">
           <InputText
