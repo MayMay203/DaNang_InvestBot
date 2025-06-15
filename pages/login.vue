@@ -37,6 +37,7 @@ const toast = useToast()
 const loginSchema = getLoginSchema(t)
 const authStore = useAuthStore()
 const isLoading = ref()
+const config = useRuntimeConfig();
 
 const loginForm = ref({
   email: '',
@@ -88,7 +89,7 @@ const handleBlurInput = (field) => {
 }
 
 const handleLoginGoogle = async () => {
-  window.location.href = 'http://localhost:3001/auth/login-with-google';
+  window.location.href = `${config.public.apiBaseUrl}/auth/login-with-google`;
 }
 
 const handleEnter = async() => {
