@@ -4,7 +4,7 @@ import Nova from "@primeuix/themes/aura";
 export default defineNuxtConfig({
   compatibilityDate: "2024-11-01",
   devtools: { enabled: false },
-  css: ["primeicons/primeicons.css", "@/assets/css/global.css"],
+  css: ["primeicons/primeicons.css", "@/assets/css/global.scss"],
   vite: {
     plugins: [tailwindcss()],
     css: {
