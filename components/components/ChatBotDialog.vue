@@ -494,7 +494,7 @@ onMounted(() => {
           <span class="text-[12px] font-medium text-[rgb(143,143,143)]">{{ date }}</span>
           <div class="flex flex-col mt-[4px]">
             <div class="flex gap-[8px] mt-[2px] items-center px-[10px] py-[8px] hover:bg-[#0d0d0d0d] cursor-pointer rounded-[8px]" :class="{'bg-[#0d0d0d0d]':selectedConvers === convers.id}" v-for="convers in conversations" :key="convers.id" @click="getDetailConversation(convers.id)">
-              <span class="flex-1 text-[13px] max-w-[18] truncate">{{ convers.name }}</span>
+              <span class="flex-1 text-[13px] block truncate">{{ convers.name }}</span>
               <BaseIcon name="delete" size-icon="20px" cursor="pointer" @click="handleDeleteConvers(convers.id)" v-if="accountId === userStore.id"></BaseIcon>
             </div>
           </div>
