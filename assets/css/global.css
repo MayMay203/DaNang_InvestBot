@@ -28,6 +28,7 @@
     --p-toggleswitch-checked-background: #10b981 !important;
     --p-toggleswitch-checked-hover-background: #6ee7b7 !important;
   }
+}
 
 *{
     box-sizing: border-box;
@@ -96,5 +97,4 @@ button[disabled] {
 
 .chatbot-dialog .p-dialog-header{
     display: none;
-}
 }
