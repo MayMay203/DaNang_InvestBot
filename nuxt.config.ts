@@ -4,13 +4,16 @@ import Nova from "@primeuix/themes/aura";
 export default defineNuxtConfig({
   compatibilityDate: "2024-11-01",
   devtools: { enabled: false },
-  css: ["primeicons/primeicons.css", "@/assets/css/global.scss"],
+  css: [
+    "primeicons/primeicons.css",
+    "@/assets/css/global.scss", // giữ SCSS, không import Tailwind ở trong
+  ],
   vite: {
     plugins: [tailwindcss()],
     css: {
       preprocessorOptions: {
         scss: {
-          additionalData: '@use "@/assets/variables/variables.scss" as *;',
+          additionalData: '@use "@/assets/variables/variables.css" as *;',
         },
       },
     },
