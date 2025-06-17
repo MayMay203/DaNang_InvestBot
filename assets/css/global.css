@@ -1,32 +1,33 @@
 @import "tailwindcss";
 
 /* Custom data table */
+@layer base {
 :root{
-    --p-select-option-selected-background: rgba(74, 144, 226, 0.08);
-    --p-select-option-selected-focus-background: rgba(74, 144, 226, 0.08);
-    --p-select-option-selected-focus-color: #065076;
-    --p-select-focus-border-color: #065076;
-    --p-button-outlined-primary-border-color: #065076;
-    --p-textarea-focus-border-color: #065076;
-    --p-button-outlined-primary-color: #065076;
-    --p-button-outlined-primary-hover-background: rgba(74, 144, 226, 0.08);
-    --p-button-primary-background: #065076;
-    --p-button-primary-border-color: #065076;
-    --p-button-primary-hover-background: rgba(74, 144, 226, 0.08);
-    --p-button-primary-hover-border-color: #065076;
-    --p-button-primary-hover-color: #065076;
-    --p-inputtext-focus-border-color: #065076;
-    --p-select-option-selected-color: #065076;
-    --p-slider-handle-focus-ring-color: #065076;
-    --p-paginator-nav-button-selected-background: rgba(74, 144, 226, 0.08);
-    --p-fieldset-legend-focus-ring-color: #065076;
-    --p-paginator-nav-button-selected-color: #065076;
-    --p-primary-color: #065076;
-    --p-primary-hover-color: #065076;
-    --p-primary-active-color: #065076;
-    --p-toggleswitch-checked-background: #10b981;
-    --p-toggleswitch-checked-hover-background: #6ee7b7;
-}
+    --p-select-option-selected-background: rgba(74, 144, 226, 0.08) !important;
+    --p-select-option-selected-focus-background: rgba(74, 144, 226, 0.08) !important;
+    --p-select-option-selected-focus-color: #065076 !important;
+    --p-select-focus-border-color: #065076 !important;
+    --p-button-outlined-primary-border-color: #065076 !important;
+    --p-textarea-focus-border-color: #065076 !important;
+    --p-button-outlined-primary-color: #065076 !important;
+    --p-button-outlined-primary-hover-background: rgba(74, 144, 226, 0.08) !important;
+    --p-button-primary-background: #065076 !important;
+    --p-button-primary-border-color: #065076 !important;
+    --p-button-primary-hover-background: rgba(74, 144, 226, 0.08) !important;
+    --p-button-primary-hover-border-color: #065076 !important;
+    --p-button-primary-hover-color: #065076 !important;
+    --p-inputtext-focus-border-color: #065076 !important;
+    --p-select-option-selected-color: #065076 !important;
+    --p-slider-handle-focus-ring-color: #065076 !important;
+    --p-paginator-nav-button-selected-background: rgba(74, 144, 226, 0.08) !important;
+    --p-fieldset-legend-focus-ring-color: #065076 !important;
+    --p-paginator-nav-button-selected-color: #065076 !important;
+    --p-primary-color: #065076 !important;
+    --p-primary-hover-color: #065076 !important;
+    --p-primary-active-color: #065076 !important;
+    --p-toggleswitch-checked-background: #10b981 !important;
+    --p-toggleswitch-checked-hover-background: #6ee7b7 !important;
+  }
 
 *{
     box-sizing: border-box;
@@ -96,4 +97,4 @@ button[disabled] {
 .chatbot-dialog .p-dialog-header{
     display: none;
 }
-  
+}
