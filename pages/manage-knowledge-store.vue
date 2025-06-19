@@ -465,7 +465,7 @@ onMounted(async () => {
       <div class="flex flex-col lg:flex-row gap-4">
         <div class="flex flex-1 flex-col gap-4 mb-4 w-full">
           <label for="name" class="font-medium w-50 text-[15px]">{{ t('management.store.materials') }}</label>
-          <MultiSelect v-model="selectedMaterials" showClear :options="materialList" optionLabel="name" filter :placeholder="t('management.store.materials')" :maxSelectedLabels="3" class="w-full" :panelStyle="{ width: '38%' }"/>
+          <MultiSelect v-model="selectedMaterials" showClear :options="materialList" optionLabel="name" filter :placeholder="t('management.store.materials')" :maxSelectedLabels="0" class="w-full" :panelStyle="{ width: '38%' }"/>
         </div>
         <div class="flex flex-1 flex-col gap-4 mb-2">
           <label for="list" class="font-medium w-50 text-[15px]">
