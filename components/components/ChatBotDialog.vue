@@ -484,9 +484,9 @@ onMounted(() => {
     >
       <div :class="['top-[20px] flex w-full pr-[24px]', 'absolute']">
         <BaseIcon name="right_panel_close" size-icon="24" cursor="pointer" @click="isExpanded = !isExpanded"></BaseIcon>
-        <div class="flex gap-[10px] ml-auto" v-if="accountId === userStore.id">
+        <div class="flex gap-[10px] ml-auto">
           <BaseIcon name="search" size-icon="24" cursor="pointer" @click="isVisibleSearch = true"></BaseIcon>
-          <BaseIcon name="edit_square" size-icon="22" cursor="pointer" @click="handleAddNewChat"></BaseIcon>
+          <BaseIcon name="edit_square" size-icon="22" cursor="pointer" @click="handleAddNewChat" v-if="accountId === userStore.id"></BaseIcon>
         </div>
       </div>
       <div class="mt-[30px] overflow-auto max-h-[80vh]">

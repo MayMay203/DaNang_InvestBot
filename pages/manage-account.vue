@@ -14,6 +14,7 @@ const toast = useToast()
 const {t} = useTranslation()
 const filters = ref({value: null});
 const loading = ref(false);
+const isLoading = ref(false)
 const accounts = ref([])
 const first = ref(0);
 const title = ref()
@@ -89,12 +90,15 @@ const toggleActive = (value, userData) => {
 const handleToggleAccount = async () => {
   const { status, id } = updatedStatus.value
   try {
+    isLoading.value = true
     await accountService.changeStatusAccount({ status, id, reason: reason.value })
     await fetchAllAccounts()
     toast.add({ severity: 'success', summary: t("toast.success"), detail: t("toast.message_success"), life: 3000 })
   } catch (error) {
     toast.add({ severity: 'error', summary: t("toast.error"), detail: t("toast.message_error"), life: 3000 })
   } finally {
+    isLoading.value = false
+    reason.value = ''
     isVisible.value = false
   }
 }
@@ -228,14 +232,14 @@ onMounted(async () => {
       </Column>
     </DataTable>
     <!-- Dialog active account -->
-     <Dialog v-model:visible="isVisible" modal :header="title" :style="{ width: '25rem' }">
+    <Dialog v-model:visible="isVisible" modal :header="title" :style="{ width: '25rem' }" @hide="handleCancel">
     <span class="text-surface-500 dark:text-surface-400 block mb-5">{{ t('management.account.active_message') }}</span>
     <Textarea v-model="reason" rows="2" class="w-[100%]" required/>
     <div class="flex items-center justify-end gap-2 mt-3">
-        <Button type="button" :label="t('action.cancel')" severity="secondary" @click="handleCancel"></Button>
-        <Button type="button" :label="t('action.save')" @click="handleToggleAccount" :disabled="!reason"></Button>
+        <Button type="button" :label="t('action.cancel')" severity="secondary" @click="handleCancel" style="height: 46px;"></Button>
+        <BaseButton type="button" :text="t('action.save')" @click="handleToggleAccount" :disabled="!reason || isLoading" :isLoading="isLoading" width="72"></BaseButton>
     </div>
-</Dialog>
+  </Dialog>
     <!-- Modal add account -->
     <Dialog v-model:visible="createDialog" modal :header="t('management.account.create_new_account')" :style="{ width: '35rem', height: 'fit-content' }">
       <div class="flex flex-col gap-1 mb-2">
