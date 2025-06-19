@@ -327,6 +327,7 @@ const handleDeleteMaterial = async (id) => {
     },
     accept: async () => {
       try {
+        isLoading.value = true
         const res = await materialService.deleteMaterial(id)
         await fetchAllMaterials();
         
@@ -336,8 +337,10 @@ const handleDeleteMaterial = async (id) => {
           detail: res.data.message,
           life: 3000,
         });
+        isLoading.value = false
       }
       catch (error) {
+        isLoading.value = false
         toast.add({
           severity: "error",
           summary: t("toast.error"),
