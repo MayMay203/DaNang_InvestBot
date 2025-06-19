@@ -212,7 +212,7 @@ const toggleActive = (value, materialData) => {
   }
       
   confirm.require({
-    message: t('toast.message_toggle_material'),
+    message: t('toast.message_toggle_store'),
     header: t('toast.confirm'),
     icon: 'pi pi-exclamation-triangle',
     rejectProps: {

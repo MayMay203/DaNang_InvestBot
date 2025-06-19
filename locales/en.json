@@ -166,6 +166,7 @@
     "message_confirm_logout": "Are you sure you want to logout?",
     "invalid_url": "The URL is incorrectly formatted.",
     "message_toggle_material": "Are you sure you want to change active status this material?",
+    "message_toggle_store": "Are you sure you want to update the active status for all materials in this store?",
     "over_upload_file": "Number of files uploaded no more than 3",
     "existed_file": "This file has been selected",
     "message_cancel_query": "You have stopped receiving feedback for this question."
