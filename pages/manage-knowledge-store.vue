@@ -512,7 +512,8 @@ onMounted(async () => {
                   name="delete"
                   size-icon="20px"
                   class="text-gray-600 hover:text-red-500 cursor-pointer"
-                  @click="handleDeleteMaterial(material.id)"
+                  cursor="pointer"
+                  @click.stop="handleDeleteMaterial(material.id)"
                 />
               </div>
             </TransitionGroup>

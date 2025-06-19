@@ -48,9 +48,9 @@ const iconStyle = computed(() => ({
 
 const emit = defineEmits(["click"]);
 
-const handleClick = () => {
+const handleClick = (event) => {
   if (!props.disabled) {
-    emit("click");
+    emit("click", event);
   }
 };
 </script>
