@@ -22,6 +22,7 @@ const first = ref(0);
 const visible = ref(false);
 const isVisible = ref(false);
 const isUploadVisible = ref(false);
+const isLoading = ref(false)
 const materials = ref([]);
 const formData = reactive({
   files: null,
@@ -124,6 +125,7 @@ const resetFormData = () => {
 
 const confirmAddNewMaterial = async () => {
   try {
+    isLoading.value = true
     if (formData.materialTypeId == '3') {
       const matches = formData.content.split(/(?=https?:\/\/)/g)
                       .map(str => str.trim())
@@ -173,8 +175,10 @@ const confirmAddNewMaterial = async () => {
     isVisible.value = false;
     visible.value = false;
     isUploadVisible.value = false;
+    isLoading.value = false
 
   } catch (error) {
+    isLoading.value = false
     console.error(error)
     isVisible.value = false;
     visible.value = false;
@@ -690,7 +694,7 @@ onMounted(async () => {
         name="demo[]"
         :multiple="true"
         accept=".jpg,.jpeg,.png,.gif,.bmp,.pdf,.doc,.docx,.xls,.xlsx"
-        :maxFileSize="1000000"
+        :maxFileSize="5242880"
         @select="onSelectedFiles"
       >
         <template #header="{ chooseCallback, clearCallback, files }">
@@ -937,4 +941,10 @@ onMounted(async () => {
       </div>
     </div>
     </Dialog>
+    <div
+    v-if="isLoading"
+    className="fixed inset-0 z-100 flex justify-center items-center bg-[rgba(0,0,0,0.1)]"
+  >
+    <ProgressSpinner />
+  </div>
 </template>

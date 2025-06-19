@@ -18,7 +18,7 @@ class MaterialService {
 
   async uploadMaterial(formData: any) {
     const { $axiosApi } = useNuxtApp();
-    $axiosApi.post(API_ENPOINT.UPLOAD_MATERIAL, formData, {
+    return $axiosApi.post(API_ENPOINT.UPLOAD_MATERIAL, formData, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
