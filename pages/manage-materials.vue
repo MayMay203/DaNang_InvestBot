@@ -943,7 +943,7 @@ onMounted(async () => {
     </Dialog>
     <div
     v-if="isLoading"
-    className="fixed inset-0 z-100 flex justify-center items-center bg-[rgba(0,0,0,0.1)]"
+    className="fixed inset-0 z-100000 flex justify-center items-center bg-[rgba(0,0,0,0.2)]"
   >
     <ProgressSpinner />
   </div>
