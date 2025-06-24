@@ -281,8 +281,8 @@ function onFileSelect(event) {
       continue;
     }
 
-    // Maximum 100MB = 104857600 bytes -> 99MB
-    if (file.size > 103809024) {
+    // Maximum 500KB
+    if (file.size > 512000) {
       toast.add({
         severity: "error",
         summary: t("toast.error"),
@@ -647,7 +647,6 @@ onMounted(() => {
       <div class="absolute bottom-[8px] left-[16px]">
         <FileUpload mode="basic" @select="onFileSelect" customUpload auto severity="secondary" class="p-button-outlined my-upload-button" chooseLabel=" " 
                     accept=".jpg,.jpeg,.png,.gif,.bmp,.pdf,.doc,.docx,.xls,.xlsx"
-                    :maxFileSize="5242880"
         />
       </div>
       <div class="flex gap-[8px] absolute bottom-[8px] right-[16px]">

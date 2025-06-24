@@ -706,7 +706,7 @@ onMounted(async () => {
       name="demo[]"
       :multiple="true"
       accept=".jpg,.jpeg,.png,.gif,.bmp,.pdf,.doc,.docx,.xls,.xlsx"
-      :maxFileSize="1000000"
+      :maxFileSize="512000"
       @select="onSelectedFiles"
     >
       <template #header="{ chooseCallback, clearCallback, files }">

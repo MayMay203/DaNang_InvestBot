@@ -226,8 +226,8 @@ function onFileSelect(event) {
       continue;
     }
 
-    // Maximum 100MB = 104857600 bytes -> 99MB
-    if (file.size > 103809024) {
+    // Maximum 500KB
+    if (file.size > 512000) {
       toast.add({
         severity: "error",
         summary: t("toast.error"),
@@ -595,7 +595,9 @@ onMounted(async() => {
         <Textarea id="queryInput" v-model="inputValue" @keydown.enter.exact.prevent="handleSendQuery" cols="30" class="w-[100%] h-[68px]" :style="{ 'resize': 'none', 'overflow-y': 'auto', 'font-size': '14px' }" :placeholder="t('chatbot.placeholder_chat')"/>
         </div>
       <div class="absolute bottom-[8px] left-[16px]">
-        <FileUpload mode="basic" @select="onFileSelect" customUpload auto severity="secondary" class="p-button-outlined my-upload-button" chooseLabel=" "/>
+        <FileUpload mode="basic" @select="onFileSelect" customUpload auto severity="secondary" class="p-button-outlined my-upload-button" chooseLabel=" "
+                    accept=".jpg,.jpeg,.png,.gif,.bmp,.pdf,.doc,.docx,.xls,.xlsx"
+        />
       </div>
       <div class="flex gap-[8px] absolute bottom-[8px] right-[16px]">
        <button
