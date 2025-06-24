@@ -324,7 +324,7 @@ onMounted(async () => {
       tableStyle="min-width: 50rem"
       filterDisplay="menu"
       :loading="loading"
-      :globalFilterFields="['name', 'description', 'createdBy', 'updatedAt', 'status', 'active']"
+      :globalFilterFields="['name', 'description', 'updatedAt', 'numberMaterials']"
     >
       <template #header>
         <div class="flex justify-between">

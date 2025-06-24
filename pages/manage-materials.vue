@@ -393,7 +393,7 @@ onMounted(async () => {
       :rowsPerPageOptions="[5, 10, 20, 50]"
       filterDisplay="menu"
       :loading="loading"
-      :globalFilterFields="['fullName', 'email', 'role', 'active']"
+      :globalFilterFields="['name', 'description']"
       scrollable
       resizableColumns
       columnResizeMode="fit"
