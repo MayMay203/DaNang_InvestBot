@@ -141,6 +141,8 @@ const handleDeleteConvers = async (id) => {
       try {
         await conversationService.deleteConversation(id)
         await getAllConversations();
+        selectedConvers.value = conversations.value[conversations.value.length - 1]?.id;
+        await getDetailConversation(selectedConvers.value)
         
         toast.add({
           severity: "success",
@@ -536,7 +538,10 @@ onMounted(async() => {
                       <Skeleton width="100%" height="1.2rem" class="mb-2" />
                       <Skeleton width="80%" height="1.2rem" />
                     </template>
-                    <div v-html="md.render(splitAnswerContent(item.answerContent).content)" class="prose text-left max-w-[90%] text-[14px]"></div>
+                    <div
+                      v-html="md.render(splitAnswerContent(item.answerContent).content || '')"
+                      class="prose text-left max-w-[90%] text-[14px]"
+                    ></div>
                     <div v-if="splitAnswerContent(item.answerContent).source" class="mt-1 text-gray-500 italic">
                       <template v-if="splitAnswerContent(item.answerContent).links.length">
                         <span v-for="(link, index) in splitAnswerContent(item.answerContent).links" :key="index" class="block">
