@@ -2,6 +2,8 @@
 import { ref, onMounted } from 'vue'
 
 const isLocaleReady = ref(false)
+const layoutName = computed(() => route.meta.layout || 'user-layout')
+const route = useRoute()
 
 onMounted(() => {
   isLocaleReady.value = true
@@ -11,7 +13,7 @@ onMounted(() => {
 
 <template>
   <div>
-    <NuxtLayout v-if="isLocaleReady" :key="$route.path">
+    <NuxtLayout v-if="isLocaleReady" :key="layoutName">
       <Toast/>
       <NuxtLoadingIndicator />
       <ConfirmDialog></ConfirmDialog>

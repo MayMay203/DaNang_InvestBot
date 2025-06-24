@@ -228,6 +228,9 @@ const toggleActive = (value, materialData) => {
     },
     reject: () => {
       handleCancel()
+    },
+    onHide: () => {
+      handleCancel()
     }
   });
 }

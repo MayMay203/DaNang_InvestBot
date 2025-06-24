@@ -24,6 +24,17 @@ const isVisibleSearch = ref(false)
 const searchResult = ref([])
 const searchText = ref('')
 let recognition = null
+const showPreview = ref(false)
+const previewFile = ref(null)
+
+const openPreview = (file) => {
+  if (file.type?.startsWith('image/')) {
+    previewFile.value = file
+    showPreview.value = true
+  } else {
+    window.open(file.url, '_blank')
+  }
+}
 
 const scrollToBottom = () => {
   if (chatContainer.value) {
@@ -470,6 +481,7 @@ onMounted(async() => {
                 <div class="flex flex-col gap-3">
                   <div
                     v-if="item.files && item.files.length"
+                    @click="openPreview(file)"
                     class="flex flex-wrap gap-3 mt-3 ml-auto"
                   >
                     <div
@@ -494,6 +506,18 @@ onMounted(async() => {
                           {{ file.name }}
                         </span>
                       </template>
+                    </div>
+
+                     <!-- modal preview image -->
+                    <div
+                      v-if="showPreview"
+                      class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50"
+                      @click.self="closePreview"
+                    >
+                      <img
+                        :src="previewFile?.preview || previewFile?.url"
+                        class="max-w-[90%] max-h-[90%] rounded-lg shadow-lg"
+                      />
                     </div>
                   </div>
 
