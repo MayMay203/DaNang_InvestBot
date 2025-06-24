@@ -169,7 +169,8 @@
     "message_toggle_store": "Are you sure you want to update the active status for all materials in this store?",
     "over_upload_file": "Number of files uploaded no more than 3",
     "existed_file": "This file has been selected",
-    "message_cancel_query": "You have stopped receiving feedback for this question."
+    "message_cancel_query": "You have stopped receiving feedback for this question.",
+    "file_too_large": "The file has exceeded the limit of 100MB"
   },
   "conversation": {
     "delete_conversation": "Are you sure to delete conversation?",

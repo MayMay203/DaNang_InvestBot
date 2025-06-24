@@ -3,6 +3,8 @@ import BaseIcon from '~/components/base-components/BaseIcon.vue';
 import { conversationService } from '~/service-api/conversationService';
 import dayjs from 'dayjs'
 import EmptyState from './EmptyState.vue';
+import MarkdownIt from 'markdown-it';
+const md = new MarkdownIt();
 
 definePageMeta({layout: 'user-layout'})
 
@@ -24,6 +26,22 @@ const searchText = ref('')
 const searchResult = ref([])
 const isLoadingVoice = ref(false)
 let recognition = null
+const showPreview = ref(false)
+const previewFile = ref(null)
+
+const openPreview = (file) => {
+  if (!file) {
+    console.warn('openPreview: file is undefined or null');
+    return;
+  }
+
+  if (file.url) {
+    window.open(file.url, '_blank');
+  } else {
+    console.warn('openPreview: file has no url', file);
+  }
+};
+
 const emit = defineEmits(['update:visible'])
 
 const props = defineProps({
@@ -122,7 +140,7 @@ const getAllConversations = async () => {
       const timestamp = date.valueOf() 
 
       if (!acc[timestamp]) acc[timestamp] = { date, items: [] }
-      acc[timestamp].items.push(conver)
+      acc[timestamp].items.unshift(conver)
 
       return acc
     }, {})
@@ -247,7 +265,7 @@ function onFileSelect(event) {
   for (const file of files) {
     const isDuplicate = selectedFiles.value.some(
       (f) => {
-        return f.name === file.name && f.size === file.size && f.type === f.type
+        return f.name === file.name && f.size === file.size && f.type === file.type;
       }
     );
 
@@ -258,8 +276,19 @@ function onFileSelect(event) {
         detail: t("toast.existed_file"),
         life: 3000,
       });
-      continue
-    };
+      continue;
+    }
+
+    // Maximum 100MB = 104857600 bytes -> 99MB
+    if (file.size > 103809024) {
+      toast.add({
+        severity: "error",
+        summary: t("toast.error"),
+        detail: t("toast.file_too_large"), 
+        life: 3000,
+      });
+      continue;
+    }
 
     if (selectedFiles.value.length >= 3) {
       toast.add({
@@ -272,12 +301,12 @@ function onFileSelect(event) {
     }
 
     const fileData = {
-      name: file.name, 
+      name: file.name,
       type: file.type,
       size: file.size,
       file: file,
       preview: null
-    }
+    };
 
     if (file.type.startsWith("image/")) {
       const reader = new FileReader();
@@ -505,7 +534,7 @@ onMounted(() => {
       </div>
      </div>
 
-     <div ref="chatContainer" :class="['relative h-[70vh] top-[50px] lg:top-[60px] bottom-[160px] overflow-y-auto w-full', {'h-[90vh]': accountId !== userStore.id}]">
+     <div ref="chatContainer" :class="['relative h-[66vh] top-[50px] lg:top-[60px] bottom-[160px] overflow-y-auto w-full', {'h-[90vh]': accountId !== userStore.id}]">
         <div :class="['mt-[20px] w-[350px] md:w-[500px] overflow-y:auto lg:w-[660px] flex flex-col gap-[36px] absolute', isExpanded ? 'left-[calc(50%_+_125px)]' : 'left-[50%]', accountId === userStore.id ? 'h-[500px]' : 'h-[87vh]',
         'transform -translate-x-1/2 z-10']">
           <div class="flex flex-col gap-[20px]" v-for="item in detailConversation" :key="item.id">
@@ -537,6 +566,17 @@ onMounted(() => {
                         </span>
                       </template>
                     </div>
+                     <!-- modal preview image -->
+                    <div
+                      v-if="showPreview"
+                      class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50"
+                      @click.self="closePreview"
+                    >
+                      <img
+                        :src="previewFile?.preview || previewFile?.url"
+                        class="max-w-[90%] max-h-[90%] rounded-lg shadow-lg"
+                      />
+                    </div>
                   </div>
 
                   <div class="text-right  max-w-[90%] text-[14px] ml-auto p-[10px] rounded-[12px] bg-[rgba(0,0,0,0.05)]">{{ item.questionContent }}</div>
@@ -546,7 +586,7 @@ onMounted(() => {
                       <Skeleton width="100%" height="1.2rem" class="mb-2" />
                       <Skeleton width="80%" height="1.2rem" />
                     </template>
-                    <div>{{ splitAnswerContent(item.answerContent).content }}</div>
+                    <div v-html="md.render(splitAnswerContent(item.answerContent).content)" class="prose text-left max-w-[90%] text-[14px]"></div>
                     <div v-if="splitAnswerContent(item.answerContent).source" class="mt-1 text-gray-500 italic">
                       <template v-if="splitAnswerContent(item.answerContent).links.length">
                         <span v-for="(link, index) in splitAnswerContent(item.answerContent).links" :key="index" class="block">
@@ -600,7 +640,10 @@ onMounted(() => {
         <Textarea id="queryInput" v-model="inputValue" @keydown.enter.exact.prevent="handleSendQuery" cols="30" class="w-[100%] h-[68px]" :style="{ 'resize': 'none', 'overflow-y': 'auto', 'font-size': '14px'}" :placeholder="t('chatbot.placeholder_chat')"/>
       </div>
       <div class="absolute bottom-[8px] left-[16px]">
-        <FileUpload mode="basic" @select="onFileSelect" customUpload auto severity="secondary" class="p-button-outlined my-upload-button" chooseLabel=" "/>
+        <FileUpload mode="basic" @select="onFileSelect" customUpload auto severity="secondary" class="p-button-outlined my-upload-button" chooseLabel=" " 
+                    accept=".jpg,.jpeg,.png,.gif,.bmp,.pdf,.doc,.docx,.xls,.xlsx"
+                    :maxFileSize="5242880"
+        />
       </div>
       <div class="flex gap-[8px] absolute bottom-[8px] right-[16px]">
         <button

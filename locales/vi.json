@@ -169,7 +169,8 @@
     "message_toggle_store": "Bạn có chắc chắn muốn thay đổi trạng thái của tất cả tài liệu trong kho này?",
     "over_upload_file": "Số lượng file tải lên không vượt quá 3",
     "existed_file": "File này đã được chọn",
-    "message_cancel_query": "Bạn đã dừng nhận phản hồi cho câu hỏi này."
+    "message_cancel_query": "Bạn đã dừng nhận phản hồi cho câu hỏi này.",
+    "file_too_large": "File đã vượt quá giới hạn là 100MB"
   },
   "conversation": {
     "delete_conversation": "Bạn có chắc chắn xoá đoạn chat này?",

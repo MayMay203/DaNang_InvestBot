@@ -26,22 +26,20 @@ const searchText = ref('')
 let recognition = null
 const showPreview = ref(false)
 const previewFile = ref(null)
+import MarkdownIt from 'markdown-it';
+const md = new MarkdownIt();
 
 const openPreview = (file) => {
-  if (file.type?.startsWith('image/')) {
-    previewFile.value = file
-    showPreview.value = true
-  } else {
-    window.open(file.url, '_blank')
-  }
-}
 
-const scrollToBottom = () => {
-  if (chatContainer.value) {
-    chatContainer.value.scrollTo({
-      top: chatContainer.value.scrollHeight,
-      behavior: 'smooth',
-    });
+  if (!file) {
+    console.warn('openPreview: file is undefined or null');
+    return;
+  }
+
+  if (file.url) {
+    window.open(file.url, '_blank');
+  } else {
+    console.warn('openPreview: file has no url', file);
   }
 };
 
@@ -86,7 +84,7 @@ const getAllConversations = async () => {
       const timestamp = date.valueOf() 
 
       if (!acc[timestamp]) acc[timestamp] = { date, items: [] }
-      acc[timestamp].items.push(conver)
+      acc[timestamp].items.unshift(conver)
 
       return acc
     }, {})
@@ -212,7 +210,7 @@ function onFileSelect(event) {
   for (const file of files) {
     const isDuplicate = selectedFiles.value.some(
       (f) => {
-        return f.name === file.name && f.size === file.size && f.type === f.type
+        return f.name === file.name && f.size === file.size && f.type === file.type;
       }
     );
 
@@ -223,8 +221,19 @@ function onFileSelect(event) {
         detail: t("toast.existed_file"),
         life: 3000,
       });
-      continue
-    };
+      continue;
+    }
+
+    // Maximum 100MB = 104857600 bytes -> 99MB
+    if (file.size > 103809024) {
+      toast.add({
+        severity: "error",
+        summary: t("toast.error"),
+        detail: t("toast.file_too_large"), 
+        life: 3000,
+      });
+      continue;
+    }
 
     if (selectedFiles.value.length >= 3) {
       toast.add({
@@ -237,12 +246,12 @@ function onFileSelect(event) {
     }
 
     const fileData = {
-      name: file.name, 
+      name: file.name,
       type: file.type,
       size: file.size,
       file: file,
       preview: null
-    }
+    };
 
     if (file.type.startsWith("image/")) {
       const reader = new FileReader();
@@ -481,7 +490,6 @@ onMounted(async() => {
                 <div class="flex flex-col gap-3">
                   <div
                     v-if="item.files && item.files.length"
-                    @click="openPreview(file)"
                     class="flex flex-wrap gap-3 mt-3 ml-auto"
                   >
                     <div
@@ -528,7 +536,7 @@ onMounted(async() => {
                       <Skeleton width="100%" height="1.2rem" class="mb-2" />
                       <Skeleton width="80%" height="1.2rem" />
                     </template>
-                    <div>{{ splitAnswerContent(item.answerContent).content }}</div>
+                    <div v-html="md.render(splitAnswerContent(item.answerContent).content)" class="prose text-left max-w-[90%] text-[14px]"></div>
                     <div v-if="splitAnswerContent(item.answerContent).source" class="mt-1 text-gray-500 italic">
                       <template v-if="splitAnswerContent(item.answerContent).links.length">
                         <span v-for="(link, index) in splitAnswerContent(item.answerContent).links" :key="index" class="block">

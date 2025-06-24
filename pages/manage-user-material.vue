@@ -171,7 +171,7 @@ const fetchAllMaterials = async () => {
     materials.value = data.map((item) => ({
       ...item,
       updatedAt: dayjs(item.updatedAt).format("HH:mm:ss DD-MM-YYYY"),
-      author: item.account.email,
+      author: item.account?.email || useUserStore().email,
     }));
   } catch (error) {
     console.error(error);
