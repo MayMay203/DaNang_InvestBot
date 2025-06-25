@@ -536,7 +536,17 @@ onMounted(() => {
       </div>
      </div>
 
-     <div ref="chatContainer" :class="['relative h-[66vh] top-[50px] lg:top-[60px] bottom-[160px] overflow-y-auto w-full', {'h-[90vh]': accountId !== userStore.id}]">
+        <div
+          ref="chatContainer"
+          :class="[
+            'relative top-[50px] lg:top-[60px] bottom-[160px] overflow-y-auto w-full',
+            selectedFiles.length > 0
+              ? 'h-[65vh]'
+              : accountId !== userStore.id
+              ? 'h-[90vh]'
+              : 'h-[72vh]'
+          ]"
+        >
         <div :class="['mt-[20px] w-[350px] md:w-[500px] overflow-y:auto lg:w-[660px] flex flex-col gap-[36px] absolute', isExpanded ? 'left-[calc(50%_+_125px)]' : 'left-[50%]', accountId === userStore.id ? 'h-[500px]' : 'h-[87vh]',
         'transform -translate-x-1/2 z-10']">
           <div class="flex flex-col gap-[20px]" v-for="item in detailConversation" :key="item.id">
@@ -619,7 +629,7 @@ onMounted(() => {
               </div>
         </div>
      </div>
-     <div v-if="accountId == userStore.id" :class="['absolute bottom-[20px] w-[350px] md:w-[520px] lg:w-[680px] rounded-[20px] px-[16px] py-[12px] overflow-hidden',
+     <div v-if="accountId == userStore.id" :class="['absolute z-10 bottom-[20px] w-[350px] md:w-[520px] lg:w-[680px] rounded-[20px] px-[16px] py-[12px] overflow-hidden',
         isExpanded ? 'left-[calc(50%_+_125px)]' : 'left-[50%]', selectedFiles.length > 0 ? 'h-[180px]' : 'h-[130px]',
         'transform -translate-x-1/2 border-1 border-[#ccc] overflow-hidden'
         ]">
