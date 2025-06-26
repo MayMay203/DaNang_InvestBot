@@ -495,6 +495,7 @@ onMounted(async() => {
       </div>
      </div>
       <div
+        ref="chatContainer"
         class="fixed pt-[30px] top-[100px] lg:top-[60px] overflow-y-auto w-full"
         :class="selectedFiles.length > 0 ? 'bottom-[210px]' : 'bottom-[160px]'"
       >
