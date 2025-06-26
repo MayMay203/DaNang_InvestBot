@@ -170,7 +170,7 @@
     "over_upload_file": "Số lượng file tải lên không vượt quá 3",
     "existed_file": "File này đã được chọn",
     "message_cancel_query": "Bạn đã dừng nhận phản hồi cho câu hỏi này.",
-    "file_too_large": "File đã vượt quá giới hạn là 100MB"
+    "file_too_large": "File đã vượt quá giới hạn là 500KB"
   },
   "conversation": {
     "delete_conversation": "Bạn có chắc chắn xoá đoạn chat này?",
