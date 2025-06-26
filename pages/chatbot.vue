@@ -414,6 +414,15 @@ const handleVoice = () => {
   }
 }
 
+const scrollToBottom = () => {
+  if (chatContainer.value) {
+    chatContainer.value.scrollTo({
+      top: chatContainer.value.scrollHeight,
+      behavior: 'smooth',
+    });
+  }
+};
+
 onMounted(async() => {
   await getAllConversations()
   selectedConvers.value = conversations.value[conversations.value.length - 1]?.id;
@@ -422,7 +431,7 @@ onMounted(async() => {
   await nextTick();
     scrollToBottom();
 
-  if (process.client) {
+ if (process.client) {
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
     if (SpeechRecognition) {
       recognition = new SpeechRecognition()
